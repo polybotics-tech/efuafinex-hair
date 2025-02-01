@@ -1,4 +1,4 @@
-# Welcome to your Expo app 👋
+# Welcome to Efuafinix Hair Mobile App 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
@@ -25,16 +25,6 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
@@ -48,3 +38,60 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+## Project Structure
+
+The project is structured as follows:
+
+```
+/efuafinix_hair_app
+├── app
+│   ├── (auth)
+│   ├── (main)
+│   ├── (tabs)
+│   ├── _layout.jsx_
+│   ├── index.jsx
+│   └── ...
+├── assets/
+├── components/
+├── constants/
+├── helpers/
+├── redux/
+├── node_modules
+├── .gitignore
+├── app.json
+├── babel.config.js
+├── package.json
+└── README.md
+```
+
+- **/assets**: Contains images, fonts, and other static assets.
+- **/components**: Contains reusable components used throughout the app.
+- **/constants**: Contains the different constants/themes of the app.
+- **/helpers**: Contains the helping functions/utilities for the app.
+- **/redux**: Contains the redux global state management files
+
+## Scripts
+
+In the project directory, you can run:
+
+- `npm start`: Starts the development server.
+- `npm run android`: Builds the app for Android.
+- `npm run ios`: Builds the app for iOS.
+- `npm run web`: Starts the web version of the app.
+- `npm run eject`: Ejects the app from Expo, giving you full control over the native code.
+
+## Contributing
+
+If you would like to contribute to this project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature/YourFeature`).
+6. Open a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
