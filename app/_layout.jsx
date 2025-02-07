@@ -42,7 +42,7 @@ export default function RootLayout() {
         text1Style={{
           fontSize: FONT_SIZE.m,
           fontWeight: FONT_WEIGHT.semibold,
-          color: COLOR_THEME.primary,
+          color: COLOR_THEME.error,
           textTransform: "uppercase",
         }}
         text2Style={{
@@ -85,7 +85,7 @@ export default function RootLayout() {
         <Stack.Screen
           name="(tabs)"
           options={{
-            headerShown: true,
+            headerShown: false,
             headerShadowVisible: false,
             header: ({}) => <TabsHeaderComponent />,
           }}

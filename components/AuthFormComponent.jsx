@@ -240,7 +240,7 @@ const FormToggle = ({ label, placeholder, form, name, setForm }) => {
           thumbColor={form[name] ? COLOR_THEME.primary : COLOR_THEME.gray200}
           ios_backgroundColor={COLOR_THEME.gray50}
           onValueChange={toggleSwitch}
-          value={form[name]}
+          value={Boolean(form[name])}
         />
       </View>
 

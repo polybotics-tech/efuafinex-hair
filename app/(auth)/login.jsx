@@ -5,26 +5,23 @@ import AuthFormComponent from "../../components/AuthFormComponent";
 import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants/theme";
 import { router } from "expo-router";
-import Toast from "react-native-toast-message";
+import { Alert } from "../../helpers/utils/alert";
+import { AUTH_HOOKS } from "../../helpers/hooks/auth";
 
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    pass: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   //handle form submission
   const submitForm = async () => {
-    //correct this later
-    Toast.show({
-      type: "success",
-      text1: "Login Successful",
-      text2: "You will be redirected shortly",
-    });
-
-    setTimeout(() => {
+    const login = await AUTH_HOOKS.attempt_login(formData, setIsLoading);
+    if (login) {
+      //redirect to home
       router.dismissTo("/(tabs)");
-    }, 4000);
+    }
   };
 
   return (
@@ -35,6 +32,7 @@ export default function Login() {
       bottomText={"Don't have an account?"}
       switchPath={"/register/"}
       buttonText={"Login to account"}
+      buttonIsLoading={isLoading}
       formSubmitFunction={submitForm}
     >
       {/**email */}
@@ -60,7 +58,7 @@ export default function Login() {
         }
         label={"Password"}
         placeholder={"Enter account password"}
-        name={"password"}
+        name={"pass"}
         form={formData}
         setForm={setFormData}
       />

@@ -1,17 +1,42 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { memo } from "react";
-import { DEMO_PACKAGE_LIST } from "../helpers/demo_data";
+import React, { memo, useEffect, useState } from "react";
 import PackageCard from "./reuseables/PackageCard";
 import NotFoundComponent from "./reuseables/NotFoundComponent";
 import SeeMoreBtn from "./reuseables/SeeMoreBtn";
+import { PACKAGE_HOOKS } from "../helpers/hooks/package";
 
 const PackageRecordsComponent = ({ filter }) => {
-  const package_records = DEMO_PACKAGE_LIST;
+  const [packages, setPackages] = useState();
+  const [meta, setMeta] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchPackages = async (page) => {
+    //send request
+    const result = await PACKAGE_HOOKS.fetch_user_packages(setIsLoading, page);
+
+    if (result) {
+      setMeta(result?.meta);
+
+      if (page > 1 && result?.packages) {
+        setPackages((prev) => [...prev, ...result?.packages]);
+      } else {
+        setPackages(result?.packages);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchPackages(1);
+  }, [filter]);
+
+  const seeMore = () => {
+    fetchPackages(Number(meta?.page + 1));
+  };
 
   return (
     <View style={styles.component}>
-      {package_records?.length > 0 ? (
-        package_records?.map((item, index) => (
+      {packages?.length > 0 ? (
+        packages?.map((item, index) => (
           <PackageCard
             key={index}
             type={item?.package_type}
@@ -20,12 +45,15 @@ const PackageRecordsComponent = ({ filter }) => {
           />
         ))
       ) : (
-        <NotFoundComponent text={"No packages recorded"} />
+        <NotFoundComponent
+          text={"No packages recorded"}
+          isLoading={isLoading}
+        />
       )}
 
       {/**see more button logic */}
-      {package_records?.length > 0 && (
-        <SeeMoreBtn onPress={() => console.log("see more")} />
+      {packages?.length > 0 && meta?.has_next_page && (
+        <SeeMoreBtn onPress={() => seeMore()} isLoading={isLoading} />
       )}
     </View>
   );

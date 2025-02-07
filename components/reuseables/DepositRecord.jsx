@@ -2,7 +2,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { memo } from "react";
 import { format_number } from "../../helpers/utils/numbers";
 import { format_date_time_readable } from "../../helpers/utils/datetime";
-import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
+import {
+  COLOR_THEME,
+  FONT_SIZE,
+  FONT_WEIGHT,
+  NAIRA_CURRENCY,
+} from "../../constants";
 import { router } from "expo-router";
 
 const DepositRecord = ({ data }) => {
@@ -13,12 +18,12 @@ const DepositRecord = ({ data }) => {
     <TouchableOpacity
       style={styles.component}
       onPress={() => {
-        view_transaction(data?.id);
+        view_transaction(data?.transaction_ref);
       }}
     >
       <View style={styles.topRow}>
         {/* package id */}
-        <Text style={styles.packageId}>{data?.package_id}</Text>
+        <Text style={styles.packageId}>{data?.transaction_ref}</Text>
 
         {/* status */}
         <StatusComponent status={data?.status} />
@@ -26,7 +31,15 @@ const DepositRecord = ({ data }) => {
 
       <View style={styles.bottomRow}>
         {/* amount */}
-        <Text style={styles.amount}>{format_number(data?.amount)}</Text>
+        <Text style={styles.amount}>
+          {NAIRA_CURRENCY} {format_number(data?.amount_expected)}{" "}
+          {data?.fee_charged > 0 && (
+            <Text style={styles.fee}>
+              [- {NAIRA_CURRENCY}
+              {format_number(data?.fee_charged)}]
+            </Text>
+          )}
+        </Text>
 
         {/* created time */}
         <Text style={styles.createdTime}>
@@ -86,11 +99,17 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.bold,
     color: COLOR_THEME.black,
   },
+  fee: {
+    fontSize: FONT_SIZE.s,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLOR_THEME.error,
+  },
   statusComponent: (s) => ({
     height: 22,
-    paddingHorizontal: 16,
+    width: 72,
     borderRadius: 100,
-    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "center",
     backgroundColor:
       s === "success"

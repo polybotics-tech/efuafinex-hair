@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { memo } from "react";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
 
@@ -6,7 +12,7 @@ const PrimaryButton = ({ ...props }) => {
   return (
     <TouchableOpacity
       style={[styles.primaryBtn, props?.style]}
-      disabled={props?.disabled}
+      disabled={props?.disabled || props?.isLoading}
       onPress={props?.onPress}
       activeOpacity={0.6}
     >
@@ -19,15 +25,24 @@ const PrimaryButton = ({ ...props }) => {
         {props?.title}
       </Text>
 
-      {props?.icon && (
-        <View
-          style={[
-            styles.primaryBtnIcon,
-            props?.iconSize && { width: props?.iconSize },
-          ]}
-        >
-          {props?.icon}
-        </View>
+      {props?.isLoading ? (
+        <ActivityIndicator
+          size={FONT_SIZE.s}
+          color={props?.color || COLOR_THEME.white}
+        />
+      ) : (
+        <>
+          {props?.icon && (
+            <View
+              style={[
+                styles.primaryBtnIcon,
+                props?.iconSize && { width: props?.iconSize },
+              ]}
+            >
+              {props?.icon}
+            </View>
+          )}
+        </>
       )}
     </TouchableOpacity>
   );

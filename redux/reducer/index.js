@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import cartSlice from "./cartSlice";
+import userSlice from "./userSlice";
 
 // Combining burgerReducer and pizzaReducer in rootReducer
 export const rootReducer = combineReducers({
-  cart: cartSlice.reducer,
+  user: userSlice.reducer,
 });

@@ -1,13 +1,31 @@
 import { StyleSheet, Switch, Text, View } from "react-native";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../../constants/theme";
 import AuthFormComponent from "../../../components/AuthFormComponent";
+import { useSelector } from "react-redux";
+import PrimaryButton from "../../../components/reuseables/PrimaryButton";
 
 export default function NotificationSettings() {
-  const [formData, setFormData] = React.useState({
-    emailNotification: false,
-    pushNotification: false,
+  //fetch user
+  const user = useSelector((state) => state.user.user);
+  const [isUnchanged, setIsUnchanged] = useState(true);
+
+  const [formData, setFormData] = useState({
+    email_notify: false,
+    push_notify: false,
   });
+
+  //update form from global state
+  useMemo(() => {
+    if (user) {
+      const { email_notify, push_notify } = user;
+
+      setFormData({
+        email_notify,
+        push_notify,
+      });
+    }
+  }, [user]);
 
   return (
     <View style={styles.page}>
@@ -18,7 +36,7 @@ export default function NotificationSettings() {
         placeholder={
           "Recieve information on all activities related to your account via email"
         }
-        name={"emailNotification"}
+        name={"email_notify"}
         form={formData}
         setForm={setFormData}
       />
@@ -30,47 +48,18 @@ export default function NotificationSettings() {
         placeholder={
           "Recieve information on in-app activities related to your account right on your device"
         }
-        name={"pushNotification"}
+        name={"push_notify"}
         form={formData}
         setForm={setFormData}
       />
+
+      {/**save button */}
+      <View style={styles.btnCont}>
+        <PrimaryButton title={"Save changes"} disabled={isUnchanged} />
+      </View>
     </View>
   );
 }
-
-const NoticeSettingComponent = ({
-  title,
-  description,
-  form,
-  name,
-  setForm,
-}) => {
-  const toggleSwitch = () => {
-    setForm({ ...form, [name]: !form[name] });
-  };
-
-  return (
-    <View style={styles.noticeComponent}>
-      <View style={styles.noticeComponentHeader}>
-        <Text style={styles.noticeComponentTitle}>{title}</Text>
-
-        {/*switch*/}
-        <Switch
-          trackColor={{
-            false: COLOR_THEME.gray50,
-            true: COLOR_THEME.primaryFaded,
-          }}
-          thumbColor={form[name] ? COLOR_THEME.primary : COLOR_THEME.gray200}
-          ios_backgroundColor={COLOR_THEME.gray50}
-          onValueChange={toggleSwitch}
-          value={form[name]}
-        />
-      </View>
-
-      <Text style={styles.noticeComponentDescription}>{description}</Text>
-    </View>
-  );
-};
 
 const styles = StyleSheet.create({
   page: {
@@ -100,5 +89,9 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.s,
     fontWeight: FONT_WEIGHT.regular,
     color: COLOR_THEME.gray200,
+  },
+  btnCont: {
+    width: "100%",
+    paddingTop: 32,
   },
 });

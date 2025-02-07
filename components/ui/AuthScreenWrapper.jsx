@@ -12,6 +12,7 @@ const AuthScreenWrapper = ({
   bottomText,
   switchText,
   buttonText,
+  buttonIsLoading,
   formSubmitFunction = () => {},
 }) => {
   return (
@@ -29,7 +30,11 @@ const AuthScreenWrapper = ({
 
       {/**submit button */}
       <View style={styles.bottomCont}>
-        <PrimaryButton title={buttonText} onPress={formSubmitFunction} />
+        <PrimaryButton
+          title={buttonText}
+          onPress={formSubmitFunction}
+          isLoading={buttonIsLoading}
+        />
 
         <Text style={styles.bottomText}>
           {bottomText}{" "}

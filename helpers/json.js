@@ -33,7 +33,7 @@ export const JSON_QUICK_OPTIONS_LIST = [
 export const RECORDS_SORTING_OPTIONS = [
   {
     name: "deposits",
-    filters: ["all", "pending", "success", "failed", "canceled"],
+    filters: ["all", "pending", "success", "failed"],
   },
   {
     name: "packages",

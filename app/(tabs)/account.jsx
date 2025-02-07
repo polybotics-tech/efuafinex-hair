@@ -4,6 +4,9 @@ import ScrollViewWrapper from "../../components/ui/ScrollViewWrapper";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
 import { Octicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useSelector } from "react-redux";
+import ImageComponent from "../../components/reuseables/ImageComponent";
+import { IMAGE_LOADER } from "../../helpers/utils/image-loader";
 
 export default function Account() {
   return (
@@ -45,13 +48,18 @@ export default function Account() {
 }
 
 const ProfileCard = ({}) => {
+  const user = useSelector((state) => state.user.user);
+
   return (
     <View style={styles.cardTemplate}>
       <View style={styles.userCard}>
-        <View style={styles.profileThumbnail}></View>
+        <View style={styles.profileThumbnail}>
+          <ImageComponent uri={IMAGE_LOADER.user_thumbnail(user?.thumbnail)} />
+        </View>
+
         <View>
-          <Text style={styles.userName}>Emma emeka</Text>
-          <Text style={styles.userMail}>emmanuelemeka@gmail.com</Text>
+          <Text style={styles.userName}>{user?.fullname}</Text>
+          <Text style={styles.userMail}>{user?.email}</Text>
         </View>
       </View>
 
@@ -108,6 +116,7 @@ const OptionTag = ({ title, icon, path }) => {
 
 const styles = StyleSheet.create({
   scrollView: {
+    paddingTop: 8,
     paddingHorizontal: 16,
     paddingBottom: 16,
     gap: 16,
@@ -132,6 +141,7 @@ const styles = StyleSheet.create({
     height: 72,
     borderRadius: 100,
     backgroundColor: COLOR_THEME.white,
+    overflow: "hidden",
   },
   userName: {
     fontSize: FONT_SIZE.b,

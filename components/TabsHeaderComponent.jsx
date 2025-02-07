@@ -38,7 +38,7 @@ const TabsHeaderComponent = () => {
   }, [path]);
 
   return (
-    <SafeAreaView style={styles.header(pageName?.toLowerCase())}>
+    <View style={styles.header(pageName?.toLowerCase())}>
       {pageName === "Home" ? (
         <Text style={styles.LogoName}>
           Logo<Text style={styles.LogoNameLink}>Name</Text>
@@ -51,7 +51,7 @@ const TabsHeaderComponent = () => {
       <View style={styles.actionBtnSplit}>
         <NotificationBtn />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

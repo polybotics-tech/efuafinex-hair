@@ -4,18 +4,32 @@ import SafeAreaWrapper from "../../../components/ui/safeAreaWrapper";
 import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
 import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
 import { useLocalSearchParams } from "expo-router";
-import { fetch_package_data } from "../../../helpers/hooks/package";
+import {
+  fetch_package_data,
+  PACKAGE_HOOKS,
+} from "../../../helpers/hooks/package";
 import PackageCard from "../../../components/reuseables/PackageCard";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../../constants";
+import NotFoundComponent from "../../../components/reuseables/NotFoundComponent";
 
 export default function Package() {
   const { id } = useLocalSearchParams();
 
   const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState();
+
+  //fetch package details
+  const fetchPackage = async (id) => {
+    const result = await PACKAGE_HOOKS.fetch_single_package(setIsLoading, id);
+
+    if (result) {
+      setData(result);
+    }
+  };
 
   useEffect(() => {
     if (id) {
-      setData(fetch_package_data(id));
+      fetchPackage(id);
     }
   }, [id]);
 
@@ -23,12 +37,24 @@ export default function Package() {
     <SafeAreaWrapper>
       <DefaultHeaderComponent directory={"package"} />
 
-      <ScrollViewWrapper style={styles.page}>
+      <ScrollViewWrapper
+        style={styles.page}
+        refreshFunc={() => {
+          setData();
+          fetchPackage(id);
+        }}
+      >
         {/**package details */}
-        <PackageCard type={data?.package_type} data={data} />
+        {!data ? (
+          <NotFoundComponent text={"Package not found"} isLoading={isLoading} />
+        ) : (
+          <>
+            <PackageCard type={data?.package_type} data={data} />
 
-        {/**description */}
-        <DescriptionComp description={data?.description} />
+            {/**description */}
+            <DescriptionComp description={data?.description} />
+          </>
+        )}
       </ScrollViewWrapper>
     </SafeAreaWrapper>
   );

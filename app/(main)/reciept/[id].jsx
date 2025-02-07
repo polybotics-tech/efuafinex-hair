@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SafeAreaWrapper from "../../../components/ui/safeAreaWrapper";
 import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
 import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
@@ -12,82 +12,121 @@ import {
 import { format_number } from "../../../helpers/utils/numbers";
 import { Octicons } from "@expo/vector-icons";
 import { format_date_time_readable } from "../../../helpers/utils/datetime";
+import { useLocalSearchParams } from "expo-router";
+import { DEPOSIT_HOOKS } from "../../../helpers/hooks/deposit";
+import NotFoundComponent from "../../../components/reuseables/NotFoundComponent";
 
 export default function Reciept() {
+  const { id } = useLocalSearchParams();
+
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState();
+
+  //fetch deposit details
+  const fetchDeposit = async (id) => {
+    const result = await DEPOSIT_HOOKS.fetch_single_deposit(setIsLoading, id);
+
+    if (result) {
+      setData(result);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchDeposit(id);
+    }
+  }, [id]);
+
   return (
     <SafeAreaWrapper>
       <DefaultHeaderComponent directory={"reciept"} />
       {/**page */}
-      <ScrollViewWrapper style={styles.page}>
-        {/**amount */}
-        <View style={styles.component}>
-          <Text style={styles.amountHeader}>AMOUNT</Text>
-          <Text style={styles.amount}>
-            {NAIRA_CURRENCY} {format_number(20000)}
-          </Text>
-
-          <View>
-            <StatusComponent status={"success"} />
-          </View>
-        </View>
-
-        {/**detail summary */}
-        <View style={styles.component}>
-          <DetailTab
-            title={"Transaction ID"}
-            value={"TRANS-361fVkE1798475824"}
-            canCopy={true}
+      <ScrollViewWrapper
+        style={styles.page}
+        refreshFunc={() => {
+          setData();
+          fetchDeposit(id);
+        }}
+      >
+        {!data ? (
+          <NotFoundComponent
+            text={"Deposit record not found"}
+            isLoading={isLoading}
           />
+        ) : (
+          <>
+            {/**amount */}
+            <View style={styles.component}>
+              <Text style={styles.amountHeader}>AMOUNT</Text>
+              <Text style={styles.amount}>
+                {NAIRA_CURRENCY} {format_number(data?.amount_expected)}
+              </Text>
 
-          <DetailTab
-            title={"Transaction Ref"}
-            value={"TRANS-361fVkE1798475824"}
-            canCopy={true}
-          />
+              <View>
+                <StatusComponent status={data?.status} />
+              </View>
+            </View>
 
-          <DetailTab
-            title={"Package ID"}
-            value={"PID-84Eq1798475824"}
-            canCopy={true}
-          />
-        </View>
+            {/**detail summary */}
+            <View style={styles.component}>
+              <DetailTab title={"Serial No"} value={data?.deposit_id} />
 
-        {/**account summary */}
-        <View style={styles.component}>
-          <DetailTab
-            title={"Account Name"}
-            value={String("Onyeleonu ifeanyichukwu g")?.toUpperCase()}
-          />
+              <DetailTab
+                title={"Transaction Ref"}
+                value={data?.transaction_ref}
+                canCopy={true}
+              />
 
-          <DetailTab
-            title={"Account Number"}
-            value={"0109684942"}
-            canCopy={true}
-          />
+              <DetailTab
+                title={"Package ID"}
+                value={data?.package_id}
+                canCopy={true}
+              />
+            </View>
 
-          <DetailTab
-            title={"Bank Name"}
-            value={String("United bank of africa")?.toUpperCase()}
-          />
-        </View>
+            {/**account summary */}
+            <View style={styles.component}>
+              <DetailTab
+                title={"Account Name"}
+                value={String("Onyeleonu ifeanyichukwu g")?.toUpperCase()}
+              />
 
-        {/**amount, status, date */}
-        <View style={styles.component}>
-          <DetailTab
-            title={"Amount"}
-            value={`${NAIRA_CURRENCY} ${format_number(67000)}`}
-          />
+              <DetailTab
+                title={"Account Number"}
+                value={"0109684942"}
+                canCopy={true}
+              />
 
-          <DetailTab
-            title={"Date"}
-            value={`${format_date_time_readable(new Date())}`}
-          />
+              <DetailTab
+                title={"Bank Name"}
+                value={String("United bank of africa")?.toUpperCase()}
+              />
+            </View>
 
-          <DetailTab
-            title={"Status"}
-            value={String("success")?.toUpperCase()}
-          />
-        </View>
+            {/**amount, status, date */}
+            <View style={styles.component}>
+              <DetailTab
+                title={"Amount Paid"}
+                value={`${NAIRA_CURRENCY} ${format_number(data?.amount_paid)}`}
+              />
+
+              <DetailTab
+                title={"Fee Charged"}
+                value={`${NAIRA_CURRENCY} ${format_number(data?.fee_charged)}`}
+              />
+
+              <DetailTab
+                title={"Date"}
+                value={`${format_date_time_readable(data?.created_time)}`}
+              />
+
+              <DetailTab
+                title={"Status"}
+                value={String(data?.status)?.toUpperCase()}
+              />
+            </View>
+          </>
+        )}
       </ScrollViewWrapper>
     </SafeAreaWrapper>
   );

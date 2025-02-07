@@ -4,15 +4,15 @@ import { END_POINTS } from "../api/endpoints";
 import { HEADERS } from "../api/header";
 import { Alert } from "../utils/alert";
 
-export const PACKAGE_HOOKS = {
-  fetch_user_packages: async (setLoader = () => {}, page, sort) => {
+export const DEPOSIT_HOOKS = {
+  fetch_user_deposits: async (setLoader = () => {}, page, sort) => {
     try {
       setLoader(true);
 
       const token = store.getState()?.user?.token;
 
       const { data } = await axios.get(
-        END_POINTS.package.multiple(page, sort),
+        END_POINTS.deposit.multiple(page, sort),
         HEADERS.json(token)
       );
 
@@ -29,14 +29,14 @@ export const PACKAGE_HOOKS = {
       setLoader(false);
     }
   },
-  fetch_single_package: async (setLoader = () => {}, package_id) => {
+  fetch_single_deposit: async (setLoader = () => {}, transaction_ref) => {
     try {
       setLoader(true);
 
       const token = store.getState()?.user?.token;
 
       const { data } = await axios.get(
-        END_POINTS.package.single(package_id),
+        END_POINTS.deposit.single(transaction_ref),
         HEADERS.json(token)
       );
 
@@ -50,7 +50,9 @@ export const PACKAGE_HOOKS = {
       Alert.error("Request failed", HEADERS.error_extractor(error));
       return false;
     } finally {
-      setLoader(false);
+      setTimeout(() => {
+        setLoader(false);
+      }, 2000);
     }
   },
 };

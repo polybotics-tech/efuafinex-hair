@@ -6,16 +6,23 @@ import {
   FONT_WEIGHT,
   SCREEN_DIMENSION,
 } from "../constants";
+import { useSelector } from "react-redux";
+import ImageComponent from "./reuseables/ImageComponent";
+import { IMAGE_LOADER } from "../helpers/utils/image-loader";
 
 const WelcomeBlockComponent = () => {
+  const user = useSelector((state) => state.user.user);
+
   return (
     <View style={styles.component}>
-      <View style={styles.thumbnail}></View>
+      <View style={styles.thumbnail}>
+        <ImageComponent uri={IMAGE_LOADER.user_thumbnail(user?.thumbnail)} />
+      </View>
 
       {/** */}
       <View style={styles.details}>
         <Text style={styles.greeting}>Good morning,</Text>
-        <Text style={styles.name}>Emmanuel Nnaemeka</Text>
+        <Text style={styles.name}>{user?.fullname}</Text>
       </View>
     </View>
   );
@@ -34,8 +41,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR_THEME.white,
   },
   thumbnail: {
-    width: 64,
-    height: 64,
+    width: 54,
+    height: 54,
     borderRadius: 100,
     backgroundColor: COLOR_THEME.gray50,
     overflow: "hidden",

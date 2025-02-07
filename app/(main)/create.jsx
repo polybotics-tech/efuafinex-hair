@@ -21,13 +21,14 @@ export default function CreatePackage() {
     fixed_deadline: false,
     duration: "",
     deadline: new Date(),
+    has_photo: true,
   });
 
   //check if package type passed as params
   const { type } = useLocalSearchParams();
   useEffect(() => {
     if (type && type === "free") {
-      setFormData((prev) => ({ ...prev, is_defined: false }));
+      setFormData((prev) => ({ ...prev, is_defined: false, has_photo: false }));
     }
   }, [type]);
 
