@@ -1,30 +1,12 @@
 import { Platform, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
-import { Tabs, usePathname } from "expo-router";
+import React from "react";
+import { Tabs } from "expo-router";
 import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants/theme";
 import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
 import TabsHeaderComponent from "../../components/TabsHeaderComponent";
 
 export default function TabsLayout() {
-  const path = usePathname();
-  const [sceneColor, setSceneColor] = useState(COLOR_THEME.gray50);
-
-  useEffect(() => {
-    console.log("path: ", path);
-    const whiteBGs = ["/account", "/create"];
-
-    if (path) {
-      if (whiteBGs?.includes(path)) {
-        console.log("in");
-        setSceneColor(COLOR_THEME.white);
-      } else {
-        console.log("out");
-        setSceneColor(COLOR_THEME.gray50);
-      }
-    }
-  }, [path]);
-
   return (
     <SafeAreaWrapper>
       <TabsHeaderComponent />
