@@ -7,6 +7,10 @@ export const END_POINTS = {
   auth: {
     login: API + "/auth/login",
     revalidate: API + "/auth/revalidate",
+    forgot: API + "/auth/forgot",
+    reset_pass: API + "/auth/reset",
+    generate_otp: API + "/auth/verify",
+    verify_otp: API + "/auth/otp",
   },
   user: {
     notify: API + "/user/notify",

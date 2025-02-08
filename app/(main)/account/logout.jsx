@@ -1,5 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
 import {
   COLOR_THEME,
   FONT_SIZE,
@@ -7,8 +13,23 @@ import {
   SCREEN_DIMENSION,
 } from "../../../constants";
 import { router } from "expo-router";
+import { AUTH_HOOKS } from "../../../helpers/hooks/auth";
 
 export default function LogOut() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const goBack = () => {
+    router.back();
+  };
+
+  const logOut = async () => {
+    let success = await AUTH_HOOKS.attempt_logout(setIsLoading);
+
+    if (success) {
+      router.dismissTo("/login/");
+    }
+  };
+
   return (
     <View style={styles.page}>
       {/*log out modal*/}
@@ -20,16 +41,25 @@ export default function LogOut() {
         </Text>
 
         <View style={styles.btnTab}>
-          <Text style={[styles.btn, { color: COLOR_THEME.error }]}>Yes</Text>
-
-          <Text
-            style={[styles.btn, { color: COLOR_THEME.primary }]}
-            onPress={() => {
-              router.back();
-            }}
+          <TouchableOpacity
+            style={styles.btn}
+            disabled={isLoading}
+            onPress={() => logOut()}
           >
-            No
-          </Text>
+            {isLoading ? (
+              <ActivityIndicator size={FONT_SIZE.s} color={COLOR_THEME.error} />
+            ) : (
+              <Text style={[styles.btnText, { color: COLOR_THEME.error }]}>
+                Yes
+              </Text>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.btn} onPress={() => goBack()}>
+            <Text style={[styles.btnText, { color: COLOR_THEME.primary }]}>
+              No
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -73,6 +103,12 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: SCREEN_DIMENSION.divisionWidth(16, 32 + 40, 2),
+    height: 32,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnText: {
+    width: "100%",
     textAlign: "center",
     fontSize: FONT_SIZE.s,
     fontWeight: FONT_WEIGHT.semibold,

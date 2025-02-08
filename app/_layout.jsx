@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { Provider } from "react-redux";
-import TabsHeaderComponent from "../components/TabsHeaderComponent";
 import store from "../redux/store";
+import TabsHeaderComponent from "../components/TabsHeaderComponent";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../constants";
 

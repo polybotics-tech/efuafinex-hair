@@ -16,8 +16,13 @@ const userSlice = createSlice({
       state.user = user;
       state.token = token;
     },
+    ACTION_LOG_USER_OUT: (state) => {
+      //update user and token to initial state
+      state.user = {};
+      state.token = "";
+    },
   },
 });
 
-export const { ACTION_LOG_USER_IN } = userSlice.actions;
+export const { ACTION_LOG_USER_IN, ACTION_LOG_USER_OUT } = userSlice.actions;
 export default userSlice;

@@ -40,7 +40,7 @@ const AuthScreenWrapper = ({
           {bottomText}{" "}
           <Text
             onPress={() => {
-              router.navigate(switchPath);
+              router.replace(switchPath);
             }}
             style={styles.bottomLink}
           >

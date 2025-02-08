@@ -4,18 +4,23 @@ import AuthScreenWrapper from "../../components/ui/AuthScreenWrapper";
 import AuthFormComponent from "../../components/AuthFormComponent";
 import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME } from "../../constants/theme";
+import { AUTH_HOOKS } from "../../helpers/hooks/auth";
+import { router } from "expo-router";
 
 export default function ForgotPassword() {
   const [formData, setFormData] = useState({
     email: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  //handle form update
-  const updateEmail = (text) => {
-    setFormData((p) => ({
-      ...p,
-      email: text,
-    }));
+  //handle form submission
+  const submitForm = async () => {
+    const found = await AUTH_HOOKS.forgot_verify_email(formData, setIsLoading);
+
+    if (found) {
+      //redirect to verify email page
+      router.dismissTo(`/verify/?ref=forgot`);
+    }
   };
 
   return (
@@ -26,6 +31,8 @@ export default function ForgotPassword() {
       bottomText={"Remember your password?"}
       switchPath={"/login/"}
       buttonText={"Check account email"}
+      buttonIsLoading={isLoading}
+      formSubmitFunction={submitForm}
     >
       {/**email */}
       <AuthFormComponent
@@ -35,9 +42,10 @@ export default function ForgotPassword() {
           <Octicons name="mail" size={16} color={COLOR_THEME.gray200} />
         }
         label={"Email address"}
-        placeholder={"What is your account email?"}
-        value={formData?.email}
-        setValue={updateEmail}
+        placeholder={"Ex. johndoe@example.com"}
+        name={"email"}
+        form={formData}
+        setForm={setFormData}
       />
     </AuthScreenWrapper>
   );
