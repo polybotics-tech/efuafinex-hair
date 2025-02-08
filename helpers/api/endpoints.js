@@ -23,5 +23,8 @@ export const END_POINTS = {
     single: (transaction_ref) => API + `/deposit/${transaction_ref}`,
     package_records: (package_id, page = 1) =>
       API + `/deposit/records/${package_id}/?page=${page}`,
+    make_deposit: (package_id) => API + `/deposit/${package_id}/`,
+    verify_transaction: (transaction_ref) =>
+      API + `/deposit/verify/${transaction_ref}`,
   },
 };

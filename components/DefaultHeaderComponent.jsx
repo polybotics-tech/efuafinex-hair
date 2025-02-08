@@ -37,6 +37,9 @@ const DefaultHeaderComponent = ({ directory }) => {
         case "create":
           setTitle("Create New Package");
           break;
+        case "deposit":
+          setTitle("Make Deposit");
+          break;
         default:
           setTitle(page_titles[directory][path]);
           break;

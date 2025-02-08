@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import SafeAreaWrapper from "../../../components/ui/safeAreaWrapper";
 import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
 import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import {
   fetch_package_data,
   PACKAGE_HOOKS,
@@ -175,6 +175,11 @@ const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
     }
   };
 
+  //make deposit
+  const makeDeposit = () => {
+    router.navigate(`/package/deposit/${id}`);
+  };
+
   return (
     <>
       {String(status)?.toLowerCase() === "in-progress" && (
@@ -208,6 +213,9 @@ const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
                     color={COLOR_THEME.white}
                   />
                 }
+                onPress={() => {
+                  makeDeposit();
+                }}
               />
             </View>
           </View>

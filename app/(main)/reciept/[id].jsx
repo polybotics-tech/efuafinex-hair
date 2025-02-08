@@ -15,6 +15,7 @@ import { format_date_time_readable } from "../../../helpers/utils/datetime";
 import { useLocalSearchParams } from "expo-router";
 import { DEPOSIT_HOOKS } from "../../../helpers/hooks/deposit";
 import NotFoundComponent from "../../../components/reuseables/NotFoundComponent";
+import PrimaryButton from "../../../components/reuseables/PrimaryButton";
 
 export default function Reciept() {
   const { id } = useLocalSearchParams();
@@ -85,23 +86,30 @@ export default function Reciept() {
             </View>
 
             {/**account summary */}
-            <View style={styles.component}>
-              <DetailTab
-                title={"Account Name"}
-                value={String("Onyeleonu ifeanyichukwu g")?.toUpperCase()}
-              />
+            {data?.extra &&
+              String(data?.extra?.channel)?.toLowerCase() === "card" && (
+                <View style={styles.component}>
+                  <DetailTab
+                    title={"Payment Mode"}
+                    value={String(data?.extra?.channel)?.toUpperCase()}
+                  />
 
-              <DetailTab
-                title={"Account Number"}
-                value={"0109684942"}
-                canCopy={true}
-              />
+                  <DetailTab
+                    title={"Card Number"}
+                    value={`${data?.extra?.bin}xxxxxx${data?.extra?.last4}`}
+                  />
 
-              <DetailTab
-                title={"Bank Name"}
-                value={String("United bank of africa")?.toUpperCase()}
-              />
-            </View>
+                  <DetailTab
+                    title={"Card Expiry Date"}
+                    value={`${data?.extra?.exp_month}/${data?.extra?.exp_year}`}
+                  />
+
+                  <DetailTab
+                    title={"Card Type"}
+                    value={String(data?.extra?.card_type)?.toUpperCase()}
+                  />
+                </View>
+              )}
 
             {/**amount, status, date */}
             <View style={styles.component}>
@@ -127,6 +135,10 @@ export default function Reciept() {
             </View>
           </>
         )}
+        {/**download button */}
+        <View style={{ marginTop: 16 }}>
+          <PrimaryButton title={"Download"} />
+        </View>
       </ScrollViewWrapper>
     </SafeAreaWrapper>
   );

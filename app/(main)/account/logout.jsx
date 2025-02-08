@@ -39,6 +39,7 @@ export default function LogOut() {
 const styles = StyleSheet.create({
   page: {
     width: "100%",
+    minHeight: "100%",
     backgroundColor: COLOR_THEME.gray50,
     alignItems: "center",
     paddingHorizontal: 16,

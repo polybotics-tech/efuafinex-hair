@@ -15,7 +15,7 @@ import {
 } from "../../constants";
 import { Stack } from "expo-router";
 
-const PopupModalWrapper = ({ children, ...props }) => {
+const PopupModalWrapper = ({ children, onCloseFunc = () => {}, ...props }) => {
   return (
     <>
       <Modal
@@ -24,6 +24,9 @@ const PopupModalWrapper = ({ children, ...props }) => {
         visible={props?.isVisible}
         onRequestClose={() => {
           props?.setIsVisible(false);
+        }}
+        onDismiss={() => {
+          onCloseFunc();
         }}
       >
         <View style={styles.modalInset}>
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
   modalInset: {
     width: "100%",
     minHeight: SCREEN_DIMENSION.heightRatio(1 / 3),
-    maxHeight: SCREEN_DIMENSION.heightRatio(1 / 1.5),
+    maxHeight: SCREEN_DIMENSION.heightRatio(1 / 1.2),
     position: "absolute",
     bottom: 0,
     left: 0,

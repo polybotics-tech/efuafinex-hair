@@ -50,9 +50,7 @@ export const DEPOSIT_HOOKS = {
       Alert.error("Request failed", HEADERS.error_extractor(error));
       return false;
     } finally {
-      setTimeout(() => {
-        setLoader(false);
-      }, 2000);
+      setLoader(false);
     }
   },
   fetch_package_deposits: async (setLoader = () => {}, package_id, page) => {
@@ -74,6 +72,58 @@ export const DEPOSIT_HOOKS = {
       }
     } catch (error) {
       Alert.error("Request failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
+  make_deposit: async (setLoader = () => {}, package_id, form) => {
+    try {
+      setLoader(true);
+
+      const token = store.getState()?.user?.token;
+
+      const { data } = await axios.post(
+        END_POINTS.deposit.make_deposit(package_id),
+        form,
+        HEADERS.json(token)
+      );
+
+      const { success, message } = data;
+      if (success) {
+        const res = data?.data;
+
+        return res;
+      }
+    } catch (error) {
+      Alert.error("Request failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
+  verify_transaction: async (setLoader = () => {}, transaction_ref) => {
+    try {
+      setLoader(true);
+
+      const token = store.getState()?.user?.token;
+
+      const { data } = await axios.get(
+        END_POINTS.deposit.verify_transaction(transaction_ref),
+        HEADERS.json(token)
+      );
+
+      const { success, message } = data;
+      if (success) {
+        const res = data?.data;
+
+        return res;
+      }
+    } catch (error) {
+      Alert.error(
+        "Request failed",
+        "Transaction verification process was interrupted"
+      );
       return false;
     } finally {
       setLoader(false);
