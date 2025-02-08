@@ -55,4 +55,28 @@ export const DEPOSIT_HOOKS = {
       }, 2000);
     }
   },
+  fetch_package_deposits: async (setLoader = () => {}, package_id, page) => {
+    try {
+      setLoader(true);
+
+      const token = store.getState()?.user?.token;
+
+      const { data } = await axios.get(
+        END_POINTS.deposit.package_records(package_id, page),
+        HEADERS.json(token)
+      );
+
+      const { success, message } = data;
+      if (success) {
+        const res = data?.data;
+
+        return res;
+      }
+    } catch (error) {
+      Alert.error("Request failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
 };

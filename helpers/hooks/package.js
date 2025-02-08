@@ -53,4 +53,28 @@ export const PACKAGE_HOOKS = {
       setLoader(false);
     }
   },
+  close_package: async (setLoader = () => {}, package_id) => {
+    try {
+      setLoader(true);
+
+      const token = store.getState()?.user?.token;
+
+      const { data } = await axios.put(
+        END_POINTS.package.mark_complete(package_id),
+        {},
+        HEADERS.json(token)
+      );
+
+      const { success, message } = data;
+      if (success) {
+        Alert.success("Request successful", message);
+        return true;
+      }
+    } catch (error) {
+      Alert.error("Request failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
 };

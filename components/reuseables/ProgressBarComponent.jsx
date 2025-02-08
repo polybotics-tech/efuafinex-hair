@@ -10,6 +10,7 @@ const ProgressBarComponent = ({ ...props }) => {
         <RegularBar
           current_value={props?.current_value}
           maximum_value={props?.maximum_value}
+          strokeWidth={props?.strokeWidth}
           props={props}
         />
       ) : (
@@ -27,7 +28,12 @@ const ProgressBarComponent = ({ ...props }) => {
 
 export default ProgressBarComponent;
 
-const RegularBar = ({ maximum_value, current_value }) => {
+const RegularBar = ({
+  maximum_value,
+  current_value,
+  strokeWidth = 8,
+  props,
+}) => {
   const progress =
     current_value > maximum_value
       ? 0
@@ -35,7 +41,12 @@ const RegularBar = ({ maximum_value, current_value }) => {
 
   return (
     <View style={styles.regular.container}>
-      <View style={styles.regular.progressContainer(props?.backgroundColor)}>
+      <View
+        style={styles.regular.progressContainer(
+          strokeWidth,
+          props?.backgroundColor
+        )}
+      >
         <View
           style={[
             styles.regular.progressBar(props?.primaryColor),
@@ -43,9 +54,6 @@ const RegularBar = ({ maximum_value, current_value }) => {
           ]}
         />
       </View>
-      <Text
-        style={styles.regular.percentageText(props?.textColor)}
-      >{`${progress}%`}</Text>
     </View>
   );
 };
@@ -111,12 +119,12 @@ const styles = StyleSheet.create({
   regular: {
     container: {
       alignItems: "center",
-      marginVertical: 20,
+      marginVertical: 4,
     },
-    progressContainer: (bgColor) => ({
-      width: "90%",
-      height: 8,
-      backgroundColor: bgColor || COLOR_THEME.gray100,
+    progressContainer: (skWidth, bgColor) => ({
+      width: "100%",
+      height: skWidth || 8,
+      backgroundColor: bgColor || COLOR_THEME.gray50,
       borderRadius: 10,
       overflow: "hidden",
     }),
@@ -124,12 +132,6 @@ const styles = StyleSheet.create({
       height: "100%",
       backgroundColor: priColor || COLOR_THEME.primary,
       borderRadius: 10,
-    }),
-    percentageText: (txtColor) => ({
-      marginTop: 8,
-      fontSize: FONT_SIZE.m,
-      fontWeight: FONT_WEIGHT.semibold,
-      color: txtColor || COLOR_THEME.primary,
     }),
   },
   circular: {
