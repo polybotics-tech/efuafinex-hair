@@ -48,7 +48,9 @@
     "react-native-webview": "13.12.5",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
-    "expo-application": "~6.0.2"
+    "expo-application": "~6.0.2",
+    "expo-image": "~2.0.4",
+    "expo-image-picker": "~16.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

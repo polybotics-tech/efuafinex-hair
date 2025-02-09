@@ -44,10 +44,13 @@ export default function VerifyEmail() {
     if (verified) {
       if (ref && ref === "forgot") {
         //redirect to reset password page
-        router.dismissTo("/reset-pass");
+        router.dismissTo("/reset-pass/");
+      } else if (ref && ref === "register") {
+        //redirect to reset password page
+        router.dismissTo("/thumbnail/");
       } else {
         //redirect to home page
-        router.dismissTo("/(tabs)");
+        router.dismissTo("/(tabs)/");
       }
     }
   };

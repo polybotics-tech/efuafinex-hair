@@ -4,28 +4,46 @@ import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../../constants/theme";
 import AuthFormComponent from "../../../components/AuthFormComponent";
 import { useSelector } from "react-redux";
 import PrimaryButton from "../../../components/reuseables/PrimaryButton";
+import { USER_HOOKS } from "../../../helpers/hooks/user";
 
 export default function NotificationSettings() {
   //fetch user
   const user = useSelector((state) => state.user.user);
-  const [isUnchanged, setIsUnchanged] = useState(true);
+  const [changed, setIschanged] = useState(false);
 
   const [formData, setFormData] = useState({
-    email_notify: false,
-    push_notify: false,
+    email_notify: Boolean(user?.email_notify),
+    push_notify: Boolean(user?.push_notify),
   });
 
   //update form from global state
   useMemo(() => {
-    if (user) {
+    if (formData) {
       const { email_notify, push_notify } = user;
 
-      setFormData({
-        email_notify,
-        push_notify,
-      });
+      //check if there is change
+      if (
+        formData?.email_notify != email_notify ||
+        formData?.push_notify != push_notify
+      ) {
+        setIschanged(true);
+      } else {
+        setIschanged(false);
+      }
     }
-  }, [user]);
+  }, [formData]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  //handle form submission
+  const submitForm = async () => {
+    const success = await USER_HOOKS.update_notify(formData, setIsLoading);
+
+    if (success) {
+      //redirect to back to account page
+      router.back();
+    }
+  };
 
   return (
     <View style={styles.page}>
@@ -55,7 +73,12 @@ export default function NotificationSettings() {
 
       {/**save button */}
       <View style={styles.btnCont}>
-        <PrimaryButton title={"Save changes"} disabled={isUnchanged} />
+        <PrimaryButton
+          title={"Save changes"}
+          disabled={!changed}
+          isLoading={isLoading}
+          onPress={() => submitForm()}
+        />
       </View>
     </View>
   );

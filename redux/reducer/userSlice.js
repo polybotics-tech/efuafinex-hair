@@ -14,15 +14,28 @@ const userSlice = createSlice({
 
       //update user and token state
       state.user = user;
-      state.token = token;
+      if (token) {
+        state.token = token;
+      }
     },
     ACTION_LOG_USER_OUT: (state) => {
       //update user and token to initial state
       state.user = {};
       state.token = "";
     },
+    ACTION_UPDATE_USER_THUMBNAIL: (state, action) => {
+      const { thumbnail, thumbnail_blur } = action.payload;
+
+      //update user and token state
+      state.user.thumbnail = thumbnail;
+      state.user.thumbnail_blur = thumbnail_blur;
+    },
   },
 });
 
-export const { ACTION_LOG_USER_IN, ACTION_LOG_USER_OUT } = userSlice.actions;
+export const {
+  ACTION_LOG_USER_IN,
+  ACTION_LOG_USER_OUT,
+  ACTION_UPDATE_USER_THUMBNAIL,
+} = userSlice.actions;
 export default userSlice;

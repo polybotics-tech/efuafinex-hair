@@ -22,9 +22,9 @@ export default function Account() {
           path={"/account/settings/"}
         />
         <OptionTag
-          title={"Delivery Location"}
-          icon={"location"}
-          path={"/account/location/"}
+          title={"Change Password"}
+          icon={"shield-lock"}
+          path={"/account/password/"}
         />
         <OptionTag
           title={"Push Notifications"}
@@ -32,9 +32,9 @@ export default function Account() {
           path={"/account/notification/"}
         />
         <OptionTag
-          title={"Log Out"}
-          icon={"sign-out"}
-          path={"/account/logout/"}
+          title={"Delivery Location"}
+          icon={"location"}
+          path={"/account/location/"}
         />
       </SectionContainer>
 
@@ -42,6 +42,16 @@ export default function Account() {
       <SectionContainer title={"Support"}>
         <OptionTag title={"Contact Us"} icon={"unmute"} />
         <OptionTag title={"Privacy Policy"} icon={"file"} />
+      </SectionContainer>
+
+      {/**support card */}
+      <SectionContainer title={"Miscellaneous"}>
+        <OptionTag
+          title={"Log Out"}
+          icon={"sign-out"}
+          path={"/account/logout/"}
+        />
+        <OptionTag title={"Delete Account"} icon={"trash"} />
       </SectionContainer>
     </ScrollViewWrapper>
   );
@@ -54,7 +64,10 @@ const ProfileCard = ({}) => {
     <View style={styles.cardTemplate}>
       <View style={styles.userCard}>
         <View style={styles.profileThumbnail}>
-          <ImageComponent uri={IMAGE_LOADER.user_thumbnail(user?.thumbnail)} />
+          <ImageComponent
+            uri={IMAGE_LOADER.user_thumbnail(user?.thumbnail)}
+            blur={user?.thumbnail_blur}
+          />
         </View>
 
         <View>

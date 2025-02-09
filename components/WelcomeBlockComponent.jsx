@@ -16,7 +16,10 @@ const WelcomeBlockComponent = () => {
   return (
     <View style={styles.component}>
       <View style={styles.thumbnail}>
-        <ImageComponent uri={IMAGE_LOADER.user_thumbnail(user?.thumbnail)} />
+        <ImageComponent
+          uri={IMAGE_LOADER.user_thumbnail(user?.thumbnail)}
+          blur={user?.thumbnail_blur}
+        />
       </View>
 
       {/** */}

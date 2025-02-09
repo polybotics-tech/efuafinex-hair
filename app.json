@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hair_ecommerce_app",
-    "slug": "hair_ecommerce_app",
+    "name": "Efuafinix Hair App",
+    "slug": "efuafinix_hair_app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "backgroundColor": "#FAFAFA",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "The app would like to get access to your camera to take photos for your profile or posts"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -33,6 +36,12 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#008080"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow access to photos to upload photo(s) from your library"
         }
       ]
     ],

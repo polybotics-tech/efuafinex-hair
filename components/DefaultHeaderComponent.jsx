@@ -12,6 +12,7 @@ const DefaultHeaderComponent = ({ directory }) => {
   const page_titles = {
     account: {
       settings: "Account Settings",
+      password: "Change Password",
       location: "Delivery Location",
       notification: "Push Notifications",
       logout: "Log Out",

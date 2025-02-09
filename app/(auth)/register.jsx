@@ -4,15 +4,27 @@ import AuthScreenWrapper from "../../components/ui/AuthScreenWrapper";
 import AuthFormComponent from "../../components/AuthFormComponent";
 import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { COLOR_THEME } from "../../constants";
+import { router } from "expo-router";
+import { AUTH_HOOKS } from "../../helpers/hooks/auth";
 
 export default function Register() {
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
     phone: "",
-    password: "",
-    confirmPassword: "",
+    pass: "",
+    confirm_pass: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  //handle form submission
+  const submitForm = async () => {
+    const register = await AUTH_HOOKS.attempt_register(formData, setIsLoading);
+
+    if (register) {
+      router.dismissTo("/verify/?ref=register");
+    }
+  };
 
   return (
     <AuthScreenWrapper
@@ -22,6 +34,8 @@ export default function Register() {
       bottomText={"Already have account?"}
       switchPath={"/login/"}
       buttonText={"Register new account"}
+      buttonIsLoading={isLoading}
+      formSubmitFunction={submitForm}
     >
       {/**fullname */}
       <AuthFormComponent
@@ -63,7 +77,7 @@ export default function Register() {
           />
         }
         label={"Phone number"}
-        placeholder={"Ex. 07010000000"}
+        placeholder={"Ex. 2347010000000"}
         name={"phone"}
         form={formData}
         setForm={setFormData}
@@ -78,7 +92,7 @@ export default function Register() {
         }
         label={"Password"}
         placeholder={"Enter a new password"}
-        name={"password"}
+        name={"pass"}
         form={formData}
         setForm={setFormData}
       />
@@ -92,7 +106,7 @@ export default function Register() {
         }
         label={"Confirm Password"}
         placeholder={"Retype password"}
-        name={"confirmPassword"}
+        name={"confirm_pass"}
         form={formData}
         setForm={setFormData}
       />

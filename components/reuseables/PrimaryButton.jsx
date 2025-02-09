@@ -11,7 +11,11 @@ import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
 const PrimaryButton = ({ ...props }) => {
   return (
     <TouchableOpacity
-      style={[styles.primaryBtn(props?.type), props?.style]}
+      style={[
+        styles.primaryBtn(props?.type),
+        props?.style,
+        { opacity: props?.disabled ? 0.5 : 1 },
+      ]}
       disabled={props?.disabled || props?.isLoading}
       onPress={props?.onPress}
       activeOpacity={0.6}

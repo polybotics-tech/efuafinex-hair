@@ -39,7 +39,7 @@ export default function VerifyEmail() {
         inputIcon={
           <Octicons name="lock" size={16} color={COLOR_THEME.gray200} />
         }
-        label={"Password"}
+        label={"New Password"}
         placeholder={"Enter a new password"}
         name={"new_pass"}
         form={formData}
