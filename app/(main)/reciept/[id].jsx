@@ -1,5 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Octicons } from "@expo/vector-icons";
+import { captureRef } from "react-native-view-shot";
+import * as MediaLibrary from "expo-media-library";
+import { useLocalSearchParams } from "expo-router";
 import SafeAreaWrapper from "../../../components/ui/safeAreaWrapper";
 import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
 import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
@@ -10,14 +14,13 @@ import {
   NAIRA_CURRENCY,
 } from "../../../constants";
 import { format_number } from "../../../helpers/utils/numbers";
-import { Octicons } from "@expo/vector-icons";
 import { format_date_time_readable } from "../../../helpers/utils/datetime";
-import { useLocalSearchParams } from "expo-router";
 import { DEPOSIT_HOOKS } from "../../../helpers/hooks/deposit";
 import NotFoundComponent from "../../../components/reuseables/NotFoundComponent";
 import PrimaryButton from "../../../components/reuseables/PrimaryButton";
+import { Alert } from "../../../helpers/utils/alert";
 
-export default function Reciept() {
+export default function RecieptPage() {
   const { id } = useLocalSearchParams();
 
   const [data, setData] = useState();
@@ -38,6 +41,64 @@ export default function Reciept() {
     }
   }, [id]);
 
+  // create a ref for reciept
+  const recieptRef = useRef();
+
+  //--download reciept handle
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  // request media library permissions
+  const requestPermission = async () => {
+    try {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+
+      if (status !== "granted") {
+        Alert.error(
+          "Download error",
+          "Permission to save to storage was not granted"
+        );
+        return false;
+      }
+      return true;
+    } catch (error) {
+      Alert.error(
+        "Download error",
+        "Permission to save to storage was not granted"
+      );
+      return false;
+    }
+  };
+
+  // capture the View and Save to Gallery
+  const saveRecieptToGallery = async () => {
+    try {
+      setIsDownloading(true);
+
+      //check for permission
+      const hasPermission = await requestPermission();
+      if (!hasPermission) return;
+
+      // Capture the view as an image
+      const uri = await captureRef(recieptRef, {
+        format: "png",
+        quality: 1,
+        result: "tmpfile",
+      });
+
+      // Save to phone gallery
+      const asset = await MediaLibrary.createAssetAsync(uri);
+
+      Alert.success(
+        "Download successful",
+        "Reciept has been saved to your gallery"
+      );
+    } catch (error) {
+      Alert.error("Download error", error?.message || "Something went wrong");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <SafeAreaWrapper>
       <DefaultHeaderComponent directory={"reciept"} />
@@ -55,7 +116,7 @@ export default function Reciept() {
             isLoading={isLoading}
           />
         ) : (
-          <>
+          <View style={styles.reciept} ref={recieptRef} collapsable={false}>
             {/**amount */}
             <View style={styles.component}>
               <Text style={styles.amountHeader}>AMOUNT</Text>
@@ -133,11 +194,25 @@ export default function Reciept() {
                 value={String(data?.status)?.toUpperCase()}
               />
             </View>
-          </>
+
+            {/**copy right marker */}
+            <View style={styles.copyRight}>
+              <Octicons
+                name="shield-check"
+                size={FONT_SIZE.xs}
+                color={COLOR_THEME.gray100}
+              />
+              <Text style={styles.copyText}>Transaction from EFUAFINIX</Text>
+            </View>
+          </View>
         )}
         {/**download button */}
-        <View style={{ marginTop: 16 }}>
-          <PrimaryButton title={"Download"} />
+        <View style={{ padding: 16 }}>
+          <PrimaryButton
+            title={"Download"}
+            onPress={() => saveRecieptToGallery()}
+            isLoading={isDownloading}
+          />
         </View>
       </ScrollViewWrapper>
     </SafeAreaWrapper>
@@ -173,8 +248,16 @@ const styles = StyleSheet.create({
     width: "100%",
     minHeight: "100%",
     backgroundColor: COLOR_THEME.gray50,
+    gap: 16,
+  },
+  reciept: {
+    width: "100%",
+    height: "auto",
     padding: 16,
     gap: 16,
+    backgroundColor: COLOR_THEME.gray50,
+    alignItems: "center",
+    justifyContent: "center",
   },
   statusComponent: (s) => ({
     height: 22,
@@ -251,5 +334,17 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.semibold,
     color: COLOR_THEME.gray200,
     textAlign: "right",
+  },
+  copyRight: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
+  },
+  copyText: {
+    fontSize: FONT_SIZE.xs,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLOR_THEME.gray100,
   },
 });

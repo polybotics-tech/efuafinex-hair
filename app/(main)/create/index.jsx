@@ -1,15 +1,16 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
-import AuthScreenWrapper from "../../components/ui/AuthScreenWrapper";
-import AuthFormComponent from "../../components/AuthFormComponent";
-import { COLOR_THEME, NAIRA_CURRENCY } from "../../constants";
-import { PACKAGE_DURATION_OPTIONS } from "../../helpers/json";
-import { return_future_year_for_date_picker } from "../../helpers/utils/datetime";
-import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
-import DefaultHeaderComponent from "../../components/DefaultHeaderComponent";
-import ScrollViewWrapper from "../../components/ui/ScrollViewWrapper";
+import AuthScreenWrapper from "../../../components/ui/AuthScreenWrapper";
+import AuthFormComponent from "../../../components/AuthFormComponent";
+import { COLOR_THEME, NAIRA_CURRENCY } from "../../../constants";
+import { PACKAGE_DURATION_OPTIONS } from "../../../helpers/json";
+import { return_future_year_for_date_picker } from "../../../helpers/utils/datetime";
+import SafeAreaWrapper from "../../../components/ui/safeAreaWrapper";
+import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
+import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
+import PhotoPicker from "../../../components/reuseables/PhotoPicker";
 
 export default function CreatePackage() {
   const [formData, setFormData] = useState({
@@ -21,7 +22,8 @@ export default function CreatePackage() {
     fixed_deadline: false,
     duration: "",
     deadline: new Date(),
-    has_photo: true,
+    has_photo: false,
+    photo: {},
   });
 
   //check if package type passed as params
@@ -31,6 +33,11 @@ export default function CreatePackage() {
       setFormData((prev) => ({ ...prev, is_defined: false, has_photo: false }));
     }
   }, [type]);
+
+  //listen for change in has_photo toggle to clear photo
+  useMemo(() => {
+    setFormData((prev) => ({ ...prev, photo: {} }));
+  }, [formData?.has_photo]);
 
   const submitForm = () => {
     console.log("submitted: ", formData);
@@ -180,6 +187,22 @@ export default function CreatePackage() {
               form={formData}
               setForm={setFormData}
             />
+          )}
+
+          {/**screeshot photo */}
+          <AuthFormComponent
+            formType={"toggle"}
+            label={"Add Screenshot Photo"}
+            placeholder={
+              "Upload a photo reference of what made you create this package. For instance, a screenshot of a product, etc."
+            }
+            name={"has_photo"}
+            form={formData}
+            setForm={setFormData}
+          />
+
+          {formData?.has_photo && (
+            <PhotoPicker name={"photo"} form={formData} setForm={setFormData} />
           )}
         </AuthScreenWrapper>
       </ScrollViewWrapper>

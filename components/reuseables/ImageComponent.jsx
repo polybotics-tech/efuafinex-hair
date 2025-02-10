@@ -14,12 +14,12 @@ const ImageComponent = ({ uri, blur, scale }) => {
           source={uri}
           style={styles.image(scale)}
           placeholder={{ blurhash }}
-          contentFit="cover"
+          contentFit={scale ? "contain" : "cover"}
           transition={1000}
         />
       ) : (
         <View style={styles.empty}>
-          <Octicons name="question" size={18} color={COLOR_THEME.gray100} />
+          <Octicons name="image" size={18} color={COLOR_THEME.gray100} />
         </View>
       )}
     </>
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     objectFit: s ? "scale-down" : "cover",
-    backgroundColor: COLOR_THEME.gray50,
   }),
   empty: {
     width: "100%",

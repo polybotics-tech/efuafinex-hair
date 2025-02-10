@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   },
   optionTab: {
     width: "100%",
-    paddingBottom: 24,
+    paddingBottom: 32,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

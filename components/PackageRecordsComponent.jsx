@@ -46,7 +46,7 @@ const PackageRecordsComponent = ({ filter }) => {
         ))
       ) : (
         <NotFoundComponent
-          text={"No packages recorded"}
+          text={`No ${filter !== "all" && filter + " "}packages recorded`}
           isLoading={isLoading}
         />
       )}

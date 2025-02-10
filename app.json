@@ -12,7 +12,9 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "The app would like to get access to your camera to take photos for your profile or posts"
+        "NSCameraUsageDescription": "This app would like to get access to your camera to take photos for your profile or posts",
+        "NSPhotoLibraryAddUsageDescription": "This app would like to save images to your device",
+        "NSPhotoLibraryUsageDescription": "This app would like to save images to your device"
       }
     },
     "android": {
@@ -20,7 +22,11 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#008080"
       },
-      "navigationBarColor": "#FAFAFA"
+      "navigationBarColor": "#FAFAFA",
+      "permissions": [
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "bundler": "metro",

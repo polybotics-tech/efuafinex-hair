@@ -31,16 +31,20 @@ export default function Account() {
           icon={"bell"}
           path={"/account/notification/"}
         />
-        <OptionTag
+        {/*<OptionTag
           title={"Delivery Location"}
           icon={"location"}
           path={"/account/location/"}
-        />
+        />*/}
       </SectionContainer>
 
       {/**support card */}
       <SectionContainer title={"Support"}>
-        <OptionTag title={"Contact Us"} icon={"unmute"} />
+        <OptionTag
+          title={"Contact Us"}
+          icon={"unmute"}
+          path={"/account/contact/"}
+        />
         <OptionTag title={"Privacy Policy"} icon={"file"} />
       </SectionContainer>
 
@@ -51,7 +55,11 @@ export default function Account() {
           icon={"sign-out"}
           path={"/account/logout/"}
         />
-        <OptionTag title={"Delete Account"} icon={"trash"} />
+        <OptionTag
+          title={"Delete Account"}
+          icon={"trash"}
+          path={"/account/delete/"}
+        />
       </SectionContainer>
     </ScrollViewWrapper>
   );

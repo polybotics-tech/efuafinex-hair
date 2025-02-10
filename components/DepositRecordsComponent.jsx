@@ -44,7 +44,9 @@ const DepositRecordsComponent = ({ filter }) => {
           <DepositRecord key={index} data={item} />
         ))
       ) : (
-        <NotFoundComponent text={"No deposits recorded"} />
+        <NotFoundComponent
+          text={`No ${filter !== "all" && filter + " "}deposits recorded`}
+        />
       )}
 
       {/**see more button logic */}

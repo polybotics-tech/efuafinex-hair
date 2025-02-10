@@ -16,6 +16,8 @@ const DefaultHeaderComponent = ({ directory }) => {
       location: "Delivery Location",
       notification: "Push Notifications",
       logout: "Log Out",
+      delete: "Delete Account",
+      contact: "Contact Us",
     },
   };
 
