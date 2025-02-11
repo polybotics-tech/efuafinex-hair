@@ -53,7 +53,7 @@ const TabsHeaderComponent = () => {
     <View style={styles.header(pageName?.toLowerCase())}>
       {pageName === "Home" ? (
         <Text style={styles.LogoName}>
-          E<Text style={styles.LogoNameLink}>F</Text>H
+          Efua<Text style={styles.LogoNameLink}>Finex</Text>Hair
         </Text>
       ) : (
         <Text style={styles.pageTitle}>{pageName}</Text>

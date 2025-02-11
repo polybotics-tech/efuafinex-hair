@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import * as Application from "expo-application";
 import { useDispatch } from "react-redux";
 import { ACTION_STORE_APP_VERSION } from "../redux/reducer/appSlice";
@@ -69,9 +69,6 @@ export default function Index() {
         <Text style={{ fontSize: FONT_SIZE.s, color: COLOR_THEME.black }}>
           Loading, please wait...
         </Text>
-        {isLoading && (
-          <ActivityIndicator size={FONT_SIZE.s} color={COLOR_THEME.black} />
-        )}
       </View>
     </SafeAreaWrapper>
   );

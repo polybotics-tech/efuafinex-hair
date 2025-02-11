@@ -16,22 +16,22 @@ export default function AuthLayout() {
       >
         <Slot />
 
-        {(pathname === "/login" || pathname === "/register") && (
+        {/*(pathname === "/login" || pathname === "/register") && (
           <>
-            {/**social auth button */}
+            {/**social auth button /}
             <View style={styles.socialCont}>
               <View style={styles.splitView}>
                 <Text style={styles.splitText}>or continue with</Text>
               </View>
 
-              {/** */}
+              {/** /}
               <View style={styles.btnCont}>
                 <SignInWithGoogle />
 
                 <SignInWithApple />
               </View>
 
-              {/**terms and policies */}
+              {/**terms and policies /}
               <Text style={styles.bottomText}>
                 By continuing, you agree to our{" "}
                 <Text style={styles.bottomLink}>
@@ -40,7 +40,7 @@ export default function AuthLayout() {
               </Text>
             </View>
           </>
-        )}
+        )*/}
       </ScrollView>
     </SafeAreaWrapper>
   );

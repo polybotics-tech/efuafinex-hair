@@ -45,7 +45,11 @@ const DepositRecordsComponent = ({ filter }) => {
         ))
       ) : (
         <NotFoundComponent
-          text={`No ${filter !== "all" && filter + " "}deposits recorded`}
+          text={
+            filter === "all"
+              ? "No deposits recorded"
+              : `No ${filter} deposits recorded`
+          }
         />
       )}
 
