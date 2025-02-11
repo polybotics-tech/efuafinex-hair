@@ -1,9 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../../constants";
 import { Ionicons, Octicons } from "@expo/vector-icons";
 import { DEMO_FAQs } from "../../../helpers/json";
 import NotFoundComponent from "../../../components/reuseables/NotFoundComponent";
+import { FAQS_HOOKS } from "../../../helpers/hooks/faqs";
+import SeeMoreBtn from "../../../components/reuseables/SeeMoreBtn";
 
 export default function ContactUs() {
   return (
@@ -39,7 +41,32 @@ const HelperBlock = () => {
 };
 
 const FaqsBlock = () => {
-  const faqs = DEMO_FAQs;
+  const [faqs, setFaqs] = useState();
+  const [meta, setMeta] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchFaqs = async (page) => {
+    //send request
+    const result = await FAQS_HOOKS.fetch_faqs(setIsLoading, page);
+
+    if (result) {
+      setMeta(result?.meta);
+
+      if (page > 1 && result?.faqs) {
+        setFaqs((prev) => [...prev, ...result?.faqs]);
+      } else {
+        setFaqs(result?.faqs);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchFaqs(1);
+  }, []);
+
+  const seeMore = () => {
+    fetchFaqs(Number(meta?.page + 1));
+  };
 
   return (
     <View style={styles.block}>
@@ -54,12 +81,20 @@ const FaqsBlock = () => {
 
       {/**faqs list */}
       <View style={styles.faqsList}>
-        {!faqs ? (
-          <NotFoundComponent text={"Unable to load FAQs"} />
-        ) : (
+        {faqs && faqs?.length > 0 ? (
           faqs?.map((item, index) => <FaqsTab key={index} faq={item} />)
+        ) : (
+          <NotFoundComponent
+            text={"Unable to load FAQs"}
+            isLoading={isLoading}
+          />
         )}
       </View>
+
+      {/**see more button logic */}
+      {faqs?.length > 0 && meta?.has_next_page && (
+        <SeeMoreBtn onPress={() => seeMore()} isLoading={isLoading} />
+      )}
     </View>
   );
 };

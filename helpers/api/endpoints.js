@@ -18,8 +18,10 @@ export const END_POINTS = {
     pass: API + "/user/pass",
     account: API + "/user/account",
     thumbnail: API + "/user/thumbnail",
+    notifications: (page = 1) => API + `/user/notifications/?page=${page}`,
   },
   package: {
+    create: API + "/package",
     multiple: (page = 1, sort = "all") =>
       API + `/package/?page=${page}&sort=${sort}`,
     single: (package_id) => API + `/package/${package_id}`,
@@ -34,5 +36,8 @@ export const END_POINTS = {
     make_deposit: (package_id) => API + `/deposit/${package_id}`,
     verify_transaction: (transaction_ref) =>
       API + `/deposit/verify/${transaction_ref}`,
+  },
+  admin: {
+    faqs: (page = 1) => API + `/admin/faqs/?page=${page}`,
   },
 };

@@ -1,5 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { memo, useMemo, useState } from "react";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   COLOR_THEME,
@@ -7,8 +13,14 @@ import {
   FONT_WEIGHT,
   SCREEN_DIMENSION,
 } from "../constants";
-import { usePathname } from "expo-router";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { router, usePathname } from "expo-router";
+import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import PopupModalWrapper from "./ui/PopupModalWrapper";
+import NotFoundComponent from "./reuseables/NotFoundComponent";
+import { NOTICE_TITLE } from "../helpers/json";
+import { format_date_time_readable } from "../helpers/utils/datetime";
+import { USER_HOOKS } from "../helpers/hooks/user";
 
 const TabsHeaderComponent = () => {
   const path = usePathname();
@@ -41,7 +53,7 @@ const TabsHeaderComponent = () => {
     <View style={styles.header(pageName?.toLowerCase())}>
       {pageName === "Home" ? (
         <Text style={styles.LogoName}>
-          Logo<Text style={styles.LogoNameLink}>Name</Text>
+          E<Text style={styles.LogoNameLink}>F</Text>H
         </Text>
       ) : (
         <Text style={styles.pageTitle}>{pageName}</Text>
@@ -56,19 +68,124 @@ const TabsHeaderComponent = () => {
 };
 
 const NotificationBtn = ({}) => {
-  const [isRead, setIsRead] = useState(false);
+  const notifications = useSelector(
+    (state) => state.notification.notifications
+  );
+  const has_unread = useSelector((state) => state.notification.has_unread);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  //mark all notice as read on visible
+  useEffect(() => {
+    if (modalVisible && has_unread) {
+      USER_HOOKS.mark_notifications_read();
+    }
+  }, [modalVisible]);
 
   return (
-    <Pressable style={styles.actionBtn}>
-      <MaterialCommunityIcons
-        name="bell-outline"
-        size={18}
-        color={COLOR_THEME.black}
-      />
+    <>
+      <Pressable
+        style={styles.actionBtn}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <MaterialCommunityIcons
+          name="bell-outline"
+          size={18}
+          color={COLOR_THEME.black}
+        />
 
-      {/**show indicator */}
-      {!isRead && <View style={styles.actionIndicator}></View>}
-    </Pressable>
+        {/**show indicator */}
+        {has_unread && <View style={styles.actionIndicator}></View>}
+      </Pressable>
+
+      {/**show notification list in modal */}
+      <PopupModalWrapper
+        isVisible={modalVisible}
+        setIsVisible={setModalVisible}
+        title={"Notifications"}
+      >
+        <View style={styles.noticeList}>
+          {notifications && notifications?.length > 0 ? (
+            notifications?.map((item, index) => (
+              <NoticeTab
+                key={index}
+                notice={item}
+                closeModal={() => {
+                  setModalVisible(false);
+                }}
+              />
+            ))
+          ) : (
+            <NotFoundComponent text={"No notifications found"} />
+          )}
+        </View>
+      </PopupModalWrapper>
+    </>
+  );
+};
+
+const NoticeTab = ({ notice, closeModal = () => {} }) => {
+  const { notification_type, extra, created_time } = notice;
+
+  const path = {
+    package: (id) => `/package/${id}`,
+    reciept: (ref) => `/reciept/${ref}`,
+  };
+
+  const navigatToPath = (type, id) => {
+    setTimeout(() => {
+      closeModal();
+    }, 100);
+
+    let goto = path[type];
+    router.navigate(goto(id));
+  };
+
+  return (
+    <View style={styles.noticeBlock}>
+      <View style={styles.noticeTab}>
+        <View style={styles.noticeIcon}>
+          <Octicons
+            name="info"
+            size={FONT_SIZE.s}
+            color={COLOR_THEME.gray100}
+          />
+        </View>
+
+        <View style={styles.noticeDesc}>
+          <Text style={styles.noticeTitle}>
+            {NOTICE_TITLE[notification_type]}
+          </Text>
+
+          <Text style={styles.noticeTime}>
+            {format_date_time_readable(created_time)}
+          </Text>
+        </View>
+      </View>
+
+      {/**action buttons */}
+      {(Boolean(extra?.package_id) || Boolean(extra?.transaction_ref)) && (
+        <View style={styles.noticeActionCont}>
+          {Boolean(extra?.package_id) && (
+            <TouchableOpacity
+              onPress={() => navigatToPath("package", extra?.package_id)}
+            >
+              <Text style={styles.noticeAction}>View package</Text>
+            </TouchableOpacity>
+          )}
+
+          {Boolean(extra?.transaction_ref) && (
+            <TouchableOpacity
+              onPress={() => navigatToPath("reciept", extra?.transaction_ref)}
+            >
+              <Text style={styles.noticeAction}>See reciept</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+    </View>
   );
 };
 
@@ -122,5 +239,64 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     right: 5,
+  },
+  noticeList: {
+    width: "100%",
+    minHeight: SCREEN_DIMENSION.heightRatio(1 / 1.4),
+    gap: 4,
+  },
+  noticeBlock: {
+    width: "100%",
+    padding: 8,
+    borderWidth: 1,
+    borderColor: COLOR_THEME.gray50,
+    borderRadius: 8,
+    gap: 8,
+  },
+  noticeTab: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  noticeIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 4,
+    backgroundColor: COLOR_THEME.gray50,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  noticeDesc: {
+    width: SCREEN_DIMENSION.subtractWidth(8, 48 + 8, 44),
+    gap: 4,
+    paddingVertical: 8,
+  },
+  noticeTitle: {
+    maxWidth: "100%",
+    fontSize: FONT_SIZE.m,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLOR_THEME.gray200,
+  },
+  noticeTime: {
+    fontSize: FONT_SIZE.xs,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLOR_THEME.gray100,
+  },
+  noticeActionCont: {
+    width: "100%",
+    paddingTop: 8,
+    paddingBottom: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    gap: 16,
+    borderTopWidth: 1,
+    borderTopColor: COLOR_THEME.gray50,
+  },
+  noticeAction: {
+    fontSize: FONT_SIZE.s,
+    fontWeight: FONT_WEIGHT.semibold,
+    color: COLOR_THEME.primary,
   },
 });

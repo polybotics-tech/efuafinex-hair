@@ -14,10 +14,10 @@ const ScrollViewWrapper = ({
   const onRefresh = useCallback(() => {
     setRefreshing(true);
 
-    setTimeout(() => {
-      //run refresh function
-      refreshFunc();
+    //run refresh function
+    refreshFunc();
 
+    setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   });

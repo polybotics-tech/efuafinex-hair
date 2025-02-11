@@ -7,6 +7,7 @@ export const LOCAL_STORAGE = {
   paths: {
     token: _prefix + "token",
     app_version: _prefix + "app_version",
+    latest_notification_id: _prefix + "latest_notification_id",
   },
   save: async (path, data) => {
     try {

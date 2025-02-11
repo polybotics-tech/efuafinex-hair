@@ -1,9 +1,11 @@
 import { Stack } from "expo-router";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import store from "../redux/store";
 import TabsHeaderComponent from "../components/TabsHeaderComponent";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../constants";
+import { useEffect, useMemo } from "react";
+import { USER_HOOKS } from "../helpers/hooks/user";
 
 export default function RootLayout() {
   //creating custom toast configurations
@@ -99,6 +101,36 @@ export default function RootLayout() {
         position="bottom"
         bottomOffset={64}
       />
+
+      <DefaultChecker />
     </Provider>
   );
 }
+
+const DefaultChecker = () => {
+  const latest_id = useSelector((state) => state.notification.latest_id);
+
+  //set request checker on interval
+  useEffect(() => {
+    const requestNotifications = async () => {
+      let res = await USER_HOOKS.fetch_notifications();
+    };
+
+    const interval = setInterval(() => {
+      requestNotifications();
+    }, 30000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  //update global state notification has unread when latest_id changes
+  useMemo(() => {
+    if (latest_id) {
+      USER_HOOKS.validate_notification_latest_id(latest_id);
+    }
+  }, [latest_id]);
+
+  return <></>;
+};

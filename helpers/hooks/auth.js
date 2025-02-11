@@ -8,6 +8,7 @@ import {
   ACTION_LOG_USER_OUT,
 } from "../../redux/reducer/userSlice";
 import { LOCAL_STORAGE } from "../local-storage";
+import { ACTION_CLEAR_NOTIFICATION_RECORDS } from "../../redux/reducer/notificationSlice";
 
 export const AUTH_HOOKS = {
   attempt_login: async (form = {}, setLoader = () => {}) => {
@@ -117,6 +118,9 @@ export const AUTH_HOOKS = {
 
       //remove user and token from global state
       store.dispatch(ACTION_LOG_USER_OUT());
+
+      //remove notifications from global state
+      store.dispatch(ACTION_CLEAR_NOTIFICATION_RECORDS());
 
       Alert.success("Request successful", "You have been logged out of device");
       return true;

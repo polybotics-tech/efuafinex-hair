@@ -31,6 +31,8 @@ import { DEPOSIT_HOOKS } from "../../../helpers/hooks/deposit";
 import DepositRecord from "../../../components/reuseables/DepositRecord";
 import SeeMoreBtn from "../../../components/reuseables/SeeMoreBtn";
 import PopupModalWrapper from "../../../components/ui/PopupModalWrapper";
+import ImageComponent from "../../../components/reuseables/ImageComponent";
+import { IMAGE_LOADER } from "../../../helpers/utils/image-loader";
 
 export default function Package() {
   const { id } = useLocalSearchParams();
@@ -69,10 +71,18 @@ export default function Package() {
           <NotFoundComponent text={"Package not found"} isLoading={isLoading} />
         ) : (
           <>
+            {/**screenshot photo */}
+            {Boolean(data?.has_photo) && data?.photo && (
+              <ScreenshotComp data={data} />
+            )}
+
+            {/**primary details */}
             <PackageCard type={data?.package_type} data={data} />
 
             {/**description */}
-            <DescriptionComp description={data?.description} />
+            {Boolean(data?.description != "") && (
+              <DescriptionComp description={data?.description} />
+            )}
 
             {/**amount summary */}
             <AmountSummComp data={data} />
@@ -92,6 +102,43 @@ export default function Package() {
     </SafeAreaWrapper>
   );
 }
+
+const ScreenshotComp = ({ data }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  return (
+    <>
+      <TouchableOpacity
+        style={styles.screenshotComp}
+        activeOpacity={0.8}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <ImageComponent
+          uri={IMAGE_LOADER.user_thumbnail(data?.photo)}
+          blur={data?.photo_blur}
+          scale={false}
+        />
+      </TouchableOpacity>
+
+      {/**show full image */}
+      <PopupModalWrapper
+        title={"View Photo"}
+        isVisible={modalVisible}
+        setIsVisible={setModalVisible}
+      >
+        <View style={styles.photoViewer}>
+          <ImageComponent
+            uri={IMAGE_LOADER.user_thumbnail(data?.photo)}
+            blur={data?.photo_blur}
+            scale={true}
+          />
+        </View>
+      </PopupModalWrapper>
+    </>
+  );
+};
 
 const DescriptionComp = ({ description }) => {
   return (
@@ -417,5 +464,17 @@ const styles = StyleSheet.create({
     marginTop: 64,
     marginBottom: 48,
     gap: 32,
+  },
+  screenshotComp: {
+    width: "100%",
+    height: SCREEN_DIMENSION.heightRatio(1 / 4.5),
+    borderRadius: 16,
+    backgroundColor: COLOR_THEME.black,
+    overflow: "hidden",
+  },
+  photoViewer: {
+    width: "100%",
+    height: "auto",
+    maxHeight: SCREEN_DIMENSION.heightRatio(1 / 1.4),
   },
 });

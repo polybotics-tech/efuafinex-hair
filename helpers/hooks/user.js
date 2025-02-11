@@ -8,6 +8,11 @@ import {
 } from "../../redux/reducer/userSlice";
 import { Alert } from "../utils/alert";
 import { LOCAL_STORAGE } from "../local-storage";
+import {
+  ACTION_UPDATE_LATEST_NOTIFICATION_ID,
+  ACTION_UPDATE_LATEST_NOTIFICATIONS,
+  ACTION_UPDATE_NOTIFICATION_HAS_UNREAD,
+} from "../../redux/reducer/notificationSlice";
 
 export const USER_HOOKS = {
   update_user_thumbnail: async (setLoader = () => {}, photo) => {
@@ -145,5 +150,60 @@ export const USER_HOOKS = {
     } finally {
       setLoader(false);
     }
+  },
+  fetch_notifications: async () => {
+    try {
+      const token = store.getState()?.user?.token;
+
+      const { data } = await axios.get(
+        END_POINTS.user.notifications(1),
+        HEADERS.json(token)
+      );
+
+      const { success, message } = data;
+      if (success) {
+        const res = data?.data;
+        const { notifications } = res;
+
+        //update notifications list in global state
+        store.dispatch(ACTION_UPDATE_LATEST_NOTIFICATIONS({ notifications }));
+
+        //update latest_id
+        store.dispatch(
+          ACTION_UPDATE_LATEST_NOTIFICATION_ID({
+            latest_id: notifications[0]?.notification_id,
+          })
+        );
+
+        return true;
+      }
+    } catch (error) {
+      return false;
+    }
+  },
+  validate_notification_latest_id: async (latest_id) => {
+    const local_id = await LOCAL_STORAGE.read(
+      LOCAL_STORAGE.paths.latest_notification_id
+    );
+
+    //means it's a new id
+    if (latest_id != local_id) {
+      //update global has unread
+      store.dispatch(
+        ACTION_UPDATE_NOTIFICATION_HAS_UNREAD({ has_unread: true })
+      );
+
+      //update local storage id
+      await LOCAL_STORAGE.save(
+        LOCAL_STORAGE.paths.latest_notification_id,
+        latest_id
+      );
+    }
+  },
+  mark_notifications_read: async () => {
+    //update global has unread
+    store.dispatch(
+      ACTION_UPDATE_NOTIFICATION_HAS_UNREAD({ has_unread: false })
+    );
   },
 };

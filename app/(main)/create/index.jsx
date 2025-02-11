@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import AuthScreenWrapper from "../../../components/ui/AuthScreenWrapper";
 import AuthFormComponent from "../../../components/AuthFormComponent";
 import { COLOR_THEME, NAIRA_CURRENCY } from "../../../constants";
@@ -11,8 +11,11 @@ import SafeAreaWrapper from "../../../components/ui/safeAreaWrapper";
 import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
 import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
 import PhotoPicker from "../../../components/reuseables/PhotoPicker";
+import { PACKAGE_HOOKS } from "../../../helpers/hooks/package";
 
 export default function CreatePackage() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -37,10 +40,22 @@ export default function CreatePackage() {
   //listen for change in has_photo toggle to clear photo
   useMemo(() => {
     setFormData((prev) => ({ ...prev, photo: {} }));
-  }, [formData?.has_photo]);
 
-  const submitForm = () => {
-    console.log("submitted: ", formData);
+    if (!formData?.is_defined) {
+      setFormData((prev) => ({ ...prev, has_photo: false }));
+    }
+  }, [formData?.has_photo, formData?.is_defined]);
+
+  const submitForm = async () => {
+    let res = await PACKAGE_HOOKS.create_new_package(formData, setIsLoading);
+
+    //redirect to home page
+    if (res) {
+      if (router.canDismiss()) {
+        router.dismissAll();
+      }
+      router.replace("/(tabs)/");
+    }
   };
 
   return (
@@ -50,6 +65,7 @@ export default function CreatePackage() {
       <ScrollViewWrapper style={styles.page}>
         <AuthScreenWrapper
           buttonText={"Create package"}
+          buttonIsLoading={isLoading}
           formSubmitFunction={submitForm}
         >
           {/**title */}
@@ -190,16 +206,18 @@ export default function CreatePackage() {
           )}
 
           {/**screeshot photo */}
-          <AuthFormComponent
-            formType={"toggle"}
-            label={"Add Screenshot Photo"}
-            placeholder={
-              "Upload a photo reference of what made you create this package. For instance, a screenshot of a product, etc."
-            }
-            name={"has_photo"}
-            form={formData}
-            setForm={setFormData}
-          />
+          {formData?.is_defined && (
+            <AuthFormComponent
+              formType={"toggle"}
+              label={"Add Screenshot Photo"}
+              placeholder={
+                "Upload a photo reference of what made you create this package. For instance, a screenshot of a product, etc."
+              }
+              name={"has_photo"}
+              form={formData}
+              setForm={setFormData}
+            />
+          )}
 
           {formData?.has_photo && (
             <PhotoPicker name={"photo"} form={formData} setForm={setFormData} />

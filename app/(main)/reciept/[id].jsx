@@ -202,7 +202,7 @@ export default function RecieptPage() {
                 size={FONT_SIZE.xs}
                 color={COLOR_THEME.gray100}
               />
-              <Text style={styles.copyText}>Transaction from EFUAFINIX</Text>
+              <Text style={styles.copyText}>Transaction from EFUAFINEX</Text>
             </View>
           </View>
         )}
