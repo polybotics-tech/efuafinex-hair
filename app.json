@@ -29,7 +29,7 @@
           }
         ]
       },
-      "bundleIdentifier": "com.polyboticstech.efuafinex_hair_app"
+      "bundleIdentifier": "com.polyboticstech.efuafinexhair"
     },
     "android": {
       "adaptiveIcon": {
@@ -45,7 +45,7 @@
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.polyboticstech.efuafinex_hair_app"
+      "package": "com.polyboticstech.efuafinexhair"
     },
     "web": {
       "bundler": "metro",
