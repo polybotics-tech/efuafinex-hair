@@ -6,6 +6,7 @@ import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME } from "../../../constants/theme";
 import { router } from "expo-router";
 import { USER_HOOKS } from "../../../helpers/hooks/user";
+import { DEBOUNCE } from "../../../helpers/utils/debounce";
 
 export default function VerifyEmail() {
   const [formData, setFormData] = useState({
@@ -16,14 +17,14 @@ export default function VerifyEmail() {
   const [isLoading, setIsLoading] = useState(false);
 
   //handle form submission
-  const submitForm = async () => {
+  const submitForm = DEBOUNCE(async () => {
     const success = await USER_HOOKS.update_pass(formData, setIsLoading);
 
     if (success) {
       //redirect to back to account page
       router.back();
     }
-  };
+  }, 500);
 
   return (
     <View style={styles.safeArea}>

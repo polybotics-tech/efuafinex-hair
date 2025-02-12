@@ -34,6 +34,7 @@ const AuthScreenWrapper = ({
           title={buttonText}
           onPress={formSubmitFunction}
           isLoading={buttonIsLoading}
+          disabled={buttonIsLoading}
         />
 
         <Text style={styles.bottomText}>

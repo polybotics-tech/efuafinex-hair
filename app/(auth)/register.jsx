@@ -6,6 +6,7 @@ import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { COLOR_THEME } from "../../constants";
 import { router } from "expo-router";
 import { AUTH_HOOKS } from "../../helpers/hooks/auth";
+import { DEBOUNCE } from "../../helpers/utils/debounce";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -18,13 +19,13 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
 
   //handle form submission
-  const submitForm = async () => {
+  const submitForm = DEBOUNCE(async () => {
     const register = await AUTH_HOOKS.attempt_register(formData, setIsLoading);
 
     if (register) {
       router.dismissTo("/verify/?ref=register");
     }
-  };
+  }, 500);
 
   return (
     <AuthScreenWrapper

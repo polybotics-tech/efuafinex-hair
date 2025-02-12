@@ -8,6 +8,7 @@ import { AUTH_HOOKS } from "../../helpers/hooks/auth";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSelector } from "react-redux";
 import NotFoundComponent from "../../components/reuseables/NotFoundComponent";
+import { DEBOUNCE } from "../../helpers/utils/debounce";
 
 export default function VerifyEmail() {
   const { ref } = useLocalSearchParams();
@@ -38,7 +39,7 @@ export default function VerifyEmail() {
   const [isLoading, setIsLoading] = useState(false);
 
   //handle form submission
-  const submitForm = async () => {
+  const submitForm = DEBOUNCE(async () => {
     const verified = await AUTH_HOOKS.verify_otp(formData, setIsLoading);
 
     if (verified) {
@@ -53,7 +54,7 @@ export default function VerifyEmail() {
         router.dismissTo("/(tabs)/");
       }
     }
-  };
+  });
 
   return (
     <AuthScreenWrapper

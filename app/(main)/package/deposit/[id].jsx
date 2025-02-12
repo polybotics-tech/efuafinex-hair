@@ -20,6 +20,7 @@ import { WebView } from "react-native-webview";
 import PopupModalWrapper from "../../../../components/ui/PopupModalWrapper";
 import { Alert } from "../../../../helpers/utils/alert";
 import { DEPOSIT_HOOKS } from "../../../../helpers/hooks/deposit";
+import { DEBOUNCE } from "../../../../helpers/utils/debounce";
 
 export default function Deposit() {
   const { id } = useLocalSearchParams();
@@ -28,13 +29,13 @@ export default function Deposit() {
   const [isLoading, setIsLoading] = useState();
 
   //fetch package details
-  const fetchPackage = async (id) => {
+  const fetchPackage = DEBOUNCE(async (id) => {
     const result = await PACKAGE_HOOKS.fetch_single_package(setIsLoading, id);
 
     if (result) {
       setData(result);
     }
-  };
+  }, 500);
 
   useEffect(() => {
     if (id) {

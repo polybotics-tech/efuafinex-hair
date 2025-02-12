@@ -17,6 +17,7 @@ import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
 import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
 import PhotoPicker from "../../../components/reuseables/PhotoPicker";
 import { PACKAGE_HOOKS } from "../../../helpers/hooks/package";
+import { DEBOUNCE } from "../../../helpers/utils/debounce";
 
 export default function CreatePackage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +56,7 @@ export default function CreatePackage() {
     }
   }, [formData?.has_photo, formData?.is_defined]);
 
-  const submitForm = async () => {
+  const submitForm = DEBOUNCE(async () => {
     let res = await PACKAGE_HOOKS.create_new_package(formData, setIsLoading);
 
     //redirect to home page
@@ -65,7 +66,7 @@ export default function CreatePackage() {
       }
       router.replace("/(tabs)/");
     }
-  };
+  }, 500);
 
   return (
     <SafeAreaWrapper>
