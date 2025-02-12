@@ -77,7 +77,7 @@ export default function Register() {
           />
         }
         label={"Phone number"}
-        placeholder={"Ex. 2347010000000"}
+        placeholder={"Ex. 07010000000"}
         name={"phone"}
         form={formData}
         setForm={setFormData}

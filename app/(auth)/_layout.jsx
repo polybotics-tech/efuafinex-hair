@@ -1,9 +1,28 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { Slot, usePathname } from "expo-router";
-import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { router, Slot, usePathname } from "expo-router";
+import * as AppleAuthentication from "expo-apple-authentication";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import {
+  COLOR_THEME,
+  FONT_SIZE,
+  FONT_WEIGHT,
+  SCREEN_DIMENSION,
+} from "../../constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
+import { Alert } from "../../helpers/utils/alert";
+import { AUTH_HOOKS } from "../../helpers/hooks/auth";
+import { jwtDecode } from "jwt-decode";
 
 export default function AuthLayout() {
   const pathname = usePathname();
@@ -16,22 +35,22 @@ export default function AuthLayout() {
       >
         <Slot />
 
-        {/*(pathname === "/login" || pathname === "/register") && (
+        {(pathname === "/login" || pathname === "/register") && (
           <>
-            {/**social auth button /}
+            {/**social auth button */}
             <View style={styles.socialCont}>
               <View style={styles.splitView}>
                 <Text style={styles.splitText}>or continue with</Text>
               </View>
 
-              {/** /}
+              {/** */}
               <View style={styles.btnCont}>
                 <SignInWithGoogle />
 
                 <SignInWithApple />
               </View>
 
-              {/**terms and policies /}
+              {/**terms and policies */}
               <Text style={styles.bottomText}>
                 By continuing, you agree to our{" "}
                 <Text style={styles.bottomLink}>
@@ -40,33 +59,235 @@ export default function AuthLayout() {
               </Text>
             </View>
           </>
-        )*/}
+        )}
       </ScrollView>
     </SafeAreaWrapper>
   );
 }
 
 const SignInWithGoogle = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const configureGoogleSignIn = () => {
+    GoogleSignin.configure({
+      webClientId:
+        "1051061091644-rk6rdjvsq8kg0gerraddds8h19pit2mh.apps.googleusercontent.com",
+      iosClientId:
+        "1051061091644-bjcue7e6li5vc56fg09ioodp1dgiqcgt.apps.googleusercontent.com",
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+      profileImageSize: 1280,
+    });
+  };
+
+  useEffect(() => {
+    configureGoogleSignIn();
+  }, []);
+
+  //handle form submission
+  const submitForm = async (formData) => {
+    const login = await AUTH_HOOKS.attempt_google_signin(
+      formData,
+      setIsLoading
+    );
+
+    if (login) {
+      //redirect to home
+      router.dismissTo("/(tabs)");
+    }
+  };
+
+  //check if google auth is availabke for device
+  const googleAuthIsAvailable = async () => {
+    const check = await GoogleSignin.hasPlayServices();
+
+    return check;
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      setIsLoading(true);
+
+      //check availability
+      const proceed = await googleAuthIsAvailable();
+
+      if (!proceed) {
+        Alert.error(
+          "Google authentication failed",
+          "This feature is not available on this device"
+        );
+        return;
+      }
+
+      const googleInfo = await GoogleSignin.signIn();
+
+      if (googleInfo) {
+        if (googleInfo?.type === "cancelled") {
+          Alert.error(
+            "Google authentication failed",
+            "Request was interupted or canceled"
+          );
+          return;
+        }
+
+        //continue
+        const { user } = googleInfo?.data;
+        const { email, name, photo } = user;
+
+        //create form
+        const form = { email, photo_url: photo, fullname: name };
+        console.log("form: ", form);
+
+        await submitForm(form);
+      } else {
+        Alert.error(
+          "Google authentication failed",
+          "Error processing request. Check internet connection"
+        );
+        return;
+      }
+    } catch (error) {
+      Alert.error(
+        "Google authentication failed",
+        error?.message || "Something went wrong"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <Pressable style={styles.socialBtn}>
-      <MaterialCommunityIcons
-        name="google"
-        size={24}
-        color={COLOR_THEME.primary}
-      />
-    </Pressable>
+    <TouchableOpacity
+      style={styles.socialBtn}
+      activeOpacity={0.6}
+      disabled={isLoading}
+      onPress={() => signInWithGoogle()}
+    >
+      {isLoading ? (
+        <ActivityIndicator size={FONT_SIZE.s} color={COLOR_THEME.primary} />
+      ) : (
+        <MaterialCommunityIcons
+          name="google"
+          size={24}
+          color={COLOR_THEME.primary}
+        />
+      )}
+    </TouchableOpacity>
   );
 };
 
 const SignInWithApple = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  //handle form submission
+  const submitForm = async (formData) => {
+    console.log("api");
+    const login = await AUTH_HOOKS.attempt_apple_signin(formData, setIsLoading);
+    if (login) {
+      //redirect to home
+      router.dismissTo("/(tabs)");
+    }
+  };
+
+  //check if apple auth is availabke for device
+  const appleAuthIsAvailable = async () => {
+    const check = await AppleAuthentication.isAvailableAsync();
+
+    return check;
+  };
+
+  const signInWithApple = async () => {
+    try {
+      setIsLoading(true);
+
+      //check availability
+      const proceed = await appleAuthIsAvailable();
+
+      if (!proceed) {
+        Alert.error(
+          "Apple authentication failed",
+          "This feature is not available on this device"
+        );
+        return;
+      }
+
+      //fetch credentials
+      const credentials = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      if (!credentials) {
+        Alert.error(
+          "Apple authentication failed",
+          "Something went wrong. Try again later"
+        );
+        return;
+      }
+
+      //extract identity token
+      const { identityToken } = credentials;
+
+      //decode token
+      const decoded = jwtDecode(identityToken);
+      console.log("decoded: ", decoded);
+      return;
+      /*const { email, fullName } = credentials;
+      console.log("email: ", email);
+
+      // signed in with apple
+      if (email && fullName) {
+        //extract fullname
+        const fullname = `${fullName?.familyName} ${fullName?.givenName}`;
+
+        //create form
+        const form = { email, fullname };
+
+        //submit form to api
+        await submitForm(form);
+      }*/
+    } catch (e) {
+      if (e.code === "ERR_REQUEST_CANCELED") {
+        // handle that the user canceled the sign-in flow
+        Alert.error(
+          "Apple authentication failed",
+          e?.message || "Process was interupted or canceled"
+        );
+      } else {
+        Alert.error(
+          "Apple authentication failed",
+          e?.message || "Something went wrong. Try again later"
+        );
+        // handle other errors
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <Pressable style={styles.socialBtn}>
-      <MaterialCommunityIcons
-        name="apple"
-        size={26}
-        color={COLOR_THEME.primary}
-      />
-    </Pressable>
+    <>
+      {Platform.OS === "ios" && (
+        <TouchableOpacity
+          style={styles.socialBtn}
+          activeOpacity={0.6}
+          disabled={isLoading}
+          onPress={() => signInWithApple()}
+        >
+          {isLoading ? (
+            <ActivityIndicator size={FONT_SIZE.s} color={COLOR_THEME.primary} />
+          ) : (
+            <MaterialCommunityIcons
+              name="apple"
+              size={26}
+              color={COLOR_THEME.primary}
+            />
+          )}
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 
@@ -75,6 +296,7 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 32,
     padding: 16,
+    paddingBottom: SCREEN_DIMENSION.heightRatio(1 / 3),
   },
   socialCont: {
     paddingBottom: 32,

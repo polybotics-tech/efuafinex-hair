@@ -36,6 +36,6 @@ export const format_number = (number) => {
 };
 
 export const format_input_number = (number) => {
-  let res = number.toString().replace(/\D/g, "");
-  return Number(res);
+  let res = number.toString().replace(/[^0-9]/g, "");
+  return res;
 };

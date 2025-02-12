@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     width: "100%",
-    gap: 8,
+    gap: 16,
   },
   optionTitle: {
     fontSize: FONT_SIZE.b,

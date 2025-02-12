@@ -10,12 +10,21 @@
     "newArchEnabled": true,
     "backgroundColor": "#FAFAFA",
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
+      "usesAppleSignIn": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This app would like to get access to your camera to take photos for your profile or posts",
         "NSPhotoLibraryAddUsageDescription": "This app would like to save images to your device",
-        "NSPhotoLibraryUsageDescription": "This app would like to save images to your device"
-      }
+        "NSPhotoLibraryUsageDescription": "This app would like to save images to your device",
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.1051061091644-bjcue7e6li5vc56fg09ioodp1dgiqcgt"
+            ]
+          }
+        ]
+      },
+      "bundleIdentifier": "com.polyboticstech.efuafinex_hair_app"
     },
     "android": {
       "adaptiveIcon": {
@@ -37,6 +46,8 @@
     },
     "plugins": [
       "expo-router",
+      "expo-apple-authentication",
+      "@react-native-google-signin/google-signin",
       [
         "expo-splash-screen",
         {

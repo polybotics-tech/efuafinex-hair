@@ -19,13 +19,13 @@ export const JSON_QUICK_OPTIONS_LIST = [
   {
     tab: 1,
     title: "Free Flow Package",
-    desc: "Save at your own pase. Nothing is too big or small",
+    desc: "Don't have any hair in mind yet? Save freely at your own pase. No limits, no pressure.",
     path: "/create/?type=free",
   },
   {
     tab: 2,
     title: "Budget Defined Package",
-    desc: "Set a target, save towards it, meet your target",
+    desc: "Found a hair you want? Set the target price, save towards it, meet your hair goal.",
     path: "/create/?type=defined",
   },
 ];
@@ -49,6 +49,7 @@ export const RECORDS_SORTING_OPTIONS = [
 ];
 
 export const PACKAGE_DURATION_OPTIONS = [
+  "1 month",
   "3 months",
   "6 months",
   "9 months",

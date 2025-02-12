@@ -75,6 +75,70 @@ export const AUTH_HOOKS = {
       setLoader(false);
     }
   },
+  attempt_apple_signin: async (form = {}, setLoader = () => {}) => {
+    try {
+      setLoader(true);
+
+      const { data } = await axios.post(
+        END_POINTS.auth.apple,
+        form,
+        HEADERS.json()
+      );
+
+      const { success, message } = data;
+      if (success) {
+        Alert.success("login successful", message);
+
+        const res = data?.data;
+        //extract user and token
+        const { user, token } = res;
+
+        //store token in local storage
+        await LOCAL_STORAGE.save(LOCAL_STORAGE.paths.token, token);
+
+        //update user global state
+        store.dispatch(ACTION_LOG_USER_IN({ user, token }));
+        return true;
+      }
+    } catch (error) {
+      Alert.error("login failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
+  attempt_google_signin: async (form = {}, setLoader = () => {}) => {
+    try {
+      setLoader(true);
+
+      const { data } = await axios.post(
+        END_POINTS.auth.google,
+        form,
+        HEADERS.json()
+      );
+
+      const { success, message } = data;
+      if (success) {
+        Alert.success("login successful", message);
+
+        const res = data?.data;
+        //extract user and token
+        const { user, token } = res;
+
+        //store token in local storage
+        await LOCAL_STORAGE.save(LOCAL_STORAGE.paths.token, token);
+
+        //update user global state
+        store.dispatch(ACTION_LOG_USER_IN({ user, token }));
+        return true;
+      }
+    } catch (error) {
+      Alert.error("login failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
   revalidate_token: async (setLoader = () => {}) => {
     try {
       setLoader(true);

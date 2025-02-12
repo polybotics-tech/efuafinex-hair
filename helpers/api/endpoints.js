@@ -7,6 +7,8 @@ export const END_POINTS = {
   auth: {
     login: API + "/auth/login",
     register: API + "/auth/register",
+    apple: API + "/auth/apple",
+    google: API + "/auth/google",
     revalidate: API + "/auth/revalidate",
     forgot: API + "/auth/forgot",
     reset_pass: API + "/auth/reset",

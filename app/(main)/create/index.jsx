@@ -1,10 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
-import { Octicons } from "@expo/vector-icons";
+import { FontAwesome6, Octicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import AuthScreenWrapper from "../../../components/ui/AuthScreenWrapper";
 import AuthFormComponent from "../../../components/AuthFormComponent";
-import { COLOR_THEME, NAIRA_CURRENCY } from "../../../constants";
+import {
+  COLOR_THEME,
+  FONT_SIZE,
+  FONT_WEIGHT,
+  NAIRA_CURRENCY,
+} from "../../../constants";
 import { PACKAGE_DURATION_OPTIONS } from "../../../helpers/json";
 import { return_future_year_for_date_picker } from "../../../helpers/utils/datetime";
 import SafeAreaWrapper from "../../../components/ui/safeAreaWrapper";
@@ -32,8 +37,12 @@ export default function CreatePackage() {
   //check if package type passed as params
   const { type } = useLocalSearchParams();
   useEffect(() => {
-    if (type && type === "free") {
-      setFormData((prev) => ({ ...prev, is_defined: false, has_photo: false }));
+    if (type) {
+      setFormData((prev) => ({
+        ...prev,
+        is_defined: Boolean(type != "free"),
+        has_photo: Boolean(type != "free"),
+      }));
     }
   }, [type]);
 
@@ -100,17 +109,37 @@ export default function CreatePackage() {
             setForm={setFormData}
           />
 
+          {/**screeshot photo */}
+          {formData?.is_defined && (
+            <AuthFormComponent
+              formType={"toggle"}
+              label={"Add Screenshot Photo"}
+              placeholder={
+                "Upload a photo reference of what made you create this package. For instance, a screenshot of a product, etc."
+              }
+              name={"has_photo"}
+              form={formData}
+              setForm={setFormData}
+            />
+          )}
+
+          {formData?.has_photo && (
+            <PhotoPicker name={"photo"} form={formData} setForm={setFormData} />
+          )}
+
           {/**package type */}
-          <AuthFormComponent
-            formType={"toggle"}
-            label={"Set Fixed Amount"}
-            placeholder={
-              "Enable this option to work with a fixed, agreed-upon amount. Otherwise, disable option to work with a free-flow plan"
-            }
-            name={"is_defined"}
-            form={formData}
-            setForm={setFormData}
-          />
+          {Boolean(type && type != "free") && (
+            <AuthFormComponent
+              formType={"toggle"}
+              label={"Set Fixed Amount"}
+              placeholder={
+                "Enable this option to work with a fixed, agreed-upon amount. Otherwise, disable option to work with a free-flow plan"
+              }
+              name={"is_defined"}
+              form={formData}
+              setForm={setFormData}
+            />
+          )}
 
           {formData?.is_defined && (
             <>
@@ -118,8 +147,8 @@ export default function CreatePackage() {
               <AuthFormComponent
                 formType={"input"}
                 inputIcon={
-                  <Octicons
-                    name="credit-card"
+                  <FontAwesome6
+                    name="naira-sign"
                     size={16}
                     color={COLOR_THEME.gray200}
                   />
@@ -183,44 +212,38 @@ export default function CreatePackage() {
               maximumDate={return_future_year_for_date_picker(2)}
             />
           ) : (
-            <AuthFormComponent
-              formType={"select"}
-              label={"Duration"}
-              placeholder={"Select duration"}
-              description={
-                "How long would you like this package plan to run for?"
-              }
-              optional={true}
-              inputIcon={
-                <Octicons
-                  name="stopwatch"
-                  size={16}
-                  color={COLOR_THEME.gray200}
-                />
-              }
-              name={"duration"}
-              options={PACKAGE_DURATION_OPTIONS}
-              form={formData}
-              setForm={setFormData}
-            />
-          )}
-
-          {/**screeshot photo */}
-          {formData?.is_defined && (
-            <AuthFormComponent
-              formType={"toggle"}
-              label={"Add Screenshot Photo"}
-              placeholder={
-                "Upload a photo reference of what made you create this package. For instance, a screenshot of a product, etc."
-              }
-              name={"has_photo"}
-              form={formData}
-              setForm={setFormData}
-            />
-          )}
-
-          {formData?.has_photo && (
-            <PhotoPicker name={"photo"} form={formData} setForm={setFormData} />
+            <View>
+              <AuthFormComponent
+                formType={"select"}
+                label={"Duration"}
+                placeholder={"Select duration"}
+                description={
+                  "How long would you like this package plan to run for?"
+                }
+                optional={true}
+                inputIcon={
+                  <Octicons
+                    name="stopwatch"
+                    size={16}
+                    color={COLOR_THEME.gray200}
+                  />
+                }
+                name={"duration"}
+                options={PACKAGE_DURATION_OPTIONS}
+                form={formData}
+                setForm={setFormData}
+              />
+              {Boolean(formData?.duration) && (
+                <TouchableOpacity
+                  style={styles.resetBtn}
+                  onPress={() => {
+                    setFormData((prev) => ({ ...prev, duration: "" }));
+                  }}
+                >
+                  <Text style={styles.resetBtnText}>Reset Duration?</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           )}
         </AuthScreenWrapper>
       </ScrollViewWrapper>
@@ -234,5 +257,15 @@ const styles = StyleSheet.create({
     minHeight: "100%",
     padding: 16,
     backgroundColor: COLOR_THEME.white,
+  },
+  resetBtn: {
+    width: "auto",
+    marginLeft: "auto",
+    paddingVertical: 8,
+  },
+  resetBtnText: {
+    fontSize: FONT_SIZE.s,
+    fontWeight: FONT_WEIGHT.semibold,
+    color: COLOR_THEME.primary,
   },
 });
