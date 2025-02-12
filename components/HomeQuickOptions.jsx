@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   option: {
     width: SCREEN_DIMENSION.halfWidth(16, 32),
-    minHeight: SCREEN_DIMENSION.heightRatio(1 / 2.5),
+    minHeight: SCREEN_DIMENSION.heightRatio(1 / 3),
     padding: 16,
     gap: 32,
     justifyContent: "space-between",
