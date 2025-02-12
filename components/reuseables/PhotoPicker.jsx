@@ -62,7 +62,7 @@ const PhotoPicker = ({ name, form, setForm }) => {
       {form[name] && form[name]?.uri && (
         <View style={styles.placeholder}>
           <ImageComponent
-            uri={IMAGE_LOADER.user_thumbnail(form[name]?.uri)}
+            uri={IMAGE_LOADER.picker_thumbnail(form[name]?.uri)}
             scale={true}
           />
         </View>

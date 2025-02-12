@@ -1,24 +1,46 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import React, { memo } from "react";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import React, { memo, useState } from "react";
+import * as Clipboard from "expo-clipboard";
 import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME } from "../../constants";
-import Toast from "react-native-toast-message";
+import { Alert } from "../../helpers/utils/alert";
 
 const CopyIcon = ({ text_to_copy = "" }) => {
-  const CopyText = (text) => {
-    //#implement copy feature later
+  const [isLoading, setIsLoading] = useState(false);
 
-    //copying successful
-    Toast.show({
-      type: "success",
-      text1: "Copied to clipboard",
-      text2: text,
-    });
+  const CopyText = async (text) => {
+    try {
+      setIsLoading(true);
+
+      //implement copy feature
+      const copy = await Clipboard.setStringAsync(String(text));
+
+      if (copy) {
+        //copying successful
+        Alert.success("Copied to clipboard", String(text));
+      }
+    } catch (error) {
+      Alert.error("Action failed", "Error copying to clipboard");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <TouchableOpacity onPress={() => CopyText(text_to_copy)}>
-      <Octicons name="copy" size={14} color={COLOR_THEME.gray100} />
+    <TouchableOpacity
+      onPress={() => CopyText(text_to_copy)}
+      disabled={isLoading}
+    >
+      {isLoading ? (
+        <ActivityIndicator size={14} color={COLOR_THEME.gray100} />
+      ) : (
+        <Octicons name="copy" size={14} color={COLOR_THEME.gray100} />
+      )}
     </TouchableOpacity>
   );
 };

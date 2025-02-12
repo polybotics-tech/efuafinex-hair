@@ -4,6 +4,7 @@ import PackageCard from "./reuseables/PackageCard";
 import NotFoundComponent from "./reuseables/NotFoundComponent";
 import SeeMoreBtn from "./reuseables/SeeMoreBtn";
 import { PACKAGE_HOOKS } from "../helpers/hooks/package";
+import { DEBOUNCE } from "../helpers/utils/debounce";
 
 const PackageRecordsComponent = ({ filter }) => {
   const [packages, setPackages] = useState();
@@ -29,9 +30,9 @@ const PackageRecordsComponent = ({ filter }) => {
     fetchPackages(1);
   }, [filter]);
 
-  const seeMore = () => {
+  const seeMore = DEBOUNCE(() => {
     fetchPackages(Number(meta?.page + 1));
-  };
+  });
 
   return (
     <View style={styles.component}>

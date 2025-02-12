@@ -35,7 +35,7 @@ export default function Deposit() {
     if (result) {
       setData(result);
     }
-  }, 500);
+  });
 
   useEffect(() => {
     if (id) {

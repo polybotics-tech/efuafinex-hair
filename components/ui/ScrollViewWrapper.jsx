@@ -31,7 +31,7 @@ const ScrollViewWrapper = ({
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          progressBackgroundColor={COLOR_THEME.primaryFaded}
+          progressBackgroundColor={COLOR_THEME.white}
           colors={[COLOR_THEME.primary]}
           tintColor={COLOR_THEME.primary}
         />

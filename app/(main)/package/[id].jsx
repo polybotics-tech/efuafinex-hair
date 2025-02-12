@@ -128,6 +128,7 @@ const ScreenshotComp = ({ data }) => {
         title={"View Photo"}
         isVisible={modalVisible}
         setIsVisible={setModalVisible}
+        containerStyle={{ padding: 0, backgroundColor: COLOR_THEME.black }}
       >
         <View style={styles.photoViewer}>
           <ImageComponent

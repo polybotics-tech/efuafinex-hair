@@ -8,4 +8,11 @@ export const IMAGE_LOADER = {
 
     return { uri: `${END_POINTS.media(url)}` };
   },
+  picker_thumbnail: (url) => {
+    if (!url) {
+      return null;
+    }
+
+    return { uri: url };
+  },
 };

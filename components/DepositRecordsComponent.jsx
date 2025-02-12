@@ -4,6 +4,7 @@ import DepositRecord from "./reuseables/DepositRecord";
 import NotFoundComponent from "./reuseables/NotFoundComponent";
 import SeeMoreBtn from "./reuseables/SeeMoreBtn";
 import { DEPOSIT_HOOKS } from "../helpers/hooks/deposit";
+import { DEBOUNCE } from "../helpers/utils/debounce";
 
 const DepositRecordsComponent = ({ filter }) => {
   const [deposits, setDeposits] = useState();
@@ -33,9 +34,9 @@ const DepositRecordsComponent = ({ filter }) => {
     fetchDeposits(1, filter);
   }, [filter]);
 
-  const seeMore = () => {
+  const seeMore = DEBOUNCE(() => {
     fetchDeposits(Number(meta?.page + 1));
-  };
+  });
 
   return (
     <View style={styles.component}>
@@ -50,6 +51,7 @@ const DepositRecordsComponent = ({ filter }) => {
               ? "No deposits recorded"
               : `No ${filter} deposits recorded`
           }
+          isLoading={isLoading}
         />
       )}
 

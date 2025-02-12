@@ -25,7 +25,7 @@ export default function Register() {
     if (register) {
       router.dismissTo("/verify/?ref=register");
     }
-  }, 500);
+  });
 
   return (
     <AuthScreenWrapper

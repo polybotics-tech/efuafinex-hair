@@ -17,7 +17,7 @@ import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
 import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
 import PhotoPicker from "../../../components/reuseables/PhotoPicker";
 import { PACKAGE_HOOKS } from "../../../helpers/hooks/package";
-import { DEBOUNCE } from "../../../helpers/utils/debounce";
+import { DEBOUNCE, DEBOUNCE_ASYNC } from "../../../helpers/utils/debounce";
 
 export default function CreatePackage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +42,7 @@ export default function CreatePackage() {
       setFormData((prev) => ({
         ...prev,
         is_defined: Boolean(type != "free"),
+        auto_complete: Boolean(type != "free"),
         has_photo: Boolean(type != "free"),
       }));
     }
@@ -61,12 +62,14 @@ export default function CreatePackage() {
 
     //redirect to home page
     if (res) {
+      const { package_id } = res;
       if (router.canDismiss()) {
         router.dismissAll();
       }
-      router.replace("/(tabs)/");
+
+      router.push(`/package/${package_id}`);
     }
-  }, 500);
+  });
 
   return (
     <SafeAreaWrapper>
@@ -76,7 +79,7 @@ export default function CreatePackage() {
         <AuthScreenWrapper
           buttonText={"Create package"}
           buttonIsLoading={isLoading}
-          formSubmitFunction={submitForm}
+          formSubmitFunction={() => submitForm()}
         >
           {/**title */}
           <AuthFormComponent
@@ -265,8 +268,10 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   resetBtnText: {
+    maxWidth: 120,
     fontSize: FONT_SIZE.s,
     fontWeight: FONT_WEIGHT.semibold,
     color: COLOR_THEME.primary,
+    textAlign: "right",
   },
 });

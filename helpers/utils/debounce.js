@@ -1,4 +1,4 @@
-export function DEBOUNCE(func, delay) {
+export function DEBOUNCE(func, delay = 300) {
   let timer;
   return function (...args) {
     if (timer) clearTimeout(timer);

@@ -7,6 +7,7 @@ import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants/theme";
 import { router } from "expo-router";
 import { Alert } from "../../helpers/utils/alert";
 import { AUTH_HOOKS } from "../../helpers/hooks/auth";
+import { DEBOUNCE } from "../../helpers/utils/debounce";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -16,13 +17,13 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   //handle form submission
-  const submitForm = async () => {
+  const submitForm = DEBOUNCE(async () => {
     const login = await AUTH_HOOKS.attempt_login(formData, setIsLoading);
     if (login) {
       //redirect to home
       router.dismissTo("/(tabs)");
     }
-  };
+  });
 
   return (
     <AuthScreenWrapper

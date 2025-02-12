@@ -24,7 +24,7 @@ export default function VerifyEmail() {
       //redirect to back to account page
       router.back();
     }
-  }, 500);
+  });
 
   return (
     <View style={styles.safeArea}>

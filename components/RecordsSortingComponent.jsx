@@ -18,6 +18,7 @@ import { Octicons } from "@expo/vector-icons";
 import PopupModalWrapper from "./ui/PopupModalWrapper";
 import { useLocalSearchParams } from "expo-router";
 import { BORDER_RADIUS } from "../constants/theme";
+import { DEBOUNCE } from "../helpers/utils/debounce";
 
 const RecordsSortingComponent = ({
   activeSort,
@@ -78,10 +79,10 @@ const SortTab = ({ options, active, setActive }) => {
   const [popupModal, setPopupModal] = useState(false);
 
   //handle option selection
-  const selectItem = (item) => {
+  const selectItem = DEBOUNCE((item) => {
     setActive(item);
     setPopupModal(false);
-  };
+  });
 
   return (
     <>
@@ -134,10 +135,10 @@ const FilterTab = ({ options, active, setActive }) => {
   const [popupModal, setPopupModal] = useState(false);
 
   //handle option selection
-  const selectItem = (item) => {
+  const selectItem = DEBOUNCE((item) => {
     setActive(item);
     setPopupModal(false);
-  };
+  });
 
   return (
     <>

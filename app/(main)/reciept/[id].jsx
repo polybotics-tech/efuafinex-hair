@@ -20,6 +20,8 @@ import NotFoundComponent from "../../../components/reuseables/NotFoundComponent"
 import PrimaryButton from "../../../components/reuseables/PrimaryButton";
 import { Alert } from "../../../helpers/utils/alert";
 import { BORDER_RADIUS } from "../../../constants/theme";
+import { DEBOUNCE } from "../../../helpers/utils/debounce";
+import CopyIcon from "../../../components/reuseables/CopyIcon";
 
 export default function RecieptPage() {
   const { id } = useLocalSearchParams();
@@ -71,7 +73,7 @@ export default function RecieptPage() {
   };
 
   // capture the View and Save to Gallery
-  const saveRecieptToGallery = async () => {
+  const saveRecieptToGallery = DEBOUNCE(async () => {
     try {
       setIsDownloading(true);
 
@@ -98,7 +100,7 @@ export default function RecieptPage() {
     } finally {
       setIsDownloading(false);
     }
-  };
+  });
 
   return (
     <SafeAreaWrapper>
@@ -213,6 +215,7 @@ export default function RecieptPage() {
             title={"Download"}
             onPress={() => saveRecieptToGallery()}
             isLoading={isDownloading}
+            disabled={isDownloading || isLoading}
           />
         </View>
       </ScrollViewWrapper>
@@ -236,9 +239,7 @@ const DetailTab = ({ title, value, canCopy }) => {
       <View style={styles.detailValueTab}>
         <Text style={styles.detailValue}>{value}</Text>
 
-        {canCopy && (
-          <Octicons name="copy" size={12} color={COLOR_THEME.gray200} />
-        )}
+        {canCopy && <CopyIcon text_to_copy={String(value)} />}
       </View>
     </View>
   );

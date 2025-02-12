@@ -26,12 +26,12 @@ export const PACKAGE_HOOKS = {
 
       //append all form value to form data
       for (let prop in form) {
-        if (prop === "photo") {
+        if (prop != "photo") {
+          formData.append(prop, String(form[prop]));
+        } else {
           if (has_photo) {
             formData.append("file", form[prop]);
           }
-        } else {
-          formData.append(prop, form[prop]);
         }
       }
 
@@ -52,6 +52,7 @@ export const PACKAGE_HOOKS = {
       }
     } catch (error) {
       Alert.error("request failed", HEADERS.error_extractor(error));
+      return false;
     } finally {
       setLoader(false);
     }
