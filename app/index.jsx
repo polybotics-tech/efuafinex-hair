@@ -67,7 +67,7 @@ export default function Index() {
         }}
       >
         <Text style={{ fontSize: FONT_SIZE.s, color: COLOR_THEME.black }}>
-          Loading, please wait...
+          Loading, please wait.....
         </Text>
       </View>
     </SafeAreaWrapper>
