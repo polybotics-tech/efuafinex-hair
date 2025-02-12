@@ -21,6 +21,11 @@
             "CFBundleURLSchemes": [
               "com.googleusercontent.apps.1051061091644-bjcue7e6li5vc56fg09ioodp1dgiqcgt"
             ]
+          },
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.1051061091644-bjcue7e6li5vc56fg09ioodp1dgiqcgt"
+            ]
           }
         ]
       },
@@ -33,6 +38,9 @@
       },
       "navigationBarColor": "#FAFAFA",
       "permissions": [
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.RECORD_AUDIO"
@@ -74,6 +82,12 @@
       "eas": {
         "projectId": "7f737132-24e3-44b3-9d11-b686ea592a03"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/7f737132-24e3-44b3-9d11-b686ea592a03"
     }
   }
 }
