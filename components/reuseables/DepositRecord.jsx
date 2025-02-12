@@ -9,6 +9,7 @@ import {
   NAIRA_CURRENCY,
 } from "../../constants";
 import { router } from "expo-router";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 const DepositRecord = ({ data }) => {
   const view_transaction = (id = "") => {
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 4,
     backgroundColor: COLOR_THEME.white,
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.m,
   },
   topRow: {
     flexDirection: "row",

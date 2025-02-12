@@ -11,7 +11,12 @@ import {
 import React, { memo, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../constants/theme";
+import {
+  BORDER_RADIUS,
+  COLOR_THEME,
+  FONT_SIZE,
+  FONT_WEIGHT,
+} from "../constants/theme";
 import { SCREEN_DIMENSION } from "../constants/dimensions";
 import { format_input_number } from "../helpers/utils/numbers";
 import PopupModalWrapper from "./ui/PopupModalWrapper";
@@ -471,7 +476,7 @@ const styles = StyleSheet.create({
       width: "100%",
       height: 48,
       paddingHorizontal: 16,
-      borderRadius: 8,
+      borderRadius: BORDER_RADIUS.s,
       backgroundColor: COLOR_THEME.gray50,
       flexDirection: "row",
       alignItems: "center",
@@ -521,7 +526,7 @@ const styles = StyleSheet.create({
       width: "100%",
       height: SCREEN_DIMENSION.heightRatio(1 / 4),
       padding: 16,
-      borderRadius: 8,
+      borderRadius: BORDER_RADIUS.s,
       backgroundColor: COLOR_THEME.gray50,
     },
     input: {
@@ -551,7 +556,7 @@ const styles = StyleSheet.create({
     toggleComponent: {
       width: "100%",
       padding: 16,
-      borderRadius: 8,
+      borderRadius: BORDER_RADIUS.s,
       backgroundColor: COLOR_THEME.white,
       borderWidth: 1.3,
       borderColor: COLOR_THEME.gray50,
@@ -594,7 +599,7 @@ const styles = StyleSheet.create({
       width: "100%",
       height: 48,
       paddingHorizontal: 16,
-      borderRadius: 8,
+      borderRadius: BORDER_RADIUS.s,
       backgroundColor: COLOR_THEME.gray50,
       flexDirection: "row",
       alignItems: "center",

@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React, { memo } from "react";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 const PrimaryButton = ({ ...props }) => {
   return (
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   primaryBtn: (type = "primary") => ({
     width: "100%",
     height: 48,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor:
       type === "primary" ? COLOR_THEME.primary : COLOR_THEME.primaryFaded,
     flexDirection: "row",

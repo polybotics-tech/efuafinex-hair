@@ -22,6 +22,15 @@ export const FONT_SIZE = {
   xxxb: 32,
 };
 
+export const BORDER_RADIUS = {
+  xs: 4,
+  s: 8,
+  m: 16,
+  b: 20,
+  xb: 32,
+  r: 1000,
+};
+
 export const FONT_WEIGHT = {
   regular: 400,
   semibold: 600,

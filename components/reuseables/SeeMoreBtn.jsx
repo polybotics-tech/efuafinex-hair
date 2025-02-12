@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { COLOR_THEME, FONT_SIZE } from "../../constants";
 import { Octicons } from "@expo/vector-icons";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 const SeeMoreBtn = ({ onPress, isLoading }) => {
   return (
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     width: 144,
     backgroundColor: COLOR_THEME.white,
     padding: 10,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

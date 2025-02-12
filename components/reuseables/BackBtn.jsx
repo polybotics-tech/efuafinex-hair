@@ -3,6 +3,7 @@ import React, { memo } from "react";
 import { router } from "expo-router";
 import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME } from "../../constants";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 const BackBtn = () => {
   return (
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   actionBtn: {
     width: 44,
     height: 44,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor: COLOR_THEME.gray50,
     alignItems: "center",
     justifyContent: "center",

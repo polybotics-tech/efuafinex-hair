@@ -7,6 +7,7 @@ import { router } from "expo-router";
 import { useSelector } from "react-redux";
 import ImageComponent from "../../components/reuseables/ImageComponent";
 import { IMAGE_LOADER } from "../../helpers/utils/image-loader";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 export default function Account() {
   return (
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 16,
     backgroundColor: COLOR_THEME.gray50,
-    borderRadius: 32,
+    borderRadius: BORDER_RADIUS.xb,
   },
   userCard: {
     width: "100%",
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
   profileThumbnail: {
     width: 72,
     height: 72,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor: COLOR_THEME.white,
     overflow: "hidden",
   },
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     height: 48,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor: COLOR_THEME.white,
   },
   optionTitle: {

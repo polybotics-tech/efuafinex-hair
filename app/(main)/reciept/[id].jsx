@@ -19,6 +19,7 @@ import { DEPOSIT_HOOKS } from "../../../helpers/hooks/deposit";
 import NotFoundComponent from "../../../components/reuseables/NotFoundComponent";
 import PrimaryButton from "../../../components/reuseables/PrimaryButton";
 import { Alert } from "../../../helpers/utils/alert";
+import { BORDER_RADIUS } from "../../../constants/theme";
 
 export default function RecieptPage() {
   const { id } = useLocalSearchParams();
@@ -262,7 +263,7 @@ const styles = StyleSheet.create({
   statusComponent: (s) => ({
     height: 22,
     paddingHorizontal: 32,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     alignSelf: "flex-start",
     justifyContent: "center",
     backgroundColor:
@@ -287,7 +288,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 32,
     paddingHorizontal: 16,
-    borderRadius: 8,
+    borderRadius: BORDER_RADIUS.s,
     backgroundColor: COLOR_THEME.white,
     gap: 8,
     flexDirection: "column",

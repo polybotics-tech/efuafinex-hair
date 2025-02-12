@@ -13,6 +13,7 @@ import { COLOR_THEME } from "../../constants";
 import ImageComponent from "./ImageComponent";
 import { IMAGE_LOADER } from "../../helpers/utils/image-loader";
 import { USER_HOOKS } from "../../helpers/hooks/user";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 const ThumbnailPicker = () => {
   const thumbnail = useSelector((state) => state.user.user?.thumbnail);
@@ -85,13 +86,13 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     backgroundColor: COLOR_THEME.gray50,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     overflow: "hidden",
   },
   button: {
     width: 48,
     height: 48,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor: COLOR_THEME.white,
     borderWidth: 1,
     borderColor: COLOR_THEME.gray50,

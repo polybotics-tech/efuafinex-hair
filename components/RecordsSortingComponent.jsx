@@ -17,6 +17,7 @@ import {
 import { Octicons } from "@expo/vector-icons";
 import PopupModalWrapper from "./ui/PopupModalWrapper";
 import { useLocalSearchParams } from "expo-router";
+import { BORDER_RADIUS } from "../constants/theme";
 
 const RecordsSortingComponent = ({
   activeSort,
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     gap: 16,
-    borderRadius: 8,
+    borderRadius: BORDER_RADIUS.s,
     backgroundColor: COLOR_THEME.gray50,
   },
   activeText: {

@@ -18,6 +18,7 @@ import {
 import ImageComponent from "./ImageComponent";
 import { IMAGE_LOADER } from "../../helpers/utils/image-loader";
 import { USER_HOOKS } from "../../helpers/hooks/user";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 const PhotoPicker = ({ name, form, setForm }) => {
   //handle photo selection from gallery
@@ -84,13 +85,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: SCREEN_DIMENSION.heightRatio(1 / 4.5),
     backgroundColor: COLOR_THEME.black,
-    borderRadius: 8,
+    borderRadius: BORDER_RADIUS.s,
     overflow: "hidden",
   },
   button: {
     width: SCREEN_DIMENSION.halfWidth(0, 32),
     height: 48,
-    borderRadius: 8,
+    borderRadius: BORDER_RADIUS.s,
     backgroundColor: COLOR_THEME.white,
     borderWidth: 1,
     borderColor: COLOR_THEME.gray50,

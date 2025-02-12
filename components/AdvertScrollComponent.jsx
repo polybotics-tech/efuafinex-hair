@@ -1,6 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { memo } from "react";
 import { COLOR_THEME, SCREEN_DIMENSION } from "../constants";
+import { BORDER_RADIUS } from "../constants/theme";
 
 const AdvertScrollComponent = () => {
   const adverts = [1, 2, 3, 4];
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     width: SCREEN_DIMENSION.subtractWidth(0, 32, 0),
     height: SCREEN_DIMENSION.heightRatio(1 / 5),
     backgroundColor: COLOR_THEME.white,
-    borderRadius: 32,
+    borderRadius: BORDER_RADIUS.b,
   },
   indicatorHolder: {
     width: "100%",
@@ -71,13 +72,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 2,
-    borderRadius: 20,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor: COLOR_THEME.white,
   },
   indicatorDot: {
     width: 6,
     height: 6,
-    borderRadius: 20,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor: COLOR_THEME.gray100,
   },
 });

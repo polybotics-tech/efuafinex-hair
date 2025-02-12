@@ -9,6 +9,7 @@ import {
 import { useSelector } from "react-redux";
 import ImageComponent from "./reuseables/ImageComponent";
 import { IMAGE_LOADER } from "../helpers/utils/image-loader";
+import { BORDER_RADIUS } from "../constants/theme";
 
 const WelcomeBlockComponent = () => {
   const user = useSelector((state) => state.user.user);
@@ -40,13 +41,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     alignItems: "center",
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.m,
     backgroundColor: COLOR_THEME.white,
   },
   thumbnail: {
     width: 54,
     height: 54,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor: COLOR_THEME.gray50,
     overflow: "hidden",
   },

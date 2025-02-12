@@ -13,6 +13,7 @@ import CopyIcon from "./CopyIcon";
 import { format_number } from "../../helpers/utils/numbers";
 import { format_date_readable } from "../../helpers/utils/datetime";
 import { router } from "expo-router";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 const PackageCard = ({ ...props }) => {
   if (props?.type === "defined")
@@ -191,14 +192,14 @@ const styles = StyleSheet.create({
   component: {
     width: "100%",
     padding: 16,
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.m,
     backgroundColor: COLOR_THEME.white,
     gap: 8,
   },
   typeComp: {
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 4,
+    borderRadius: BORDER_RADIUS.xs,
     backgroundColor: COLOR_THEME.gray50,
     alignSelf: "flex-start",
   },

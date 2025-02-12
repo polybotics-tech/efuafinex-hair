@@ -15,6 +15,7 @@ import {
 } from "../constants";
 import { JSON_QUICK_OPTIONS_LIST } from "../helpers/json";
 import { router } from "expo-router";
+import { BORDER_RADIUS } from "../constants/theme";
 
 const HomeQuickOptions = () => {
   const options = JSON_QUICK_OPTIONS_LIST;
@@ -89,11 +90,11 @@ const styles = StyleSheet.create({
   },
   option: {
     width: SCREEN_DIMENSION.halfWidth(16, 32),
-    minHeight: SCREEN_DIMENSION.heightRatio(1 / 3.5),
+    minHeight: SCREEN_DIMENSION.heightRatio(1 / 2.5),
     padding: 16,
     gap: 32,
     justifyContent: "space-between",
-    borderRadius: 32,
+    borderRadius: BORDER_RADIUS.b,
   },
   inner: {
     width: "100%",
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     height: 44,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     marginLeft: "auto",
   },
 });

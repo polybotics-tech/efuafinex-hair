@@ -299,11 +299,12 @@ const styles = StyleSheet.create({
     paddingBottom: SCREEN_DIMENSION.heightRatio(1 / 3),
   },
   socialCont: {
+    paddingTop: 16,
     paddingBottom: 32,
   },
   splitView: {
     width: "100%",
-    height: 0.3,
+    height: 0.8,
     backgroundColor: COLOR_THEME.gray100,
     alignItems: "center",
     justifyContent: "center",

@@ -33,6 +33,7 @@ import SeeMoreBtn from "../../../components/reuseables/SeeMoreBtn";
 import PopupModalWrapper from "../../../components/ui/PopupModalWrapper";
 import ImageComponent from "../../../components/reuseables/ImageComponent";
 import { IMAGE_LOADER } from "../../../helpers/utils/image-loader";
+import { BORDER_RADIUS } from "../../../constants/theme";
 
 export default function Package() {
   const { id } = useLocalSearchParams();
@@ -373,7 +374,7 @@ const styles = StyleSheet.create({
   sectionComp: {
     width: "100%",
     padding: 16,
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.m,
     backgroundColor: COLOR_THEME.white,
     gap: 16,
   },
@@ -433,8 +434,8 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 16,
     backgroundColor: COLOR_THEME.white,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderTopLeftRadius: BORDER_RADIUS.m,
+    borderTopRightRadius: BORDER_RADIUS.m,
     borderBottomWidth: 0.8,
     borderBottomColor: COLOR_THEME.gray100,
   },
@@ -468,7 +469,7 @@ const styles = StyleSheet.create({
   screenshotComp: {
     width: "100%",
     height: SCREEN_DIMENSION.heightRatio(1 / 4.5),
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.m,
     backgroundColor: COLOR_THEME.black,
     overflow: "hidden",
   },

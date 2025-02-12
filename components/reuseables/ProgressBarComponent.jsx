@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Svg, { Circle } from "react-native-svg";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
+import { BORDER_RADIUS } from "../../constants/theme";
 
 const ProgressBarComponent = ({ ...props }) => {
   return (
@@ -125,13 +126,13 @@ const styles = StyleSheet.create({
       width: "100%",
       height: skWidth || 8,
       backgroundColor: bgColor || COLOR_THEME.gray50,
-      borderRadius: 10,
+      borderRadius: BORDER_RADIUS.b,
       overflow: "hidden",
     }),
     progressBar: (priColor) => ({
       height: "100%",
       backgroundColor: priColor || COLOR_THEME.primary,
-      borderRadius: 10,
+      borderRadius: BORDER_RADIUS.b,
     }),
   },
   circular: {

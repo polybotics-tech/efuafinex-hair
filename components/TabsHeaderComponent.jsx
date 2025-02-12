@@ -21,6 +21,7 @@ import NotFoundComponent from "./reuseables/NotFoundComponent";
 import { NOTICE_TITLE } from "../helpers/json";
 import { format_date_time_readable } from "../helpers/utils/datetime";
 import { USER_HOOKS } from "../helpers/hooks/user";
+import { BORDER_RADIUS } from "../constants/theme";
 
 const TabsHeaderComponent = () => {
   const path = usePathname();
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
   actionBtn: {
     width: 44,
     height: 44,
-    borderRadius: 100,
+    borderRadius: BORDER_RADIUS.r,
     backgroundColor: COLOR_THEME.gray50,
     alignItems: "center",
     justifyContent: "center",
