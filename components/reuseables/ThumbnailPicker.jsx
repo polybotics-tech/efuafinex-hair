@@ -65,9 +65,9 @@ const ThumbnailPicker = () => {
         onPress={() => SELECT_IMAGE()}
       >
         {isLoading ? (
-          <ActivityIndicator size={18} color={COLOR_THEME.gray200} />
+          <ActivityIndicator size={18} color={COLOR_THEME.white} />
         ) : (
-          <Octicons name="plus" size={18} color={COLOR_THEME.gray200} />
+          <Octicons name="plus" size={18} color={COLOR_THEME.white} />
         )}
       </TouchableOpacity>
     </View>
@@ -93,9 +93,9 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: BORDER_RADIUS.r,
-    backgroundColor: COLOR_THEME.white,
+    backgroundColor: COLOR_THEME.primary,
     borderWidth: 1,
-    borderColor: COLOR_THEME.gray50,
+    borderColor: COLOR_THEME.white,
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
