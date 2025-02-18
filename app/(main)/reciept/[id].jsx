@@ -175,6 +175,34 @@ export default function RecieptPage() {
                 </View>
               )}
 
+            {data?.extra &&
+              String(data?.extra?.channel)?.toLowerCase() ===
+                "bank_transfer" && (
+                <View style={styles.component}>
+                  <DetailTab
+                    title={"Payment Mode"}
+                    value={String(data?.extra?.channel)?.toUpperCase()}
+                  />
+
+                  <DetailTab
+                    title={"Sender Bank"}
+                    value={String(data?.extra?.sender_bank)?.toUpperCase()}
+                  />
+
+                  <DetailTab
+                    title={"Sender Account Number"}
+                    value={String(
+                      data?.extra?.sender_bank_account_number
+                    )?.toUpperCase()}
+                  />
+
+                  <DetailTab
+                    title={"Sender Account Name"}
+                    value={String(data?.extra?.sender_name)?.toUpperCase()}
+                  />
+                </View>
+              )}
+
             {/**amount, status, date */}
             <View style={styles.component}>
               <DetailTab
@@ -215,7 +243,12 @@ export default function RecieptPage() {
             title={"Download"}
             onPress={() => saveRecieptToGallery()}
             isLoading={isDownloading}
-            disabled={isDownloading || isLoading}
+            disabled={
+              isDownloading ||
+              isLoading ||
+              Boolean(data?.length < 1) ||
+              Boolean(!data?.transaction_ref)
+            }
           />
         </View>
       </ScrollViewWrapper>

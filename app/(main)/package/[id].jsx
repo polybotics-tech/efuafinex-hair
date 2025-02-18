@@ -78,7 +78,7 @@ export default function Package() {
             )}
 
             {/**primary details */}
-            <PackageCard type={data?.package_type} data={data} />
+            <PackageCard type={data?.package_type} data={data} full={true} />
 
             {/**description */}
             {Boolean(data?.description != "") && (

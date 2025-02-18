@@ -13,7 +13,7 @@ import {
   NAIRA_CURRENCY,
   SCREEN_DIMENSION,
 } from "../../../../constants";
-import { Octicons } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { format_number } from "../../../../helpers/utils/numbers";
 
 import { WebView } from "react-native-webview";
@@ -113,20 +113,23 @@ export default function Deposit() {
           <ActivityIndicator size={FONT_SIZE.s} color={COLOR_THEME.gray200} />
         ) : (
           <AuthScreenWrapper
-            title={`${id}`}
+            title={`${String(data?.title)?.toUpperCase()}`}
             subText={
               "Make a deposit to boost the available funds in this package"
             }
             buttonText={"Proceed"}
             buttonIsLoading={btnLoading}
             formSubmitFunction={submitForm}
+            bottomText={
+              "Note: when depositing via bank transfer, you are responsible for ensuring that the amount sent from your banking app matches this amount entered on the EFH app. \n\nBy continuing, you agree that we will in no way be held responsible for any mistakes made by you during the transfers."
+            }
           >
             {/**target amount */}
             <AuthFormComponent
               formType={"input"}
               inputIcon={
-                <Octicons
-                  name="credit-card"
+                <FontAwesome6
+                  name="naira-sign"
                   size={16}
                   color={COLOR_THEME.gray200}
                 />
@@ -188,10 +191,12 @@ const VerificationInProgress = ({
   const [isLoading, setIsLoading] = useState(true);
 
   const loadReciept = () => {
-    if (router.canDismiss()) {
-      router.dismiss(2);
-    }
-    router.push(`/reciept/${transaction_ref}`);
+    setTimeout(() => {
+      if (router.canDismiss()) {
+        router.dismiss(2);
+      }
+      router.push(`/reciept/${transaction_ref}`);
+    }, 5000);
   };
 
   const verifyTrans = async () => {

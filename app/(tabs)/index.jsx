@@ -5,7 +5,6 @@ import { COLOR_THEME } from "../../constants";
 import HomeQuickOptions from "../../components/HomeQuickOptions";
 import AdvertScrollComponent from "../../components/AdvertScrollComponent";
 import SectionGroupWrapper from "../../components/ui/SectionGroupWrapper";
-import WelcomeBlockComponent from "../../components/WelcomeBlockComponent";
 import PackageCard from "../../components/reuseables/PackageCard";
 import NotFoundComponent from "../../components/reuseables/NotFoundComponent";
 import { PACKAGE_HOOKS } from "../../helpers/hooks/package";
@@ -38,14 +37,11 @@ export default function Home() {
           fetchPackages();
         }}
       >
-        {/**welcome block */}
-        <WelcomeBlockComponent />
-
         {/**advert block */}
         <AdvertScrollComponent />
 
-        {/**quick options 
-      <HomeQuickOptions />*/}
+        {/**quick options */}
+        <HomeQuickOptions />
 
         {/**recommended section block */}
         <SectionGroupWrapper
@@ -71,7 +67,7 @@ export default function Home() {
       </ScrollViewWrapper>
 
       {/**float add button */}
-      <HomeQuickOptions />
+      <HomeQuickOptions type={"float"} />
     </>
   );
 }

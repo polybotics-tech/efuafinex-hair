@@ -16,19 +16,15 @@ import {
 import { JSON_QUICK_OPTIONS_LIST } from "../helpers/json";
 import { router } from "expo-router";
 import { BORDER_RADIUS } from "../constants/theme";
+import PrimaryButton from "./reuseables/PrimaryButton";
 
-const HomeQuickOptions = () => {
+const HomeQuickOptions = ({ type }) => {
   const options = JSON_QUICK_OPTIONS_LIST;
 
-  return (
-    <>
-      {/*<View style={styles.quickOptionTab}>
-      {options?.map((item, index) => (
-        <OptionTab key={index} data={item} />
-      ))}
-    </View>*/}
+  if (type === "float") {
+    /**add button */
 
-      {/**add button */}
+    return (
       <TouchableOpacity
         style={styles.floatBtn}
         activeOpacity={0.6}
@@ -38,6 +34,16 @@ const HomeQuickOptions = () => {
       >
         <Octicons name="plus" size={24} color={COLOR_THEME.white} />
       </TouchableOpacity>
+    );
+  }
+
+  return (
+    <>
+      <View style={styles.quickOptionTab}>
+        {options?.map((item, index) => (
+          <OptionTab key={index} data={item} />
+        ))}
+      </View>
     </>
   );
 };
@@ -74,20 +80,13 @@ const OptionTab = ({ data }) => {
         </Text>
       </View>
 
-      <TouchableOpacity
-        style={[
-          styles.optionBtn,
-          {
-            backgroundColor: tab === 2 ? COLOR_THEME.white : COLOR_THEME.gray50,
-          },
-        ]}
+      <PrimaryButton
+        title={"Start a package"}
+        type={"secondary"}
         onPress={() => {
           router.navigate(path);
         }}
-        activeOpacity={0.8}
-      >
-        <Octicons name="plus" size={18} color={COLOR_THEME.black} />
-      </TouchableOpacity>
+      />
     </View>
   );
 };
@@ -102,8 +101,8 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   option: {
-    width: SCREEN_DIMENSION.halfWidth(16, 32),
-    minHeight: SCREEN_DIMENSION.heightRatio(1 / 3),
+    width: "100%", //SCREEN_DIMENSION.halfWidth(16, 32),
+    minHeight: SCREEN_DIMENSION.heightRatio(1 / 4),
     padding: 16,
     gap: 32,
     justifyContent: "space-between",

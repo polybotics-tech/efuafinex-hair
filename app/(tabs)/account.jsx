@@ -1,13 +1,19 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import ScrollViewWrapper from "../../components/ui/ScrollViewWrapper";
-import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
+import {
+  COLOR_THEME,
+  FONT_SIZE,
+  FONT_WEIGHT,
+  SCREEN_DIMENSION,
+} from "../../constants";
 import { Octicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useSelector } from "react-redux";
 import ImageComponent from "../../components/reuseables/ImageComponent";
 import { IMAGE_LOADER } from "../../helpers/utils/image-loader";
 import { BORDER_RADIUS } from "../../constants/theme";
+import CopyIcon from "../../components/reuseables/CopyIcon";
 
 export default function Account() {
   return (
@@ -79,9 +85,17 @@ const ProfileCard = ({}) => {
           />
         </View>
 
-        <View>
+        <View style={{ gap: 3 }}>
+          <View style={styles.userIdCont}>
+            <Text numberOfLines={1} style={styles.userId}>
+              {user?.user_id}
+            </Text>
+            <CopyIcon text_to_copy={user?.user_id} />
+          </View>
           <Text style={styles.userName}>{user?.fullname}</Text>
-          <Text style={styles.userMail}>{user?.email}</Text>
+          <Text style={styles.userMail} numberOfLines={1}>
+            {user?.email}
+          </Text>
         </View>
       </View>
 
@@ -176,6 +190,17 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.regular,
     color: COLOR_THEME.gray200,
     textTransform: "lowercase",
+  },
+  userIdCont: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  userId: {
+    maxWidth: SCREEN_DIMENSION.subtractWidth(8 + 16, 32 + 32, 72),
+    fontSize: FONT_SIZE.xs,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLOR_THEME.gray100,
   },
   optionList: {
     width: "100%",

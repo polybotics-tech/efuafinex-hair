@@ -16,17 +16,17 @@ export const JSON_ONBOARD_TAB_LIST = [
 ];
 
 export const JSON_QUICK_OPTIONS_LIST = [
-  {
+  /*{
     tab: 1,
     title: "Free Flow Package",
     desc: "Don't have any hair in mind yet? Save freely at your own pase. No limits, no pressure.",
     path: "/create/?type=free",
-  },
+  },*/
   {
-    tab: 2,
+    tab: 1,
     title: "Budget Defined Package",
     desc: "Found a hair you want? Set the target price, save towards it, meet your hair goal.",
-    path: "/create/?type=defined",
+    path: "/create/",
   },
 ];
 

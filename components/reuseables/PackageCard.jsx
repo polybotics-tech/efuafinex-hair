@@ -18,16 +18,26 @@ import { BORDER_RADIUS } from "../../constants/theme";
 const PackageCard = ({ ...props }) => {
   if (props?.type === "defined")
     return (
-      <BudgetDefinedCard data={props?.data} clickable={props?.clickable} />
+      <BudgetDefinedCard
+        data={props?.data}
+        clickable={props?.clickable}
+        full={props?.full}
+      />
     );
 
   if (props?.type === "free")
-    return <FreeFlowCard data={props?.data} clickable={props?.clickable} />;
+    return (
+      <FreeFlowCard
+        data={props?.data}
+        clickable={props?.clickable}
+        full={props?.full}
+      />
+    );
 
   return <></>;
 };
 
-const BudgetDefinedCard = ({ data, clickable }) => {
+const BudgetDefinedCard = ({ data, clickable, full }) => {
   const view_package = (id) => {
     if (clickable) {
       router.navigate(`/package/${id}`);
@@ -48,7 +58,7 @@ const BudgetDefinedCard = ({ data, clickable }) => {
           onPress={() => view_package(data?.package_id)}
           style={styles.mainDetails(true)}
         >
-          <Text style={styles.title} numberOfLines={1}>
+          <Text style={styles.title} numberOfLines={full ? 3 : 1}>
             {data?.title}
           </Text>
           {/**creation date */}
@@ -108,7 +118,7 @@ const BudgetDefinedCard = ({ data, clickable }) => {
   );
 };
 
-const FreeFlowCard = ({ data, clickable }) => {
+const FreeFlowCard = ({ data, clickable, full }) => {
   const view_package = (id) => {
     if (clickable) {
       router.navigate(`/package/${id}`);
@@ -138,7 +148,7 @@ const FreeFlowCard = ({ data, clickable }) => {
           onPress={() => view_package(data?.package_id)}
           style={styles.mainDetails(false)}
         >
-          <Text style={styles.title} numberOfLines={1}>
+          <Text style={styles.title} numberOfLines={full ? 3 : 1}>
             {data?.title}
           </Text>
           {/**creation date */}

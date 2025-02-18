@@ -5,8 +5,12 @@ import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants/theme";
 import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
 import TabsHeaderComponent from "../../components/TabsHeaderComponent";
+import { useSelector } from "react-redux";
 
 export default function TabsLayout() {
+  //check for unread notifications
+  const has_unread = useSelector((state) => state.notification.has_unread);
+
   return (
     <SafeAreaWrapper>
       <TabsHeaderComponent />
@@ -15,12 +19,7 @@ export default function TabsLayout() {
         screenOptions={{
           tabBarActiveTintColor: COLOR_THEME.primary,
           tabBarInactiveTintColor: COLOR_THEME.gray100,
-          tabBarStyle: {
-            height: 72,
-            backgroundColor: COLOR_THEME.white,
-            elevation: 0,
-            borderTopWidth: 0,
-          },
+          tabBarStyle: styles.tabBar,
           tabBarItemStyle: {
             paddingVertical: 6,
           },
@@ -61,6 +60,18 @@ export default function TabsLayout() {
         />
 
         <Tabs.Screen
+          name="notices"
+          options={{
+            title: "Notices",
+            tabBarIcon: ({ color }) => (
+              <Octicons name="bell" size={18} color={color} />
+            ),
+            tabBarBadge: has_unread ? "" : undefined,
+            tabBarBadgeStyle: styles.tabBarBadge,
+          }}
+        />
+
+        <Tabs.Screen
           name="account"
           options={{
             title: "Account",
@@ -74,4 +85,21 @@ export default function TabsLayout() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  tabBar: {
+    height: 72,
+    backgroundColor: COLOR_THEME.white,
+    elevation: 0,
+    borderTopWidth: 0,
+  },
+  tabBarBadge: {
+    minWidth: 10,
+    width: 10,
+    height: 10,
+    borderRadius: 20,
+    backgroundColor: COLOR_THEME.primary,
+    position: "absolute",
+    top: 0,
+    right: 5,
+  },
+});

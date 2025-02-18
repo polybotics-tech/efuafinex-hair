@@ -4,8 +4,10 @@ import store from "../redux/store";
 import TabsHeaderComponent from "../components/TabsHeaderComponent";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../constants";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { USER_HOOKS } from "../helpers/hooks/user";
+import { fetch } from "@react-native-community/netinfo";
+import { Alert } from "../helpers/utils/alert";
 
 export default function RootLayout() {
   //creating custom toast configurations
@@ -93,6 +95,7 @@ export default function RootLayout() {
       />
 
       <DefaultChecker />
+      <NetworkChecker />
     </Provider>
   );
 }
@@ -121,6 +124,45 @@ const DefaultChecker = () => {
       USER_HOOKS.validate_notification_latest_id(latest_id);
     }
   }, [latest_id]);
+
+  return <></>;
+};
+
+const NetworkChecker = () => {
+  const [isDefault, setIsDefault] = useState(true);
+  const [isConnected, setIsConnected] = useState(true);
+
+  useEffect(() => {
+    if (!isDefault) {
+      if (isConnected) {
+        Alert.success(
+          "Stable Connection Restored",
+          "Your internet connection was restored"
+        );
+      } else {
+        Alert.error(
+          "error",
+          "Poor Connection Detected",
+          "Check your internet connection and try again"
+        );
+      }
+    }
+
+    setIsDefault(false);
+  }, [isConnected]);
+
+  //test for connection every 10sec
+  useEffect(() => {
+    const testInterval = setInterval(() => {
+      fetch().then((state) => {
+        setIsConnected(state.isConnected);
+      });
+    }, 10000);
+
+    return () => {
+      clearInterval(testInterval);
+    };
+  }, []);
 
   return <></>;
 };
