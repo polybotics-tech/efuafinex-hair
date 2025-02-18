@@ -30,44 +30,49 @@ export default function Home() {
   }, []);
 
   return (
-    <ScrollViewWrapper
-      style={styles.scrollArea}
-      refreshFunc={() => {
-        setPackages();
-        fetchPackages();
-      }}
-    >
-      {/**welcome block */}
-      <WelcomeBlockComponent />
-
-      {/**advert block */}
-      <AdvertScrollComponent />
-
-      {/**quick options */}
-      <HomeQuickOptions />
-
-      {/**recommended section block */}
-      <SectionGroupWrapper
-        title={"Your latest packages"}
-        seeAllPath={"/records/?type=packages"}
+    <>
+      <ScrollViewWrapper
+        style={styles.scrollArea}
+        refreshFunc={() => {
+          setPackages();
+          fetchPackages();
+        }}
       >
-        {packages?.length > 0 ? (
-          packages?.map((item, index) => (
-            <PackageCard
-              key={index}
-              type={item?.package_type}
-              data={item}
-              clickable={true}
+        {/**welcome block */}
+        <WelcomeBlockComponent />
+
+        {/**advert block */}
+        <AdvertScrollComponent />
+
+        {/**quick options 
+      <HomeQuickOptions />*/}
+
+        {/**recommended section block */}
+        <SectionGroupWrapper
+          title={"Your latest packages"}
+          seeAllPath={"/records/?type=packages"}
+        >
+          {packages?.length > 0 ? (
+            packages?.map((item, index) => (
+              <PackageCard
+                key={index}
+                type={item?.package_type}
+                data={item}
+                clickable={true}
+              />
+            ))
+          ) : (
+            <NotFoundComponent
+              text={"No existing package found"}
+              isLoading={isLoading}
             />
-          ))
-        ) : (
-          <NotFoundComponent
-            text={"No existing package found"}
-            isLoading={isLoading}
-          />
-        )}
-      </SectionGroupWrapper>
-    </ScrollViewWrapper>
+          )}
+        </SectionGroupWrapper>
+      </ScrollViewWrapper>
+
+      {/**float add button */}
+      <HomeQuickOptions />
+    </>
   );
 }
 

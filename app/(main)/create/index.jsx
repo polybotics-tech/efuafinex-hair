@@ -36,7 +36,7 @@ export default function CreatePackage() {
   });
 
   //check if package type passed as params
-  const { type } = useLocalSearchParams();
+  /*const { type } = useLocalSearchParams();
   useEffect(() => {
     if (type) {
       setFormData((prev) => ({
@@ -46,7 +46,7 @@ export default function CreatePackage() {
         has_photo: Boolean(type != "free"),
       }));
     }
-  }, [type]);
+  }, [type]);*/
 
   //listen for change in has_photo toggle to clear photo
   useMemo(() => {
@@ -132,18 +132,16 @@ export default function CreatePackage() {
           )}
 
           {/**package type */}
-          {Boolean(type && type != "free") && (
-            <AuthFormComponent
-              formType={"toggle"}
-              label={"Set Fixed Amount"}
-              placeholder={
-                "Enable this option to work with a fixed, agreed-upon amount. Otherwise, disable option to work with a free-flow plan"
-              }
-              name={"is_defined"}
-              form={formData}
-              setForm={setFormData}
-            />
-          )}
+          <AuthFormComponent
+            formType={"toggle"}
+            label={"Set Fixed Amount"}
+            placeholder={
+              "Enable this option to work with a fixed, agreed-upon amount. Otherwise, disable option to work with a free-flow plan"
+            }
+            name={"is_defined"}
+            form={formData}
+            setForm={setFormData}
+          />
 
           {formData?.is_defined && (
             <>

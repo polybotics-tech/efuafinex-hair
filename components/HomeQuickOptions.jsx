@@ -21,11 +21,24 @@ const HomeQuickOptions = () => {
   const options = JSON_QUICK_OPTIONS_LIST;
 
   return (
-    <View style={styles.quickOptionTab}>
+    <>
+      {/*<View style={styles.quickOptionTab}>
       {options?.map((item, index) => (
         <OptionTab key={index} data={item} />
       ))}
-    </View>
+    </View>*/}
+
+      {/**add button */}
+      <TouchableOpacity
+        style={styles.floatBtn}
+        activeOpacity={0.6}
+        onPress={() => {
+          router.navigate("/create/");
+        }}
+      >
+        <Octicons name="plus" size={24} color={COLOR_THEME.white} />
+      </TouchableOpacity>
+    </>
   );
 };
 
@@ -116,5 +129,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: BORDER_RADIUS.r,
     marginLeft: "auto",
+  },
+  floatBtn: {
+    width: 48,
+    height: 48,
+    borderRadius: BORDER_RADIUS.r,
+    backgroundColor: COLOR_THEME.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 12,
+    right: 16,
+    zIndex: 2,
   },
 });

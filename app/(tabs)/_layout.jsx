@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { Octicons } from "@expo/vector-icons";
@@ -16,7 +16,7 @@ export default function TabsLayout() {
           tabBarActiveTintColor: COLOR_THEME.primary,
           tabBarInactiveTintColor: COLOR_THEME.gray100,
           tabBarStyle: {
-            height: Platform.OS === "ios" ? 74 : 64,
+            height: 72,
             backgroundColor: COLOR_THEME.white,
             elevation: 0,
             borderTopWidth: 0,

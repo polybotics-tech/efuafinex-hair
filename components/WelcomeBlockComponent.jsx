@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import ImageComponent from "./reuseables/ImageComponent";
 import { IMAGE_LOADER } from "../helpers/utils/image-loader";
 import { BORDER_RADIUS } from "../constants/theme";
+import { get_current_greeting } from "../helpers/utils/datetime";
 
 const WelcomeBlockComponent = () => {
   const user = useSelector((state) => state.user.user);
@@ -25,7 +26,7 @@ const WelcomeBlockComponent = () => {
 
       {/** */}
       <View style={styles.details}>
-        <Text style={styles.greeting}>Good morning,</Text>
+        <Text style={styles.greeting}>{get_current_greeting()},</Text>
         <Text style={styles.name}>{user?.fullname}</Text>
       </View>
     </View>

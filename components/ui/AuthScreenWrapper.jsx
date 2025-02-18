@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLOR_THEME.gray100,
   },
   pageTitle: {
-    fontSize: FONT_SIZE.xxb,
+    fontSize: FONT_SIZE.xb,
     fontWeight: FONT_WEIGHT.bold,
     color: COLOR_THEME.black,
     textAlign: "left",

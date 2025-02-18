@@ -33,17 +33,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#008080"
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#FAFAFA"
       },
       "navigationBarColor": "#FAFAFA",
       "permissions": [
         "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.READ_EXTERNAL_STORAGE"
       ],
       "package": "com.polyboticstech.efuafinexhair"
     },
@@ -62,7 +58,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#008080"
+          "backgroundColor": "#FAFAFA"
         }
       ],
       [

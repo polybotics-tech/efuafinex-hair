@@ -6,7 +6,6 @@ import {
   View,
 } from "react-native";
 import React, { memo, useEffect, useMemo, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
   COLOR_THEME,
   FONT_SIZE,
@@ -22,6 +21,8 @@ import { NOTICE_TITLE } from "../helpers/json";
 import { format_date_time_readable } from "../helpers/utils/datetime";
 import { USER_HOOKS } from "../helpers/hooks/user";
 import { BORDER_RADIUS } from "../constants/theme";
+import ImageComponent from "./reuseables/ImageComponent";
+import { IMAGE_LOADER } from "../helpers/utils/image-loader";
 
 const TabsHeaderComponent = () => {
   const path = usePathname();
@@ -53,9 +54,19 @@ const TabsHeaderComponent = () => {
   return (
     <View style={styles.header(pageName?.toLowerCase())}>
       {pageName === "Home" ? (
-        <Text style={styles.LogoName}>
-          Efua<Text style={styles.LogoNameLink}>Finex</Text>Hair
-        </Text>
+        <View style={styles.logo}>
+          <View style={styles.LogoImg}>
+            <ImageComponent
+              uri={IMAGE_LOADER.app_logo()}
+              scale={true}
+              blur={"i"}
+            />
+          </View>
+
+          <Text style={styles.LogoName}>
+            Efua<Text style={styles.LogoNameLink}>Finex</Text>Hair
+          </Text>
+        </View>
       ) : (
         <Text style={styles.pageTitle}>{pageName}</Text>
       )}
@@ -205,6 +216,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.8,
     borderBottomColor: page === "home" ? COLOR_THEME.gray50 : COLOR_THEME.white,
   }),
+  logo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  LogoImg: {
+    width: 36,
+    height: 36,
+    overflow: "hidden",
+  },
   LogoName: {
     fontSize: FONT_SIZE.b,
     fontWeight: FONT_WEIGHT.semibold,

@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor:
       s === "success"
-        ? COLOR_THEME.primaryFaded
+        ? COLOR_THEME.successFaded
         : s === "failed" || s === "canceled"
         ? COLOR_THEME.errorFaded
         : COLOR_THEME.gray50,
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.semibold,
     color:
       s === "success"
-        ? COLOR_THEME.primary
+        ? COLOR_THEME.success
         : s === "failed" || s === "canceled"
         ? COLOR_THEME.error
         : COLOR_THEME.gray200,

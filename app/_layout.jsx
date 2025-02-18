@@ -10,19 +10,15 @@ import { USER_HOOKS } from "../helpers/hooks/user";
 export default function RootLayout() {
   //creating custom toast configurations
   const toastConfig = {
-    /*
-      Overwrite 'success' type,
-      by modifying the existing `BaseToast` component
-    */
     success: (props) => (
       <BaseToast
         {...props}
-        style={{ borderLeftColor: COLOR_THEME.primary }}
+        style={{ borderLeftColor: COLOR_THEME.success }}
         contentContainerStyle={{ paddingHorizontal: 16 }}
         text1Style={{
           fontSize: FONT_SIZE.m,
           fontWeight: FONT_WEIGHT.semibold,
-          color: COLOR_THEME.primary,
+          color: COLOR_THEME.success,
           textTransform: "uppercase",
         }}
         text2Style={{
@@ -32,10 +28,7 @@ export default function RootLayout() {
         }}
       />
     ),
-    /*
-      Overwrite 'error' type,
-      by modifying the existing `ErrorToast` component
-    */
+
     error: (props) => (
       <ErrorToast
         {...props}
@@ -54,10 +47,7 @@ export default function RootLayout() {
         }}
       />
     ),
-    /*
-      Overwrite 'pending' type,
-      by modifying the existing `BaseToast` component
-    */
+
     pending: (props) => (
       <BaseToast
         {...props}

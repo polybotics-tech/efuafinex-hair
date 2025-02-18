@@ -56,7 +56,7 @@ export default function LogOut() {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.btn} onPress={() => goBack()}>
-            <Text style={[styles.btnText, { color: COLOR_THEME.primary }]}>
+            <Text style={[styles.btnText, { color: COLOR_THEME.success }]}>
               No
             </Text>
           </TouchableOpacity>

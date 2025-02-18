@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { router, Slot, usePathname } from "expo-router";
 import * as AppleAuthentication from "expo-apple-authentication";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+//import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import {
   COLOR_THEME,
   FONT_SIZE,
@@ -45,9 +45,9 @@ export default function AuthLayout() {
 
               {/** */}
               <View style={styles.btnCont}>
-                <SignInWithGoogle />
+                {/*<SignInWithGoogle />
 
-                {/*<SignInWithApple />*/}
+                <SignInWithApple />*/}
               </View>
 
               {/**terms and policies */}

@@ -71,3 +71,27 @@ export const format_chat_thread_date_readable = (date) => {
 
   return res;
 };
+
+export const get_current_greeting = () => {
+  const dt = new Date();
+  const hr = dt.getHours();
+  const morning = 1;
+  const noon = 12;
+  const evening = 17;
+
+  let greeting;
+
+  if (morning < hr && hr < noon) {
+    return "Good morning";
+  }
+
+  if (noon < hr && hr < evening) {
+    return "Good afternoon";
+  }
+
+  if (hr > evening) {
+    return "Good morning";
+  }
+
+  return "Good day";
+};

@@ -15,4 +15,10 @@ export const IMAGE_LOADER = {
 
     return { uri: url };
   },
+  app_logo: () => {
+    return require("../../assets/images/icon.png");
+  },
+  app_logo_with_title: () => {
+    return require("../../assets/images/adaptive-icon.png");
+  },
 };
