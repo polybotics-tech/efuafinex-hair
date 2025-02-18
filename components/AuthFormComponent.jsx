@@ -32,6 +32,8 @@ const AuthFormComponent = ({ ...props }) => {
           placeholder={props?.placeholder}
           description={props?.description}
           optional={props?.optional}
+          disabled={props?.disabled}
+          value={props?.value}
           name={props?.name}
           form={props?.form}
           setForm={props?.setForm}
@@ -95,6 +97,8 @@ const FormInput = ({
   placeholder = "Type here",
   description = "",
   optional = false,
+  disabled = false,
+  value = "",
   name = "",
   form = [],
   setForm = () => {},
@@ -129,17 +133,20 @@ const FormInput = ({
           placeholder={placeholder}
           placeholderTextColor={COLOR_THEME.gray100}
           style={styles.formInput.input(mode === "password")}
-          value={`${form[name]}`}
-          onChangeText={(text) =>
-            updateFormInput(
-              mode === "numeric" ? format_input_number(text) : text
-            )
-          }
+          value={!disabled ? `${form[name]}` : `${value}`}
+          onChangeText={(text) => {
+            if (!disabled) {
+              updateFormInput(
+                mode === "numeric" ? format_input_number(text) : text
+              );
+            }
+          }}
           inputMode={mode}
           secureTextEntry={mode === "password" && inputMode === "password"}
           autoCapitalize="none"
           autoCorrect={false}
           cursorColor={COLOR_THEME.gray200}
+          editable={!disabled}
         />
 
         {mode === "password" && (

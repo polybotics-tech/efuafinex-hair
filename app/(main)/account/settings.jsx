@@ -42,6 +42,21 @@ export default function AccountSettings() {
           buttonIsLoading={isLoading}
           formSubmitFunction={submitForm}
         >
+          {/**email */}
+          {user && (
+            <AuthFormComponent
+              formType={"input"}
+              inputMode={"email"}
+              inputIcon={
+                <Octicons name="note" size={16} color={COLOR_THEME.gray200} />
+              }
+              label={"Email Address"}
+              placeholder={"Ex. johnsdoe@example.com"}
+              disabled={true}
+              value={user?.email}
+            />
+          )}
+
           {/**fullname */}
           <AuthFormComponent
             formType={"input"}
