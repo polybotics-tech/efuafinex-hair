@@ -141,7 +141,6 @@ const NetworkChecker = () => {
         );
       } else {
         Alert.error(
-          "error",
           "Poor Connection Detected",
           "Check your internet connection and try again"
         );
