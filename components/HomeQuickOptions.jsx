@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
   optionTitle: {
     fontSize: FONT_SIZE.b,
     fontWeight: FONT_WEIGHT.bold,
-    textTransform: "capitalize",
   },
   optionDesc: {
     fontSize: FONT_SIZE.s,

@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   }),
   logo: {
     width: SCREEN_DIMENSION.subtractWidth(20, 32, 44),
-    gap: 4,
+    gap: 2,
   },
   LogoName: {
     maxWidth: "100%",
@@ -109,10 +109,9 @@ const styles = StyleSheet.create({
   },
   greetings: {
     maxWidth: "100%",
-    fontSize: FONT_SIZE.s,
+    fontSize: FONT_SIZE.xs,
     fontWeight: FONT_WEIGHT.regular,
     color: COLOR_THEME.gray100,
-    textTransform: "uppercase",
   },
   LogoNameLink: {
     color: COLOR_THEME.primary,
