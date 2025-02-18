@@ -130,7 +130,7 @@ const FreeFlowCard = ({ data, clickable, full }) => {
       <View style={styles.freeTopBar}>
         {/**type */}
         <View style={styles.typeComp}>
-          <Text style={styles.type}>{data?.package_type?.toUpperCase()}</Text>
+          <Text style={styles.type}>FLOW</Text>
         </View>
 
         {/**amount */}

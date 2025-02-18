@@ -270,7 +270,9 @@ const DetailTab = ({ title, value, canCopy }) => {
       <Text style={styles.detailTitle}>{title}</Text>
 
       <View style={styles.detailValueTab}>
-        <Text style={styles.detailValue}>{value}</Text>
+        <Text style={styles.detailValue} numberOfLines={1}>
+          {value}
+        </Text>
 
         {canCopy && <CopyIcon text_to_copy={String(value)} />}
       </View>
@@ -356,15 +358,16 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.semibold,
     color: COLOR_THEME.black,
     textAlign: "left",
-    maxWidth: "45%",
+    maxWidth: "44%",
   },
   detailValueTab: {
-    maxWidth: "54%",
+    maxWidth: "52%",
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
   },
   detailValue: {
+    maxWidth: "95%",
     fontSize: FONT_SIZE.xs,
     fontWeight: FONT_WEIGHT.semibold,
     color: COLOR_THEME.gray200,
