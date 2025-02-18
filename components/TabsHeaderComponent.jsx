@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { BORDER_RADIUS } from "../constants/theme";
 import ImageComponent from "./reuseables/ImageComponent";
 import { IMAGE_LOADER } from "../helpers/utils/image-loader";
+import { get_current_greeting } from "../helpers/utils/datetime";
 
 const TabsHeaderComponent = () => {
   const user = useSelector((state) => state.user?.user);
@@ -54,30 +55,27 @@ const TabsHeaderComponent = () => {
     <View style={styles.header(pageName?.toLowerCase())}>
       {pageName === "Home" ? (
         <View style={styles.logo}>
-          <View style={styles.LogoImg}>
-            <ImageComponent
-              uri={IMAGE_LOADER.app_logo()}
-              scale={true}
-              blur={"i"}
-            />
-          </View>
-
-          {user && Boolean(user?.fullname != "")}
           <Text style={styles.LogoName} numberOfLines={1}>
-            {user?.fullname}
+            Hello {String(user?.fullname)?.split(" ")[0]},
           </Text>
+          <Text style={styles.greetings}>{get_current_greeting()}</Text>
         </View>
       ) : (
         <Text style={styles.pageTitle}>{pageName}</Text>
       )}
 
       {/**action buttons */}
-      <View style={styles.userThumbnailCont}>
+      <TouchableOpacity
+        style={styles.userThumbnailCont}
+        onPress={() => {
+          router.navigate("/account");
+        }}
+      >
         <ImageComponent
           uri={IMAGE_LOADER.user_thumbnail(user?.thumbnail)}
           blur={user?.thumbnail_blur}
         />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -99,21 +97,22 @@ const styles = StyleSheet.create({
     borderBottomColor: page === "home" ? COLOR_THEME.gray50 : COLOR_THEME.white,
   }),
   logo: {
-    flexDirection: "row",
-    alignItems: "center",
+    width: SCREEN_DIMENSION.subtractWidth(20, 32, 44),
     gap: 4,
   },
-  LogoImg: {
-    width: 36,
-    height: 36,
-    overflow: "hidden",
-  },
   LogoName: {
-    width: SCREEN_DIMENSION.subtractWidth(20, 32, 44 + 36),
+    maxWidth: "100%",
     fontSize: FONT_SIZE.b,
     fontWeight: FONT_WEIGHT.semibold,
     color: COLOR_THEME.black,
     textTransform: "capitalize",
+  },
+  greetings: {
+    maxWidth: "100%",
+    fontSize: FONT_SIZE.s,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLOR_THEME.gray100,
+    textTransform: "uppercase",
   },
   LogoNameLink: {
     color: COLOR_THEME.primary,

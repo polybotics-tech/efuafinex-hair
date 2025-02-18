@@ -24,7 +24,7 @@ export const JSON_QUICK_OPTIONS_LIST = [
   },*/
   {
     tab: 1,
-    title: "Budget Defined Package",
+    title: "EFH Ultimate Payment",
     desc: "Found a hair you want? Set the target price, save towards it, meet your hair goal.",
     path: "/create/",
   },
