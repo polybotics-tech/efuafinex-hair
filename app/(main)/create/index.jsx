@@ -73,7 +73,7 @@ export default function CreatePackage() {
 
   return (
     <SafeAreaWrapper>
-      <DefaultHeaderComponent directory={"package"} />
+      <DefaultHeaderComponent directory={"create"} />
 
       <ScrollViewWrapper style={styles.page}>
         <AuthScreenWrapper
