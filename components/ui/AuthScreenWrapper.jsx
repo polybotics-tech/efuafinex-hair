@@ -22,7 +22,7 @@ const AuthScreenWrapper = ({
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       (event) => {
-        setKeyboardPadding(Number(event.endCoordinates.height / 2));
+        setKeyboardPadding(Number(event.endCoordinates.height / 4));
       }
     );
 
