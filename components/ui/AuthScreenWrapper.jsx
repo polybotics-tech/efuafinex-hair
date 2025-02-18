@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { memo } from "react";
+import { Keyboard, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { memo, useEffect, useState } from "react";
 import { router } from "expo-router";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants/theme";
 import PrimaryButton from "../reuseables/PrimaryButton";
@@ -15,8 +15,33 @@ const AuthScreenWrapper = ({
   buttonIsLoading,
   formSubmitFunction = () => {},
 }) => {
+  //handle keyboard display
+  const [keyboardPadding, setKeyboardPadding] = useState(0);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      (event) => {
+        setKeyboardPadding(Number(event.endCoordinates.height / 2));
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardPadding(0);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+  //
+
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, { paddingBottom: keyboardPadding }]}>
       {/**title block */}
       {(title || subText) && (
         <View style={styles.titleBlock}>

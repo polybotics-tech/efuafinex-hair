@@ -30,7 +30,7 @@ export default function AuthLayout() {
   return (
     <SafeAreaWrapper>
       <ScrollView
-        contentContainerStyle={styles.scrollView}
+        contentContainerStyle={[styles.scrollView]}
         showsVerticalScrollIndicator={false}
       >
         <Slot />
@@ -296,11 +296,9 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 32,
     padding: 16,
-    paddingBottom: SCREEN_DIMENSION.heightRatio(1 / 3),
   },
   socialCont: {
-    paddingTop: 16,
-    paddingBottom: 32,
+    paddingVertical: 16,
   },
   splitView: {
     width: "100%",
