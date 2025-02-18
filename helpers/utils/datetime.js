@@ -74,24 +74,22 @@ export const format_chat_thread_date_readable = (date) => {
 
 export const get_current_greeting = () => {
   const dt = new Date();
-  const hr = dt.getHours();
+  const hr = Number(dt.getHours());
   const morning = 1;
   const noon = 12;
   const evening = 17;
 
-  let greeting;
-
   if (morning < hr && hr < noon) {
-    return "Good morning";
+    return "Good morning 🌝";
   }
 
   if (noon < hr && hr < evening) {
-    return "Good afternoon";
+    return "Good afternoon 🌞";
   }
 
   if (hr > evening) {
-    return "Good morning";
+    return "Good evening 🌛";
   }
 
-  return "Good day";
+  return "Good day 🌞";
 };
