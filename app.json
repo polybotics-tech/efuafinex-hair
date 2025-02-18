@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Efuafinex Hair App",
-    "slug": "efuafinex_hair_app",
-    "version": "1.0.0",
+    "name": "Efuafinex Hair",
+    "slug": "efuafinex_hair",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
