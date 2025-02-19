@@ -299,9 +299,7 @@ const DetailTab = ({ title, value, canCopy, theme }) => {
       <Text style={styles(theme).detailTitle}>{title}</Text>
 
       <View style={styles(theme).detailValueTab}>
-        <Text style={styles(theme).detailValue} numberOfLines={1}>
-          {value}
-        </Text>
+        <Text style={styles(theme).detailValue}>{value}</Text>
 
         {canCopy && <CopyIcon text_to_copy={String(value)} />}
       </View>
