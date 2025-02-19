@@ -190,13 +190,13 @@ const ThemeToggle = ({ theme }) => {
       {/*switch*/}
       <Switch
         trackColor={{
-          false: COLOR_THEME[theme].gray50,
+          false: COLOR_THEME[theme].white,
           true: COLOR_THEME[theme].primaryFaded,
         }}
         thumbColor={
           is_dark ? COLOR_THEME[theme].primary : COLOR_THEME[theme].gray200
         }
-        ios_backgroundColor={COLOR_THEME[theme].gray50}
+        ios_backgroundColor={COLOR_THEME[theme].white}
         onValueChange={toggleSwitch}
         value={Boolean(is_dark)}
       />
