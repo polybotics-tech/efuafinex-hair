@@ -6,8 +6,11 @@ import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME } from "../../constants/theme";
 import { AUTH_HOOKS } from "../../helpers/hooks/auth";
 import { router } from "expo-router";
+import { useSelector } from "react-redux";
 
 export default function ForgotPassword() {
+  const theme = useSelector((state) => state.app.theme);
+
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -39,7 +42,7 @@ export default function ForgotPassword() {
         formType={"input"}
         inputMode={"email"}
         inputIcon={
-          <Octicons name="mail" size={16} color={COLOR_THEME.gray200} />
+          <Octicons name="mail" size={16} color={COLOR_THEME[theme].gray200} />
         }
         label={"Email address"}
         placeholder={"Ex. johndoe@example.com"}
@@ -51,4 +54,4 @@ export default function ForgotPassword() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = (theme) => StyleSheet.create({});

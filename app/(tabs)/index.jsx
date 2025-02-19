@@ -8,8 +8,11 @@ import SectionGroupWrapper from "../../components/ui/SectionGroupWrapper";
 import PackageCard from "../../components/reuseables/PackageCard";
 import NotFoundComponent from "../../components/reuseables/NotFoundComponent";
 import { PACKAGE_HOOKS } from "../../helpers/hooks/package";
+import { useSelector } from "react-redux";
 
 export default function Home() {
+  const theme = useSelector((state) => state.app.theme);
+
   //fetch user packages
   const [isLoading, setIsLoading] = useState(false);
   const [packages, setPackages] = useState();
@@ -31,7 +34,7 @@ export default function Home() {
   return (
     <>
       <ScrollViewWrapper
-        style={styles.scrollArea}
+        style={styles(theme).scrollArea}
         refreshFunc={() => {
           setPackages();
           fetchPackages();
@@ -72,14 +75,15 @@ export default function Home() {
   );
 }
 
-const styles = StyleSheet.create({
-  scrollArea: {
-    backgroundColor: COLOR_THEME.gray50,
-    padding: 16,
-    gap: 16,
-  },
-  dualScrollView: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    scrollArea: {
+      backgroundColor: COLOR_THEME[theme].gray50,
+      padding: 16,
+      gap: 16,
+    },
+    dualScrollView: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+    },
+  });

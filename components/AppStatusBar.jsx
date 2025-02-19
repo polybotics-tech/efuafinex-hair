@@ -1,15 +1,18 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React, { memo } from "react";
 import { StatusBar } from "expo-status-bar";
 import { COLOR_THEME } from "../constants";
 import { Stack } from "expo-router";
+import { useSelector } from "react-redux";
 
 const AppStatusBar = () => {
+  const theme = useSelector((state) => state.app.theme);
+  const theme_is_dark = useSelector((state) => state.app.is_dark);
   return (
     <>
       <StatusBar
-        backgroundColor={COLOR_THEME.white}
-        style="dark"
+        backgroundColor={COLOR_THEME[theme].white}
+        style={theme_is_dark ? "light" : "dark"}
         animated={true}
       />
 
@@ -17,7 +20,7 @@ const AppStatusBar = () => {
         options={{
           headerShown: false,
           navigationBarHidden: false,
-          navigationBarColor: COLOR_THEME.white,
+          navigationBarColor: COLOR_THEME[theme].white,
           animation: "none",
         }}
       />

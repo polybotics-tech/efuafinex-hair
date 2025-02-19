@@ -34,8 +34,11 @@ import PopupModalWrapper from "../../../components/ui/PopupModalWrapper";
 import ImageComponent from "../../../components/reuseables/ImageComponent";
 import { IMAGE_LOADER } from "../../../helpers/utils/image-loader";
 import { BORDER_RADIUS } from "../../../constants/theme";
+import { useSelector } from "react-redux";
 
 export default function Package() {
+  const theme = useSelector((state) => state.app.theme);
+
   const { id } = useLocalSearchParams();
 
   const [data, setData] = useState();
@@ -61,7 +64,7 @@ export default function Package() {
       <DefaultHeaderComponent directory={"package"} />
 
       <ScrollViewWrapper
-        style={styles.page}
+        style={styles(theme).page}
         refreshFunc={() => {
           setData();
           fetchPackage(id);
@@ -74,7 +77,7 @@ export default function Package() {
           <>
             {/**screenshot photo */}
             {Boolean(data?.has_photo) && data?.photo && (
-              <ScreenshotComp data={data} />
+              <ScreenshotComp data={data} theme={theme} />
             )}
 
             {/**primary details */}
@@ -82,21 +85,22 @@ export default function Package() {
 
             {/**description */}
             {Boolean(data?.description != "") && (
-              <DescriptionComp description={data?.description} />
+              <DescriptionComp description={data?.description} theme={theme} />
             )}
 
             {/**amount summary */}
-            <AmountSummComp data={data} />
+            <AmountSummComp data={data} theme={theme} />
 
             {/**action buttons */}
             <ActionButtonsComp
               id={data?.package_id}
               status={data?.status}
               onCloseSuccessful={() => fetchPackage(data?.package_id)}
+              theme={theme}
             />
 
             {/**deposit history */}
-            <DepositHistoryComp id={data?.package_id} />
+            <DepositHistoryComp id={data?.package_id} theme={theme} />
           </>
         )}
       </ScrollViewWrapper>
@@ -104,13 +108,13 @@ export default function Package() {
   );
 }
 
-const ScreenshotComp = ({ data }) => {
+const ScreenshotComp = ({ data, theme }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <>
       <TouchableOpacity
-        style={styles.screenshotComp}
+        style={styles(theme).screenshotComp}
         activeOpacity={0.8}
         onPress={() => {
           setModalVisible(true);
@@ -128,9 +132,12 @@ const ScreenshotComp = ({ data }) => {
         title={"View Photo"}
         isVisible={modalVisible}
         setIsVisible={setModalVisible}
-        containerStyle={{ padding: 0, backgroundColor: COLOR_THEME.black }}
+        containerStyle={{
+          padding: 0,
+          backgroundColor: COLOR_THEME[theme].black,
+        }}
       >
-        <View style={styles.photoViewer}>
+        <View style={styles(theme).photoViewer}>
           <ImageComponent
             uri={IMAGE_LOADER.user_thumbnail(data?.photo)}
             blur={data?.photo_blur}
@@ -142,19 +149,19 @@ const ScreenshotComp = ({ data }) => {
   );
 };
 
-const DescriptionComp = ({ description }) => {
+const DescriptionComp = ({ description, theme }) => {
   return (
-    <View style={styles.sectionComp}>
-      <View style={styles.sectionTopBar}>
-        <Text style={styles.sectionTitle}>Description</Text>
+    <View style={styles(theme).sectionComp}>
+      <View style={styles(theme).sectionTopBar}>
+        <Text style={styles(theme).sectionTitle}>Description</Text>
       </View>
 
-      <Text style={styles.description}>{description}</Text>
+      <Text style={styles(theme).description}>{description}</Text>
     </View>
   );
 };
 
-const AmountSummComp = ({ data }) => {
+const AmountSummComp = ({ data, theme }) => {
   const { target_amount, available_amount, package_type } = data;
   const balance =
     package_type === "free" ? 0 : Number(target_amount - available_amount);
@@ -162,16 +169,16 @@ const AmountSummComp = ({ data }) => {
   return (
     <>
       {package_type === "defined" && (
-        <View style={styles.sectionComp}>
-          <View style={styles.sectionTopBar}>
-            <Text style={styles.sectionTitle}>Amount Summary</Text>
+        <View style={styles(theme).sectionComp}>
+          <View style={styles(theme).sectionTopBar}>
+            <Text style={styles(theme).sectionTitle}>Amount Summary</Text>
           </View>
 
           {/**target goal */}
           {package_type === "defined" && (
-            <View style={styles.split}>
-              <Text style={styles.subTitle}>Target Goal:</Text>
-              <Text style={styles.target}>
+            <View style={styles(theme).split}>
+              <Text style={styles(theme).subTitle}>Target Goal:</Text>
+              <Text style={styles(theme).target}>
                 {NAIRA_CURRENCY} {format_number(target_amount)}
               </Text>
             </View>
@@ -185,21 +192,23 @@ const AmountSummComp = ({ data }) => {
           />
 
           {/**summary */}
-          <View style={styles.split}>
+          <View style={styles(theme).split}>
             {/**available amount */}
             <View style={{ gap: 2, maxWidth: "45%" }}>
-              <Text style={styles.summaryTitle("left")}>Amount Deposited:</Text>
-              <Text style={styles.summaryValue("left")}>
+              <Text style={styles(theme).summaryTitle("left")}>
+                Amount Deposited:
+              </Text>
+              <Text style={styles(theme).summaryValue("left")}>
                 {NAIRA_CURRENCY} {format_number(available_amount)}
               </Text>
             </View>
 
             {/**remaining balance */}
             <View style={{ gap: 2, maxWidth: "45%" }}>
-              <Text style={styles.summaryTitle("right")}>
+              <Text style={styles(theme).summaryTitle("right")}>
                 Remaining Balance:
               </Text>
-              <Text style={styles.summaryValue("right")}>
+              <Text style={styles(theme).summaryValue("right")}>
                 {NAIRA_CURRENCY} {format_number(balance)}
               </Text>
             </View>
@@ -210,7 +219,12 @@ const AmountSummComp = ({ data }) => {
   );
 };
 
-const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
+const ActionButtonsComp = ({
+  id,
+  status,
+  onCloseSuccessful = () => {},
+  theme,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -234,7 +248,7 @@ const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
       {String(status)?.toLowerCase() === "in-progress" && (
         <View>
           {/**action bar */}
-          <View style={styles.split}>
+          <View style={styles(theme).split}>
             <View style={{ width: SCREEN_DIMENSION.divisionWidth(16, 32, 2) }}>
               <PrimaryButton
                 title={"Close package"}
@@ -243,7 +257,7 @@ const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
                   <Octicons
                     name="check"
                     size={18}
-                    color={COLOR_THEME.primary}
+                    color={COLOR_THEME[theme].primary}
                   />
                 }
                 onPress={() => {
@@ -259,7 +273,7 @@ const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
                   <Octicons
                     name="arrow-right"
                     size={18}
-                    color={COLOR_THEME.white}
+                    color={COLOR_THEME[theme].white}
                   />
                 }
                 onPress={() => {
@@ -277,14 +291,14 @@ const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
         setIsVisible={setModalVisible}
         title={"Close Package"}
       >
-        <Text style={styles.closeWarn}>
+        <Text style={styles(theme).closeWarn}>
           You are about to perform an irreversible action. Once a package is
           closed, it's status is automatically updated to completed. Thus, it
           can not be reactivated. This will prompt the admin to reach out to you
           for further process. Do you wish to continue?
         </Text>
 
-        <View style={styles.closeBtnCont}>
+        <View style={styles(theme).closeBtnCont}>
           <PrimaryButton
             title={"Yes, close package"}
             isLoading={isLoading}
@@ -292,7 +306,7 @@ const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
           />
 
           <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <Text style={styles.closeCancel}>No, cancel</Text>
+            <Text style={styles(theme).closeCancel}>No, cancel</Text>
           </TouchableOpacity>
         </View>
       </PopupModalWrapper>
@@ -300,7 +314,7 @@ const ActionButtonsComp = ({ id, status, onCloseSuccessful = () => {} }) => {
   );
 };
 
-const DepositHistoryComp = ({ id }) => {
+const DepositHistoryComp = ({ id, theme }) => {
   const [deposits, setDeposits] = useState();
   const [meta, setMeta] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -337,14 +351,14 @@ const DepositHistoryComp = ({ id }) => {
   };
 
   return (
-    <View style={styles.historyComp}>
-      <View style={styles.historyBlock}>
-        <Text style={styles.historyTitle}>Complete Deposit Records</Text>
+    <View style={styles(theme).historyComp}>
+      <View style={styles(theme).historyBlock}>
+        <Text style={styles(theme).historyTitle}>Complete Deposit Records</Text>
       </View>
 
       {/**show list of deposits */}
       <ScrollView
-        contentContainerStyle={styles.historyList}
+        contentContainerStyle={styles(theme).historyList}
         showsVerticalScrollIndicator={false}
       >
         {deposits?.length > 0 ? (
@@ -364,119 +378,120 @@ const DepositHistoryComp = ({ id }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  page: {
-    width: "100%",
-    minHeight: "100%",
-    padding: 16,
-    backgroundColor: COLOR_THEME.gray50,
-    gap: 16,
-  },
-  sectionComp: {
-    width: "100%",
-    padding: 16,
-    borderRadius: BORDER_RADIUS.m,
-    backgroundColor: COLOR_THEME.white,
-    gap: 16,
-  },
-  sectionTopBar: {
-    width: "100%",
-    paddingBottom: 8,
-    borderBottomWidth: 0.8,
-    borderBottomColor: COLOR_THEME.gray50,
-  },
-  sectionTitle: {
-    fontSize: FONT_SIZE.xs,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.black,
-  },
-  description: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray200,
-  },
-  split: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 16,
-  },
-  subTitle: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray200,
-  },
-  target: {
-    fontSize: FONT_SIZE.b,
-    fontWeight: FONT_WEIGHT.bold,
-    color: COLOR_THEME.black,
-  },
-  summaryTitle: (align) => ({
-    fontSize: FONT_SIZE.xs,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray200,
-    textAlign: align || "left",
-  }),
-  summaryValue: (align) => ({
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.black,
-    textAlign: align || "left",
-  }),
-  historyComp: {
-    width: "100%",
-    gap: 16,
-    paddingTop: 16,
-    maxHeight: SCREEN_DIMENSION.heightRatio(1 / 1.5),
-    overflow: "hidden",
-  },
-  historyBlock: {
-    width: "100%",
-    padding: 16,
-    backgroundColor: COLOR_THEME.white,
-    borderTopLeftRadius: BORDER_RADIUS.m,
-    borderTopRightRadius: BORDER_RADIUS.m,
-    borderBottomWidth: 0.8,
-    borderBottomColor: COLOR_THEME.gray100,
-  },
-  historyTitle: {
-    fontSize: FONT_SIZE.b,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.gray200,
-  },
-  historyList: {
-    minHeight: "100%",
-    paddingBottom: 32,
-    gap: 16,
-  },
-  closeWarn: {
-    fontSize: FONT_SIZE.m,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray200,
-    textAlign: "center",
-  },
-  closeCancel: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.error,
-    textAlign: "center",
-  },
-  closeBtnCont: {
-    marginTop: 64,
-    marginBottom: 48,
-    gap: 32,
-  },
-  screenshotComp: {
-    width: "100%",
-    height: SCREEN_DIMENSION.heightRatio(1 / 4.5),
-    borderRadius: BORDER_RADIUS.m,
-    backgroundColor: COLOR_THEME.black,
-    overflow: "hidden",
-  },
-  photoViewer: {
-    width: "100%",
-    height: "auto",
-    maxHeight: SCREEN_DIMENSION.heightRatio(1 / 1.4),
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    page: {
+      width: "100%",
+      minHeight: "100%",
+      padding: 16,
+      backgroundColor: COLOR_THEME[theme].gray50,
+      gap: 16,
+    },
+    sectionComp: {
+      width: "100%",
+      padding: 16,
+      borderRadius: BORDER_RADIUS.m,
+      backgroundColor: COLOR_THEME[theme].white,
+      gap: 16,
+    },
+    sectionTopBar: {
+      width: "100%",
+      paddingBottom: 8,
+      borderBottomWidth: 0.8,
+      borderBottomColor: COLOR_THEME[theme].gray50,
+    },
+    sectionTitle: {
+      fontSize: FONT_SIZE.xs,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].black,
+    },
+    description: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray200,
+    },
+    split: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: 16,
+    },
+    subTitle: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray200,
+    },
+    target: {
+      fontSize: FONT_SIZE.b,
+      fontWeight: FONT_WEIGHT.bold,
+      color: COLOR_THEME[theme].black,
+    },
+    summaryTitle: (align) => ({
+      fontSize: FONT_SIZE.xs,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray200,
+      textAlign: align || "left",
+    }),
+    summaryValue: (align) => ({
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].black,
+      textAlign: align || "left",
+    }),
+    historyComp: {
+      width: "100%",
+      gap: 16,
+      paddingTop: 16,
+      maxHeight: SCREEN_DIMENSION.heightRatio(1 / 1.5),
+      overflow: "hidden",
+    },
+    historyBlock: {
+      width: "100%",
+      padding: 16,
+      backgroundColor: COLOR_THEME[theme].white,
+      borderTopLeftRadius: BORDER_RADIUS.m,
+      borderTopRightRadius: BORDER_RADIUS.m,
+      borderBottomWidth: 0.8,
+      borderBottomColor: COLOR_THEME[theme].gray100,
+    },
+    historyTitle: {
+      fontSize: FONT_SIZE.b,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].gray200,
+    },
+    historyList: {
+      minHeight: "100%",
+      paddingBottom: 32,
+      gap: 16,
+    },
+    closeWarn: {
+      fontSize: FONT_SIZE.m,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray200,
+      textAlign: "center",
+    },
+    closeCancel: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].error,
+      textAlign: "center",
+    },
+    closeBtnCont: {
+      marginTop: 64,
+      marginBottom: 48,
+      gap: 32,
+    },
+    screenshotComp: {
+      width: "100%",
+      height: SCREEN_DIMENSION.heightRatio(1 / 4.5),
+      borderRadius: BORDER_RADIUS.m,
+      backgroundColor: COLOR_THEME[theme].black,
+      overflow: "hidden",
+    },
+    photoViewer: {
+      width: "100%",
+      height: "auto",
+      maxHeight: SCREEN_DIMENSION.heightRatio(1 / 1.4),
+    },
+  });

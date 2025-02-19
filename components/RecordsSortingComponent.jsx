@@ -19,6 +19,7 @@ import PopupModalWrapper from "./ui/PopupModalWrapper";
 import { useLocalSearchParams } from "expo-router";
 import { BORDER_RADIUS } from "../constants/theme";
 import { DEBOUNCE } from "../helpers/utils/debounce";
+import { useSelector } from "react-redux";
 
 const RecordsSortingComponent = ({
   activeSort,
@@ -26,6 +27,8 @@ const RecordsSortingComponent = ({
   activeFilter,
   setActiveFilter,
 }) => {
+  const theme = useSelector((state) => state.app.theme);
+
   const sortOptions = RECORDS_SORTING_OPTIONS;
   const [filterOptions, setFilterOptions] = useState([]);
 
@@ -55,12 +58,13 @@ const RecordsSortingComponent = ({
   }, [activeSort]);
 
   return (
-    <View style={styles.component}>
+    <View style={styles(theme).component}>
       {/**sort component */}
       <SortTab
         options={sortOptions}
         active={activeSort}
         setActive={setActiveSort}
+        theme={theme}
       />
 
       {/**filter component */}
@@ -68,6 +72,7 @@ const RecordsSortingComponent = ({
         options={filterOptions}
         active={activeFilter}
         setActive={setActiveFilter}
+        theme={theme}
       />
     </View>
   );
@@ -75,7 +80,7 @@ const RecordsSortingComponent = ({
 
 export default memo(RecordsSortingComponent);
 
-const SortTab = ({ options, active, setActive }) => {
+const SortTab = ({ options, active, setActive, theme }) => {
   const [popupModal, setPopupModal] = useState(false);
 
   //handle option selection
@@ -87,14 +92,18 @@ const SortTab = ({ options, active, setActive }) => {
   return (
     <>
       <TouchableOpacity
-        style={styles.innerComp}
+        style={styles(theme).innerComp}
         onPress={() => {
           setPopupModal(true);
         }}
       >
-        <Text style={styles.activeText}>{active?.name}</Text>
+        <Text style={styles(theme).activeText}>{active?.name}</Text>
 
-        <Octicons name="chevron-down" size={18} color={COLOR_THEME.gray200} />
+        <Octicons
+          name="chevron-down"
+          size={18}
+          color={COLOR_THEME[theme].gray200}
+        />
       </TouchableOpacity>
 
       {/**popup modal for sorting */}
@@ -107,22 +116,28 @@ const SortTab = ({ options, active, setActive }) => {
           options?.map((item, index) => (
             <TouchableOpacity
               key={index}
-              style={styles.optionTab}
+              style={styles(theme).optionTab}
               onPress={() => {
                 selectItem(item);
               }}
             >
               <Text
                 style={[
-                  styles?.optionText,
-                  item?.name === active?.name && { color: COLOR_THEME.black },
+                  styles(theme).optionText,
+                  item?.name === active?.name && {
+                    color: COLOR_THEME[theme].black,
+                  },
                 ]}
               >
                 {item?.name}
               </Text>
 
               {item?.name === active?.name && (
-                <Octicons name="check" size={18} color={COLOR_THEME.primary} />
+                <Octicons
+                  name="check"
+                  size={18}
+                  color={COLOR_THEME[theme].primary}
+                />
               )}
             </TouchableOpacity>
           ))}
@@ -131,7 +146,7 @@ const SortTab = ({ options, active, setActive }) => {
   );
 };
 
-const FilterTab = ({ options, active, setActive }) => {
+const FilterTab = ({ options, active, setActive, theme }) => {
   const [popupModal, setPopupModal] = useState(false);
 
   //handle option selection
@@ -144,14 +159,18 @@ const FilterTab = ({ options, active, setActive }) => {
     <>
       {/**preview block */}
       <TouchableOpacity
-        style={styles.innerComp}
+        style={styles(theme).innerComp}
         onPress={() => {
           setPopupModal(true);
         }}
       >
-        <Text style={styles.activeText}>{active}</Text>
+        <Text style={styles(theme).activeText}>{active}</Text>
 
-        <Octicons name="chevron-down" size={18} color={COLOR_THEME.gray200} />
+        <Octicons
+          name="chevron-down"
+          size={18}
+          color={COLOR_THEME[theme].gray200}
+        />
       </TouchableOpacity>
 
       {/**popup modal for sorting */}
@@ -164,22 +183,26 @@ const FilterTab = ({ options, active, setActive }) => {
           options?.map((item, index) => (
             <TouchableOpacity
               key={index}
-              style={styles.optionTab}
+              style={styles(theme).optionTab}
               onPress={() => {
                 selectItem(item);
               }}
             >
               <Text
                 style={[
-                  styles?.optionText,
-                  item === active && { color: COLOR_THEME.black },
+                  styles(theme).optionText,
+                  item === active && { color: COLOR_THEME[theme].black },
                 ]}
               >
                 {item}
               </Text>
 
               {item === active && (
-                <Octicons name="check" size={18} color={COLOR_THEME.primary} />
+                <Octicons
+                  name="check"
+                  size={18}
+                  color={COLOR_THEME[theme].primary}
+                />
               )}
             </TouchableOpacity>
           ))}
@@ -188,49 +211,50 @@ const FilterTab = ({ options, active, setActive }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  component: {
-    width: "100%",
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 8,
-    backgroundColor: COLOR_THEME.white,
-    borderBottomWidth: 0.8,
-    borderBottomColor: COLOR_THEME.gray50,
-  },
-  innerComp: {
-    width: SCREEN_DIMENSION.divisionWidth(8, 16 + 16, 2),
-    height: 36,
-    paddingHorizontal: "16",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    gap: 16,
-    borderRadius: BORDER_RADIUS.s,
-    backgroundColor: COLOR_THEME.gray50,
-  },
-  activeText: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray200,
-    textTransform: "uppercase",
-  },
-  optionTab: {
-    width: "100%",
-    paddingBottom: 32,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 16,
-  },
-  optionText: {
-    fontSize: FONT_SIZE.m,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray200,
-    textTransform: "uppercase",
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    component: {
+      width: "100%",
+      paddingHorizontal: 16,
+      paddingTop: 8,
+      paddingBottom: 16,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: 8,
+      backgroundColor: COLOR_THEME[theme].white,
+      borderBottomWidth: 0.8,
+      borderBottomColor: COLOR_THEME[theme].gray50,
+    },
+    innerComp: {
+      width: SCREEN_DIMENSION.divisionWidth(8, 16 + 16, 2),
+      height: 36,
+      paddingHorizontal: "16",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      gap: 16,
+      borderRadius: BORDER_RADIUS.s,
+      backgroundColor: COLOR_THEME[theme].gray50,
+    },
+    activeText: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray200,
+      textTransform: "uppercase",
+    },
+    optionTab: {
+      width: "100%",
+      paddingBottom: 32,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: 16,
+    },
+    optionText: {
+      fontSize: FONT_SIZE.m,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray200,
+      textTransform: "uppercase",
+    },
+  });

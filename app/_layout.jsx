@@ -10,71 +10,10 @@ import { fetch } from "@react-native-community/netinfo";
 import { Alert } from "../helpers/utils/alert";
 
 export default function RootLayout() {
-  //creating custom toast configurations
-  const toastConfig = {
-    success: (props) => (
-      <BaseToast
-        {...props}
-        style={{ borderLeftColor: COLOR_THEME.success }}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-        text1Style={{
-          fontSize: FONT_SIZE.m,
-          fontWeight: FONT_WEIGHT.semibold,
-          color: COLOR_THEME.success,
-          textTransform: "uppercase",
-        }}
-        text2Style={{
-          fontSize: FONT_SIZE.s,
-          fontWeight: FONT_WEIGHT.regular,
-          color: COLOR_THEME.gray200,
-        }}
-      />
-    ),
-
-    error: (props) => (
-      <ErrorToast
-        {...props}
-        style={{ borderLeftColor: COLOR_THEME.error }}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-        text1Style={{
-          fontSize: FONT_SIZE.m,
-          fontWeight: FONT_WEIGHT.semibold,
-          color: COLOR_THEME.error,
-          textTransform: "uppercase",
-        }}
-        text2Style={{
-          fontSize: FONT_SIZE.s,
-          fontWeight: FONT_WEIGHT.regular,
-          color: COLOR_THEME.gray200,
-        }}
-      />
-    ),
-
-    pending: (props) => (
-      <BaseToast
-        {...props}
-        style={{ borderLeftColor: COLOR_THEME.black }}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-        text1Style={{
-          fontSize: FONT_SIZE.m,
-          fontWeight: FONT_WEIGHT.semibold,
-          color: COLOR_THEME.black,
-          textTransform: "uppercase",
-        }}
-        text2Style={{
-          fontSize: FONT_SIZE.s,
-          fontWeight: FONT_WEIGHT.regular,
-          color: COLOR_THEME.gray200,
-        }}
-      />
-    ),
-  };
-
   return (
     <Provider store={store}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
         <Stack.Screen
           name="(tabs)"
@@ -86,14 +25,7 @@ export default function RootLayout() {
         />
       </Stack>
 
-      <Toast
-        autoHide={true}
-        visibilityTime={5000}
-        config={toastConfig}
-        position="bottom"
-        bottomOffset={64}
-      />
-
+      <ThemeChecker />
       <DefaultChecker />
       <NetworkChecker />
     </Provider>
@@ -164,4 +96,96 @@ const NetworkChecker = () => {
   }, []);
 
   return <></>;
+};
+
+const ThemeChecker = () => {
+  const theme = useSelector((state) => state.app.theme);
+
+  //update app theme from user preference
+  useEffect(() => {
+    const write_theme_from_user = async () => {
+      await USER_HOOKS.fetch_theme_preference();
+    };
+
+    write_theme_from_user();
+  }, []);
+
+  //creating custom toast configurations
+  const toastConfig = {
+    success: (props) => (
+      <BaseToast
+        {...props}
+        style={{
+          borderLeftColor: COLOR_THEME[theme].success,
+          backgroundColor: COLOR_THEME[theme].white,
+        }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+        text1Style={{
+          fontSize: FONT_SIZE.m,
+          fontWeight: FONT_WEIGHT.semibold,
+          color: COLOR_THEME[theme].success,
+          textTransform: "uppercase",
+        }}
+        text2Style={{
+          fontSize: FONT_SIZE.s,
+          fontWeight: FONT_WEIGHT.regular,
+          color: COLOR_THEME[theme].gray200,
+        }}
+      />
+    ),
+
+    error: (props) => (
+      <ErrorToast
+        {...props}
+        style={{
+          borderLeftColor: COLOR_THEME[theme].error,
+          backgroundColor: COLOR_THEME[theme].white,
+        }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+        text1Style={{
+          fontSize: FONT_SIZE.m,
+          fontWeight: FONT_WEIGHT.semibold,
+          color: COLOR_THEME[theme].error,
+          textTransform: "uppercase",
+        }}
+        text2Style={{
+          fontSize: FONT_SIZE.s,
+          fontWeight: FONT_WEIGHT.regular,
+          color: COLOR_THEME[theme].gray200,
+        }}
+      />
+    ),
+
+    pending: (props) => (
+      <BaseToast
+        {...props}
+        style={{
+          borderLeftColor: COLOR_THEME[theme].black,
+          backgroundColor: COLOR_THEME[theme].white,
+        }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+        text1Style={{
+          fontSize: FONT_SIZE.m,
+          fontWeight: FONT_WEIGHT.semibold,
+          color: COLOR_THEME[theme].black,
+          textTransform: "uppercase",
+        }}
+        text2Style={{
+          fontSize: FONT_SIZE.s,
+          fontWeight: FONT_WEIGHT.regular,
+          color: COLOR_THEME[theme].gray200,
+        }}
+      />
+    ),
+  };
+
+  return (
+    <Toast
+      autoHide={true}
+      visibilityTime={5000}
+      config={toastConfig}
+      position="bottom"
+      bottomOffset={100}
+    />
+  );
 };

@@ -17,10 +17,11 @@ import {
 } from "../../constants";
 import ImageComponent from "./ImageComponent";
 import { IMAGE_LOADER } from "../../helpers/utils/image-loader";
-import { USER_HOOKS } from "../../helpers/hooks/user";
 import { BORDER_RADIUS } from "../../constants/theme";
 
 const PhotoPicker = ({ name, form, setForm }) => {
+  const theme = useSelector((state) => state.app.theme);
+
   //handle photo selection from gallery
   const SELECT_IMAGE = async () => {
     // No permissions request is necessary for launching the image library
@@ -47,20 +48,20 @@ const PhotoPicker = ({ name, form, setForm }) => {
   };
 
   return (
-    <View style={styles.component}>
+    <View style={styles(theme).component}>
       {/**picker toggle */}
       <TouchableOpacity
-        style={styles.button}
+        style={styles(theme).button}
         activeOpacity={0.9}
         onPress={() => SELECT_IMAGE()}
       >
-        <Text style={styles.buttonText}>Select photo</Text>
-        <Octicons name="plus" size={18} color={COLOR_THEME.gray100} />
+        <Text style={styles(theme).buttonText}>Select photo</Text>
+        <Octicons name="plus" size={18} color={COLOR_THEME[theme].gray100} />
       </TouchableOpacity>
 
       {/**placeholder */}
       {form[name] && form[name]?.uri && (
-        <View style={styles.placeholder}>
+        <View style={styles(theme).placeholder}>
           <ImageComponent
             uri={IMAGE_LOADER.picker_thumbnail(form[name]?.uri)}
             scale={true}
@@ -73,36 +74,37 @@ const PhotoPicker = ({ name, form, setForm }) => {
 
 export default memo(PhotoPicker);
 
-const styles = StyleSheet.create({
-  component: {
-    width: "100%",
-    height: "auto",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 16,
-  },
-  placeholder: {
-    width: "100%",
-    height: SCREEN_DIMENSION.heightRatio(1 / 4.5),
-    backgroundColor: COLOR_THEME.black,
-    borderRadius: BORDER_RADIUS.s,
-    overflow: "hidden",
-  },
-  button: {
-    width: SCREEN_DIMENSION.halfWidth(0, 32),
-    height: 48,
-    borderRadius: BORDER_RADIUS.s,
-    backgroundColor: COLOR_THEME.white,
-    borderWidth: 1,
-    borderColor: COLOR_THEME.gray50,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  buttonText: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.gray100,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    component: {
+      width: "100%",
+      height: "auto",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 16,
+    },
+    placeholder: {
+      width: "100%",
+      height: SCREEN_DIMENSION.heightRatio(1 / 4.5),
+      backgroundColor: COLOR_THEME[theme].black,
+      borderRadius: BORDER_RADIUS.s,
+      overflow: "hidden",
+    },
+    button: {
+      width: SCREEN_DIMENSION.halfWidth(0, 32),
+      height: 48,
+      borderRadius: BORDER_RADIUS.s,
+      backgroundColor: COLOR_THEME[theme].white,
+      borderWidth: 1,
+      borderColor: COLOR_THEME[theme].gray50,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+    },
+    buttonText: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].gray100,
+    },
+  });

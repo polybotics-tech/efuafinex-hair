@@ -3,8 +3,11 @@ import React from "react";
 import Svg, { Circle } from "react-native-svg";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
 import { BORDER_RADIUS } from "../../constants/theme";
+import { useSelector } from "react-redux";
 
 const ProgressBarComponent = ({ ...props }) => {
+  const theme = useSelector((state) => state.app.theme);
+
   return (
     <>
       {props?.type === "regular" ? (
@@ -13,6 +16,7 @@ const ProgressBarComponent = ({ ...props }) => {
           maximum_value={props?.maximum_value}
           strokeWidth={props?.strokeWidth}
           props={props}
+          theme={theme}
         />
       ) : (
         <CircularBar
@@ -21,6 +25,7 @@ const ProgressBarComponent = ({ ...props }) => {
           size={props?.size}
           strokeWidth={props?.strokeWidth}
           props={props}
+          theme={theme}
         />
       )}
     </>
@@ -34,6 +39,7 @@ const RegularBar = ({
   current_value,
   strokeWidth = 8,
   props,
+  theme,
 }) => {
   const progress =
     current_value > maximum_value
@@ -41,16 +47,16 @@ const RegularBar = ({
       : parseInt(Number((current_value / maximum_value) * 100)) || 0;
 
   return (
-    <View style={styles.regular.container}>
+    <View style={styles(theme).regular.container}>
       <View
-        style={styles.regular.progressContainer(
+        style={styles(theme).regular.progressContainer(
           strokeWidth,
           props?.backgroundColor
         )}
       >
         <View
           style={[
-            styles.regular.progressBar(props?.primaryColor),
+            styles(theme).regular.progressBar(props?.primaryColor),
             { width: `${progress}%` },
           ]}
         />
@@ -65,6 +71,7 @@ const CircularBar = ({
   size = 64,
   strokeWidth = 8,
   props,
+  theme,
 }) => {
   const progress =
     current_value > maximum_value
@@ -77,14 +84,14 @@ const CircularBar = ({
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
-    <View style={styles.circular.container}>
+    <View style={styles(theme).circular.container}>
       <Svg width={size} height={size}>
         {/* Background Circle */}
         <Circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={props?.backgroundColor || COLOR_THEME.gray100}
+          stroke={props?.backgroundColor || COLOR_THEME[theme].gray100}
           strokeWidth={strokeWidth}
           fill="none"
         />
@@ -93,7 +100,7 @@ const CircularBar = ({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={props?.primaryColor || COLOR_THEME.primary}
+          stroke={props?.primaryColor || COLOR_THEME[theme].primary}
           strokeWidth={strokeWidth}
           fill="none"
           strokeLinecap="round"
@@ -103,10 +110,10 @@ const CircularBar = ({
       </Svg>
       <Text
         style={[
-          styles.circular.percentageText,
+          styles(theme).circular.percentageText,
           {
             fontSize: size / 5,
-            color: props?.textColor || COLOR_THEME.primary,
+            color: props?.textColor || COLOR_THEME[theme].primary,
           },
         ]}
       >
@@ -116,33 +123,34 @@ const CircularBar = ({
   );
 };
 
-const styles = StyleSheet.create({
-  regular: {
-    container: {
-      alignItems: "center",
-      marginVertical: 4,
+const styles = (theme) =>
+  StyleSheet.create({
+    regular: {
+      container: {
+        alignItems: "center",
+        marginVertical: 4,
+      },
+      progressContainer: (skWidth, bgColor) => ({
+        width: "100%",
+        height: skWidth || 8,
+        backgroundColor: bgColor || COLOR_THEME[theme].gray50,
+        borderRadius: BORDER_RADIUS.b,
+        overflow: "hidden",
+      }),
+      progressBar: (priColor) => ({
+        height: "100%",
+        backgroundColor: priColor || COLOR_THEME[theme].primary,
+        borderRadius: BORDER_RADIUS.b,
+      }),
     },
-    progressContainer: (skWidth, bgColor) => ({
-      width: "100%",
-      height: skWidth || 8,
-      backgroundColor: bgColor || COLOR_THEME.gray50,
-      borderRadius: BORDER_RADIUS.b,
-      overflow: "hidden",
-    }),
-    progressBar: (priColor) => ({
-      height: "100%",
-      backgroundColor: priColor || COLOR_THEME.primary,
-      borderRadius: BORDER_RADIUS.b,
-    }),
-  },
-  circular: {
-    container: {
-      justifyContent: "center",
-      alignItems: "center",
+    circular: {
+      container: {
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      percentageText: {
+        position: "absolute",
+        fontWeight: "bold",
+      },
     },
-    percentageText: {
-      position: "absolute",
-      fontWeight: "bold",
-    },
-  },
-});
+  });

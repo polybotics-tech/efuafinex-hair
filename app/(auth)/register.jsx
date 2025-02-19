@@ -7,8 +7,11 @@ import { COLOR_THEME } from "../../constants";
 import { router } from "expo-router";
 import { AUTH_HOOKS } from "../../helpers/hooks/auth";
 import { DEBOUNCE } from "../../helpers/utils/debounce";
+import { useSelector } from "react-redux";
 
 export default function Register() {
+  const theme = useSelector((state) => state.app.theme);
+
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -43,7 +46,7 @@ export default function Register() {
         formType={"input"}
         inputMode={"text"}
         inputIcon={
-          <Octicons name="note" size={16} color={COLOR_THEME.gray200} />
+          <Octicons name="note" size={16} color={COLOR_THEME[theme].gray200} />
         }
         label={"Legal full name"}
         placeholder={"Ex. Okoye Raymond"}
@@ -57,7 +60,7 @@ export default function Register() {
         formType={"input"}
         inputMode={"email"}
         inputIcon={
-          <Octicons name="mail" size={16} color={COLOR_THEME.gray200} />
+          <Octicons name="mail" size={16} color={COLOR_THEME[theme].gray200} />
         }
         label={"Email address"}
         placeholder={"Ex. johndoe@example.com"}
@@ -74,7 +77,7 @@ export default function Register() {
           <Octicons
             name="device-mobile"
             size={16}
-            color={COLOR_THEME.gray200}
+            color={COLOR_THEME[theme].gray200}
           />
         }
         label={"Phone number"}
@@ -89,7 +92,7 @@ export default function Register() {
         formType={"input"}
         inputMode={"password"}
         inputIcon={
-          <Octicons name="lock" size={16} color={COLOR_THEME.gray200} />
+          <Octicons name="lock" size={16} color={COLOR_THEME[theme].gray200} />
         }
         label={"Password"}
         placeholder={"Enter a new password"}
@@ -103,7 +106,7 @@ export default function Register() {
         formType={"input"}
         inputMode={"password"}
         inputIcon={
-          <Octicons name="lock" size={16} color={COLOR_THEME.gray200} />
+          <Octicons name="lock" size={16} color={COLOR_THEME[theme].gray200} />
         }
         label={"Confirm Password"}
         placeholder={"Retype password"}
@@ -115,4 +118,4 @@ export default function Register() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = (theme) => StyleSheet.create({});

@@ -2,12 +2,14 @@ import { SCREEN_DIMENSION } from "./dimensions";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "./theme";
 
 const NAIRA_CURRENCY = "₦";
+const MINIMUM_DEPOSIT = 1000;
 
 export {
   COLOR_THEME,
   FONT_SIZE,
   FONT_WEIGHT,
   NAIRA_CURRENCY,
+  MINIMUM_DEPOSIT,
   SCREEN_DIMENSION,
 };
 

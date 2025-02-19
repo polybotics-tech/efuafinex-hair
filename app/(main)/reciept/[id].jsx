@@ -22,8 +22,11 @@ import { Alert } from "../../../helpers/utils/alert";
 import { BORDER_RADIUS } from "../../../constants/theme";
 import { DEBOUNCE } from "../../../helpers/utils/debounce";
 import CopyIcon from "../../../components/reuseables/CopyIcon";
+import { useSelector } from "react-redux";
 
 export default function RecieptPage() {
+  const theme = useSelector((state) => state.app.theme);
+
   const { id } = useLocalSearchParams();
 
   const [data, setData] = useState();
@@ -107,7 +110,7 @@ export default function RecieptPage() {
       <DefaultHeaderComponent directory={"reciept"} />
       {/**page */}
       <ScrollViewWrapper
-        style={styles.page}
+        style={styles(theme).page}
         refreshFunc={() => {
           setData();
           fetchDeposit(id);
@@ -119,58 +122,72 @@ export default function RecieptPage() {
             isLoading={isLoading}
           />
         ) : (
-          <View style={styles.reciept} ref={recieptRef} collapsable={false}>
+          <View
+            style={styles(theme).reciept}
+            ref={recieptRef}
+            collapsable={false}
+          >
             {/**amount */}
-            <View style={styles.component}>
-              <Text style={styles.amountHeader}>AMOUNT</Text>
-              <Text style={styles.amount}>
+            <View style={styles(theme).component}>
+              <Text style={styles(theme).amountHeader}>AMOUNT</Text>
+              <Text style={styles(theme).amount}>
                 {NAIRA_CURRENCY} {format_number(data?.amount_expected)}
               </Text>
 
               <View>
-                <StatusComponent status={data?.status} />
+                <StatusComponent status={data?.status} theme={theme} />
               </View>
             </View>
 
             {/**detail summary */}
-            <View style={styles.component}>
-              <DetailTab title={"Serial No"} value={data?.deposit_id} />
+            <View style={styles(theme).component}>
+              <DetailTab
+                title={"Serial No"}
+                value={data?.deposit_id}
+                theme={theme}
+              />
 
               <DetailTab
                 title={"Transaction Ref"}
                 value={data?.transaction_ref}
                 canCopy={true}
+                theme={theme}
               />
 
               <DetailTab
                 title={"Package ID"}
                 value={data?.package_id}
                 canCopy={true}
+                theme={theme}
               />
             </View>
 
             {/**account summary */}
             {data?.extra &&
               String(data?.extra?.channel)?.toLowerCase() === "card" && (
-                <View style={styles.component}>
+                <View style={styles(theme).component}>
                   <DetailTab
                     title={"Payment Mode"}
                     value={String(data?.extra?.channel)?.toUpperCase()}
+                    theme={theme}
                   />
 
                   <DetailTab
                     title={"Card Number"}
                     value={`${data?.extra?.bin}xxxxxx${data?.extra?.last4}`}
+                    theme={theme}
                   />
 
                   <DetailTab
                     title={"Card Expiry Date"}
                     value={`${data?.extra?.exp_month}/${data?.extra?.exp_year}`}
+                    theme={theme}
                   />
 
                   <DetailTab
                     title={"Card Type"}
                     value={String(data?.extra?.card_type)?.toUpperCase()}
+                    theme={theme}
                   />
                 </View>
               )}
@@ -178,15 +195,17 @@ export default function RecieptPage() {
             {data?.extra &&
               String(data?.extra?.channel)?.toLowerCase() ===
                 "bank_transfer" && (
-                <View style={styles.component}>
+                <View style={styles(theme).component}>
                   <DetailTab
                     title={"Payment Mode"}
                     value={String(data?.extra?.channel)?.toUpperCase()}
+                    theme={theme}
                   />
 
                   <DetailTab
                     title={"Sender Bank"}
                     value={String(data?.extra?.sender_bank)?.toUpperCase()}
+                    theme={theme}
                   />
 
                   <DetailTab
@@ -194,46 +213,54 @@ export default function RecieptPage() {
                     value={String(
                       data?.extra?.sender_bank_account_number
                     )?.toUpperCase()}
+                    theme={theme}
                   />
 
                   <DetailTab
                     title={"Sender Account Name"}
                     value={String(data?.extra?.sender_name)?.toUpperCase()}
+                    theme={theme}
                   />
                 </View>
               )}
 
             {/**amount, status, date */}
-            <View style={styles.component}>
+            <View style={styles(theme).component}>
               <DetailTab
                 title={"Amount Paid"}
                 value={`${NAIRA_CURRENCY} ${format_number(data?.amount_paid)}`}
+                theme={theme}
               />
 
               <DetailTab
                 title={"Fee Charged"}
                 value={`${NAIRA_CURRENCY} ${format_number(data?.fee_charged)}`}
+                theme={theme}
               />
 
               <DetailTab
                 title={"Date"}
                 value={`${format_date_time_readable(data?.created_time)}`}
+                theme={theme}
               />
 
               <DetailTab
                 title={"Status"}
                 value={String(data?.status)?.toUpperCase()}
+                theme={theme}
               />
             </View>
 
             {/**copy right marker */}
-            <View style={styles.copyRight}>
+            <View style={styles(theme).copyRight}>
               <Octicons
                 name="shield-check"
                 size={FONT_SIZE.xs}
-                color={COLOR_THEME.gray100}
+                color={COLOR_THEME[theme].gray100}
               />
-              <Text style={styles.copyText}>Transaction from EFUAFINEX</Text>
+              <Text style={styles(theme).copyText}>
+                Transaction from EFUAFINEX
+              </Text>
             </View>
           </View>
         )}
@@ -256,21 +283,23 @@ export default function RecieptPage() {
   );
 }
 
-const StatusComponent = ({ status }) => {
+const StatusComponent = ({ status, theme }) => {
   return (
-    <View style={styles.statusComponent(status)}>
-      <Text style={styles.status(status)}>{String(status)?.toUpperCase()}</Text>
+    <View style={styles(theme).statusComponent(status)}>
+      <Text style={styles(theme).status(status)}>
+        {String(status)?.toUpperCase()}
+      </Text>
     </View>
   );
 };
 
-const DetailTab = ({ title, value, canCopy }) => {
+const DetailTab = ({ title, value, canCopy, theme }) => {
   return (
-    <View style={styles.detailTab}>
-      <Text style={styles.detailTitle}>{title}</Text>
+    <View style={styles(theme).detailTab}>
+      <Text style={styles(theme).detailTitle}>{title}</Text>
 
-      <View style={styles.detailValueTab}>
-        <Text style={styles.detailValue} numberOfLines={1}>
+      <View style={styles(theme).detailValueTab}>
+        <Text style={styles(theme).detailValue} numberOfLines={1}>
           {value}
         </Text>
 
@@ -280,109 +309,110 @@ const DetailTab = ({ title, value, canCopy }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  page: {
-    width: "100%",
-    minHeight: "100%",
-    backgroundColor: COLOR_THEME.gray50,
-    gap: 16,
-  },
-  reciept: {
-    width: "100%",
-    height: "auto",
-    padding: 16,
-    gap: 16,
-    backgroundColor: COLOR_THEME.gray50,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  statusComponent: (s) => ({
-    height: 22,
-    paddingHorizontal: 32,
-    borderRadius: BORDER_RADIUS.r,
-    alignSelf: "flex-start",
-    justifyContent: "center",
-    backgroundColor:
-      s === "success"
-        ? COLOR_THEME.successFaded
-        : s === "failed" || s === "canceled"
-        ? COLOR_THEME.errorFaded
-        : COLOR_THEME.gray50,
-  }),
-  status: (s) => ({
-    fontSize: FONT_SIZE.xs,
-    fontWeight: FONT_WEIGHT.semibold,
-    color:
-      s === "success"
-        ? COLOR_THEME.success
-        : s === "failed" || s === "canceled"
-        ? COLOR_THEME.error
-        : COLOR_THEME.gray200,
-    lineHeight: 12,
-  }),
-  component: {
-    width: "100%",
-    paddingVertical: 32,
-    paddingHorizontal: 16,
-    borderRadius: BORDER_RADIUS.s,
-    backgroundColor: COLOR_THEME.white,
-    gap: 8,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  amountHeader: {
-    fontSize: FONT_SIZE.xs,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.gray200,
-    textAlign: "center",
-  },
-  amount: {
-    fontSize: FONT_SIZE.xxxb,
-    fontWeight: FONT_WEIGHT.bold,
-    color: COLOR_THEME.black,
-    textAlign: "center",
-    lineHeight: 32,
-    marginBottom: 8,
-  },
-  detailTab: {
-    width: "100%",
-    paddingVertical: 4,
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    gap: 16,
-  },
-  detailTitle: {
-    fontSize: FONT_SIZE.xs,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.black,
-    textAlign: "left",
-    maxWidth: "44%",
-  },
-  detailValueTab: {
-    maxWidth: "52%",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  detailValue: {
-    maxWidth: "95%",
-    fontSize: FONT_SIZE.xs,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.gray200,
-    textAlign: "right",
-  },
-  copyRight: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 4,
-  },
-  copyText: {
-    fontSize: FONT_SIZE.xs,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray100,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    page: {
+      width: "100%",
+      minHeight: "100%",
+      backgroundColor: COLOR_THEME[theme].gray50,
+      gap: 16,
+    },
+    reciept: {
+      width: "100%",
+      height: "auto",
+      padding: 16,
+      gap: 16,
+      backgroundColor: COLOR_THEME[theme].gray50,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    statusComponent: (s) => ({
+      height: 22,
+      paddingHorizontal: 32,
+      borderRadius: BORDER_RADIUS.r,
+      alignSelf: "flex-start",
+      justifyContent: "center",
+      backgroundColor:
+        s === "success"
+          ? COLOR_THEME[theme].successFaded
+          : s === "failed" || s === "canceled"
+          ? COLOR_THEME[theme].errorFaded
+          : COLOR_THEME[theme].gray50,
+    }),
+    status: (s) => ({
+      fontSize: FONT_SIZE.xs,
+      fontWeight: FONT_WEIGHT.semibold,
+      color:
+        s === "success"
+          ? COLOR_THEME[theme].success
+          : s === "failed" || s === "canceled"
+          ? COLOR_THEME[theme].error
+          : COLOR_THEME[theme].gray200,
+      lineHeight: 12,
+    }),
+    component: {
+      width: "100%",
+      paddingVertical: 32,
+      paddingHorizontal: 16,
+      borderRadius: BORDER_RADIUS.s,
+      backgroundColor: COLOR_THEME[theme].white,
+      gap: 8,
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    amountHeader: {
+      fontSize: FONT_SIZE.xs,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].gray200,
+      textAlign: "center",
+    },
+    amount: {
+      fontSize: FONT_SIZE.xxxb,
+      fontWeight: FONT_WEIGHT.bold,
+      color: COLOR_THEME[theme].black,
+      textAlign: "center",
+      lineHeight: 32,
+      marginBottom: 8,
+    },
+    detailTab: {
+      width: "100%",
+      paddingVertical: 4,
+      flexDirection: "row",
+      alignItems: "flex-start",
+      justifyContent: "space-between",
+      gap: 16,
+    },
+    detailTitle: {
+      fontSize: FONT_SIZE.xs,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].black,
+      textAlign: "left",
+      maxWidth: "44%",
+    },
+    detailValueTab: {
+      maxWidth: "52%",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+    },
+    detailValue: {
+      maxWidth: "95%",
+      fontSize: FONT_SIZE.xs,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].gray200,
+      textAlign: "right",
+    },
+    copyRight: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 4,
+    },
+    copyText: {
+      fontSize: FONT_SIZE.xs,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray100,
+    },
+  });

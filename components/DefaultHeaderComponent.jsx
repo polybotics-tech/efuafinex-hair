@@ -3,8 +3,11 @@ import React, { memo, useMemo, useState } from "react";
 import BackBtn from "./reuseables/BackBtn";
 import { usePathname } from "expo-router";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../constants";
+import { useSelector } from "react-redux";
 
 const DefaultHeaderComponent = ({ directory }) => {
+  const theme = useSelector((state) => state.app.theme);
+
   const pathname = usePathname();
   const [title, setTitle] = useState(""); //state to store page title
 
@@ -50,34 +53,35 @@ const DefaultHeaderComponent = ({ directory }) => {
     }
   }, [pathname]);
   return (
-    <View style={styles.header}>
+    <View style={styles(theme).header}>
       {/*back button*/}
       <BackBtn />
 
       {/*page title*/}
-      <Text style={styles.pageTitle}>{title}</Text>
+      <Text style={styles(theme).pageTitle}>{title}</Text>
     </View>
   );
 };
 
 export default memo(DefaultHeaderComponent);
 
-const styles = StyleSheet.create({
-  header: {
-    width: "100%",
-    paddingTop: 8,
-    paddingBottom: 12,
-    paddingHorizontal: 16,
-    backgroundColor: COLOR_THEME.white,
-    borderBottomWidth: 0.8,
-    borderBottomColor: COLOR_THEME.gray50,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-  },
-  pageTitle: {
-    fontSize: FONT_SIZE.xb,
-    fontWeight: FONT_WEIGHT.bold,
-    color: COLOR_THEME.black,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    header: {
+      width: "100%",
+      paddingTop: 8,
+      paddingBottom: 12,
+      paddingHorizontal: 16,
+      backgroundColor: COLOR_THEME[theme].white,
+      borderBottomWidth: 0.8,
+      borderBottomColor: COLOR_THEME[theme].gray50,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 16,
+    },
+    pageTitle: {
+      fontSize: FONT_SIZE.xb,
+      fontWeight: FONT_WEIGHT.bold,
+      color: COLOR_THEME[theme].black,
+    },
+  });

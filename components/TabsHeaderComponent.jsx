@@ -20,6 +20,7 @@ import { IMAGE_LOADER } from "../helpers/utils/image-loader";
 import { get_current_greeting } from "../helpers/utils/datetime";
 
 const TabsHeaderComponent = () => {
+  const theme = useSelector((state) => state.app.theme);
   const user = useSelector((state) => state.user?.user);
 
   const path = usePathname();
@@ -52,21 +53,21 @@ const TabsHeaderComponent = () => {
   }, [path]);
 
   return (
-    <View style={styles.header(pageName?.toLowerCase())}>
+    <View style={styles(theme).header(pageName?.toLowerCase())}>
       {pageName === "Home" ? (
-        <View style={styles.logo}>
-          <Text style={styles.LogoName} numberOfLines={1}>
+        <View style={styles(theme).logo}>
+          <Text style={styles(theme).LogoName} numberOfLines={1}>
             Hello {String(user?.fullname)?.split(" ")[0]},
           </Text>
-          <Text style={styles.greetings}>{get_current_greeting()}</Text>
+          <Text style={styles(theme).greetings}>{get_current_greeting()}</Text>
         </View>
       ) : (
-        <Text style={styles.pageTitle}>{pageName}</Text>
+        <Text style={styles(theme).pageTitle}>{pageName}</Text>
       )}
 
       {/**action buttons */}
       <TouchableOpacity
-        style={styles.userThumbnailCont}
+        style={styles(theme).userThumbnailCont}
         onPress={() => {
           router.navigate("/account");
         }}
@@ -82,53 +83,55 @@ const TabsHeaderComponent = () => {
 
 export default memo(TabsHeaderComponent);
 
-const styles = StyleSheet.create({
-  header: (page) => ({
-    width: "100%",
-    paddingTop: 8,
-    paddingBottom: 12,
-    paddingHorizontal: 16,
-    backgroundColor: COLOR_THEME.white,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 16,
-    borderBottomWidth: 0.8,
-    borderBottomColor: page === "home" ? COLOR_THEME.gray50 : COLOR_THEME.white,
-  }),
-  logo: {
-    width: SCREEN_DIMENSION.subtractWidth(20, 32, 44),
-    gap: 2,
-  },
-  LogoName: {
-    maxWidth: "100%",
-    fontSize: FONT_SIZE.b,
-    fontWeight: FONT_WEIGHT.semibold,
-    lineHeight: 18,
-    color: COLOR_THEME.black,
-    textTransform: "capitalize",
-  },
-  greetings: {
-    maxWidth: "100%",
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray100,
-  },
-  LogoNameLink: {
-    color: COLOR_THEME.primary,
-  },
-  pageTitle: {
-    fontSize: FONT_SIZE.xb,
-    fontWeight: FONT_WEIGHT.bold,
-    color: COLOR_THEME.black,
-  },
-  userThumbnailCont: {
-    width: 44,
-    height: 44,
-    borderRadius: BORDER_RADIUS.r,
-    backgroundColor: COLOR_THEME.gray50,
-    overflow: "hidden",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    header: (page) => ({
+      width: "100%",
+      paddingTop: 8,
+      paddingBottom: 12,
+      paddingHorizontal: 16,
+      backgroundColor: COLOR_THEME[theme].white,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: 16,
+      borderBottomWidth: 0.8,
+      borderBottomColor:
+        page === "home" ? COLOR_THEME[theme].gray50 : COLOR_THEME[theme].white,
+    }),
+    logo: {
+      width: SCREEN_DIMENSION.subtractWidth(20, 32, 44),
+      gap: 2,
+    },
+    LogoName: {
+      maxWidth: "100%",
+      fontSize: FONT_SIZE.b,
+      fontWeight: FONT_WEIGHT.semibold,
+      lineHeight: 18,
+      color: COLOR_THEME[theme].black,
+      textTransform: "capitalize",
+    },
+    greetings: {
+      maxWidth: "100%",
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray100,
+    },
+    LogoNameLink: {
+      color: COLOR_THEME[theme].primary,
+    },
+    pageTitle: {
+      fontSize: FONT_SIZE.xb,
+      fontWeight: FONT_WEIGHT.bold,
+      color: COLOR_THEME[theme].black,
+    },
+    userThumbnailCont: {
+      width: 44,
+      height: 44,
+      borderRadius: BORDER_RADIUS.r,
+      backgroundColor: COLOR_THEME[theme].gray50,
+      overflow: "hidden",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  });

@@ -10,6 +10,7 @@ import { PACKAGE_HOOKS } from "../../../../helpers/hooks/package";
 import {
   COLOR_THEME,
   FONT_SIZE,
+  MINIMUM_DEPOSIT,
   NAIRA_CURRENCY,
   SCREEN_DIMENSION,
 } from "../../../../constants";
@@ -21,12 +22,16 @@ import PopupModalWrapper from "../../../../components/ui/PopupModalWrapper";
 import { Alert } from "../../../../helpers/utils/alert";
 import { DEPOSIT_HOOKS } from "../../../../helpers/hooks/deposit";
 import { DEBOUNCE } from "../../../../helpers/utils/debounce";
+import { useSelector } from "react-redux";
 
 export default function Deposit() {
+  const theme = useSelector((state) => state.app.theme);
+
   const { id } = useLocalSearchParams();
 
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState();
+  const [canProceed, setCanProceed] = useState(false);
 
   //fetch package details
   const fetchPackage = DEBOUNCE(async (id) => {
@@ -58,6 +63,18 @@ export default function Deposit() {
   const [formData, setFormData] = useState({
     amount: "",
   });
+
+  //handle quick validation of amount entered
+  useEffect(() => {
+    if (
+      Number(formData?.amount) >= Number(MINIMUM_DEPOSIT) &&
+      Number(formData?.amount) <= Number(balance)
+    ) {
+      setCanProceed(true);
+    } else {
+      setCanProceed(false);
+    }
+  }, [formData?.amount, balance]);
 
   //handle deposit functionality
   const [authorization_url, setAuthUrl] = useState("");
@@ -108,9 +125,12 @@ export default function Deposit() {
     <SafeAreaWrapper>
       <DefaultHeaderComponent directory={"deposit"} />
 
-      <ScrollViewWrapper style={styles.page}>
+      <ScrollViewWrapper style={styles(theme).page}>
         {!data ? (
-          <ActivityIndicator size={FONT_SIZE.s} color={COLOR_THEME.gray200} />
+          <ActivityIndicator
+            size={FONT_SIZE.s}
+            color={COLOR_THEME[theme].gray200}
+          />
         ) : (
           <AuthScreenWrapper
             title={`${String(data?.title)?.toUpperCase()}`}
@@ -119,6 +139,7 @@ export default function Deposit() {
             }
             buttonText={"Proceed"}
             buttonIsLoading={btnLoading}
+            buttonIsDisabled={!canProceed}
             formSubmitFunction={submitForm}
             bottomText={
               "Note: when depositing via bank transfer, you are responsible for ensuring that the amount sent from your banking app matches this amount entered on the EFH app. \n\nBy continuing, you agree that we will in no way be held responsible for any mistakes made by you during the transfers."
@@ -131,17 +152,18 @@ export default function Deposit() {
                 <FontAwesome6
                   name="naira-sign"
                   size={16}
-                  color={COLOR_THEME.gray200}
+                  color={COLOR_THEME[theme].gray200}
                 />
               }
               inputMode={"numeric"}
               label={"Amount"}
               placeholder={"How much would you like to deposit?"}
+              hasError={Boolean(Number(formData?.amount) >= 1 && !canProceed)}
               description={
                 balance > 0
-                  ? `You can deposit anything from ${NAIRA_CURRENCY}100 - ${NAIRA_CURRENCY}${format_number(
-                      balance
-                    )}`
+                  ? `You can deposit anything from ${NAIRA_CURRENCY}${format_number(
+                      MINIMUM_DEPOSIT
+                    )} - ${NAIRA_CURRENCY}${format_number(balance)}`
                   : ""
               }
               name={"amount"}
@@ -156,17 +178,17 @@ export default function Deposit() {
           isVisible={lauchWeb}
           setIsVisible={setLauchWeb}
           onCloseFunc={() => verifyTransaction()}
-          containerStyle={styles.containerStyle}
+          containerStyle={styles(theme).containerStyle}
         >
           <WebView
-            style={styles.webContainer}
+            style={styles(theme).webContainer}
             source={{ uri: authorization_url }}
             onNavigationStateChange={handleWebViewNavigation}
             startInLoadingState
             renderLoading={() => (
               <ActivityIndicator
                 size={FONT_SIZE.m}
-                color={COLOR_THEME.primary}
+                color={COLOR_THEME[theme].primary}
               />
             )}
           />
@@ -178,6 +200,7 @@ export default function Deposit() {
         <VerificationInProgress
           transaction_ref={transaction_ref}
           resetParams={() => resetAllParams()}
+          theme={theme}
         />
       )}
     </SafeAreaWrapper>
@@ -187,6 +210,7 @@ export default function Deposit() {
 const VerificationInProgress = ({
   transaction_ref,
   resetParams = () => {},
+  theme,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -219,36 +243,37 @@ const VerificationInProgress = ({
   }, [transaction_ref]);
 
   return (
-    <View style={styles.verifyCont}>
-      <ActivityIndicator size={"large"} color={COLOR_THEME.white} />
+    <View style={styles(theme).verifyCont}>
+      <ActivityIndicator size={"large"} color={COLOR_THEME[theme].white} />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  page: {
-    width: "100%",
-    minHeight: "100%",
-    padding: 16,
-    backgroundColor: COLOR_THEME.white,
-  },
-  containerStyle: {
-    width: "100%",
-    minHeight: SCREEN_DIMENSION.heightRatio(1 / 0.5),
-  },
-  webContainer: {
-    width: "100%",
-    height: "100%",
-  },
-  verifyCont: {
-    width: SCREEN_DIMENSION.width,
-    height: SCREEN_DIMENSION.height,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    zIndex: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.8)",
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    page: {
+      width: "100%",
+      minHeight: "100%",
+      padding: 16,
+      backgroundColor: COLOR_THEME[theme].white,
+    },
+    containerStyle: {
+      width: "100%",
+      minHeight: SCREEN_DIMENSION.heightRatio(1 / 0.5),
+    },
+    webContainer: {
+      width: "100%",
+      height: "100%",
+    },
+    verifyCont: {
+      width: SCREEN_DIMENSION.width,
+      height: SCREEN_DIMENSION.height,
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      zIndex: 5,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "rgba(0,0,0,0.8)",
+    },
+  });

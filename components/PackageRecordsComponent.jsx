@@ -5,8 +5,11 @@ import NotFoundComponent from "./reuseables/NotFoundComponent";
 import SeeMoreBtn from "./reuseables/SeeMoreBtn";
 import { PACKAGE_HOOKS } from "../helpers/hooks/package";
 import { DEBOUNCE } from "../helpers/utils/debounce";
+import { useSelector } from "react-redux";
 
 const PackageRecordsComponent = ({ filter }) => {
+  const theme = useSelector((state) => state.app.theme);
+
   const [packages, setPackages] = useState();
   const [meta, setMeta] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +38,7 @@ const PackageRecordsComponent = ({ filter }) => {
   });
 
   return (
-    <View style={styles.component}>
+    <View style={styles(theme).component}>
       {packages?.length > 0 ? (
         packages?.map((item, index) => (
           <PackageCard
@@ -66,10 +69,11 @@ const PackageRecordsComponent = ({ filter }) => {
 
 export default memo(PackageRecordsComponent);
 
-const styles = StyleSheet.create({
-  component: {
-    width: "100%",
-    padding: 16,
-    gap: 16,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    component: {
+      width: "100%",
+      padding: 16,
+      gap: 16,
+    },
+  });

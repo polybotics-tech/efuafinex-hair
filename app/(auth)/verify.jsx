@@ -11,6 +11,8 @@ import NotFoundComponent from "../../components/reuseables/NotFoundComponent";
 import { DEBOUNCE } from "../../helpers/utils/debounce";
 
 export default function VerifyEmail() {
+  const theme = useSelector((state) => state.app.theme);
+
   const { ref } = useLocalSearchParams();
   const user = useSelector((state) => state.user.user);
 
@@ -77,7 +79,11 @@ export default function VerifyEmail() {
           formType={"input"}
           inputMode={"numeric"}
           inputIcon={
-            <Octicons name="number" size={16} color={COLOR_THEME.gray200} />
+            <Octicons
+              name="number"
+              size={16}
+              color={COLOR_THEME[theme].gray200}
+            />
           }
           label={"6-digit OTP"}
           placeholder={"Ex. 123456"}
@@ -90,4 +96,4 @@ export default function VerifyEmail() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = (theme) => StyleSheet.create({});

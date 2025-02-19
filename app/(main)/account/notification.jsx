@@ -7,6 +7,8 @@ import PrimaryButton from "../../../components/reuseables/PrimaryButton";
 import { USER_HOOKS } from "../../../helpers/hooks/user";
 
 export default function NotificationSettings() {
+  const theme = useSelector((state) => state.app.theme);
+
   //fetch user
   const user = useSelector((state) => state.user.user);
   const [changed, setIschanged] = useState(false);
@@ -46,7 +48,7 @@ export default function NotificationSettings() {
   };
 
   return (
-    <View style={styles.page}>
+    <View style={styles(theme).page}>
       {/*email notification*/}
       <AuthFormComponent
         formType={"toggle"}
@@ -72,7 +74,7 @@ export default function NotificationSettings() {
       />
 
       {/**save button */}
-      <View style={styles.btnCont}>
+      <View style={styles(theme).btnCont}>
         <PrimaryButton
           title={"Save changes"}
           disabled={!changed}
@@ -84,37 +86,17 @@ export default function NotificationSettings() {
   );
 }
 
-const styles = StyleSheet.create({
-  page: {
-    width: "100%",
-    padding: 16,
-    gap: 16,
-  },
-  noticeComponent: {
-    width: "100%",
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: COLOR_THEME.white,
-    gap: 16,
-  },
-  noticeComponentHeader: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  noticeComponentTitle: {
-    fontSize: FONT_SIZE.b,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.black,
-  },
-  noticeComponentDescription: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray200,
-  },
-  btnCont: {
-    width: "100%",
-    paddingTop: 32,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    page: {
+      width: "100%",
+      minHeight: "100%",
+      padding: 16,
+      gap: 16,
+      backgroundColor: COLOR_THEME[theme].gray50,
+    },
+    btnCont: {
+      width: "100%",
+      paddingTop: 32,
+    },
+  });

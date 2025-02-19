@@ -5,8 +5,11 @@ import NotFoundComponent from "./reuseables/NotFoundComponent";
 import SeeMoreBtn from "./reuseables/SeeMoreBtn";
 import { DEPOSIT_HOOKS } from "../helpers/hooks/deposit";
 import { DEBOUNCE } from "../helpers/utils/debounce";
+import { useSelector } from "react-redux";
 
 const DepositRecordsComponent = ({ filter }) => {
+  const theme = useSelector((state) => state.app.theme);
+
   const [deposits, setDeposits] = useState();
   const [meta, setMeta] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +42,7 @@ const DepositRecordsComponent = ({ filter }) => {
   });
 
   return (
-    <View style={styles.component}>
+    <View style={styles(theme).component}>
       {deposits?.length > 0 ? (
         deposits?.map((item, index) => (
           <DepositRecord key={index} data={item} />
@@ -65,10 +68,11 @@ const DepositRecordsComponent = ({ filter }) => {
 
 export default memo(DepositRecordsComponent);
 
-const styles = StyleSheet.create({
-  component: {
-    width: "100%",
-    padding: 16,
-    gap: 16,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    component: {
+      width: "100%",
+      padding: 16,
+      gap: 16,
+    },
+  });

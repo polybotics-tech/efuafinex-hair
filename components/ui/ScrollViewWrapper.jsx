@@ -2,12 +2,15 @@ import { RefreshControl, ScrollView, StyleSheet } from "react-native";
 import React, { memo, useCallback, useState } from "react";
 import { COLOR_THEME, SCREEN_DIMENSION } from "../../constants";
 import AppStatusBar from "../AppStatusBar";
+import { useSelector } from "react-redux";
 
 const ScrollViewWrapper = ({
   children,
   style = {},
   refreshFunc = () => {},
 }) => {
+  const theme = useSelector((state) => state.app.theme);
+
   //handle refreshing
   const [refreshing, setRefreshing] = useState(false);
 
@@ -24,16 +27,16 @@ const ScrollViewWrapper = ({
 
   return (
     <ScrollView
-      contentContainerStyle={[styles.scroll, style]}
+      contentContainerStyle={[styles(theme).scroll, style]}
       showsVerticalScrollIndicator={false}
       nestedScrollEnabled={true}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          progressBackgroundColor={COLOR_THEME.white}
-          colors={[COLOR_THEME.primary]}
-          tintColor={COLOR_THEME.primary}
+          progressBackgroundColor={COLOR_THEME[theme].white}
+          colors={[COLOR_THEME[theme].primary]}
+          tintColor={COLOR_THEME[theme].primary}
         />
       }
     >
@@ -47,11 +50,12 @@ const ScrollViewWrapper = ({
 
 export default memo(ScrollViewWrapper);
 
-const styles = StyleSheet.create({
-  scroll: {
-    width: SCREEN_DIMENSION.width,
-    minHeight: "100%",
-    backgroundColor: COLOR_THEME.white,
-    paddingBottom: 64,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    scroll: {
+      width: SCREEN_DIMENSION.width,
+      minHeight: "100%",
+      backgroundColor: COLOR_THEME[theme].white,
+      paddingBottom: 64,
+    },
+  });

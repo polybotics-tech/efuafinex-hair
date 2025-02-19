@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import { Tabs } from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants/theme";
 import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
@@ -8,8 +8,14 @@ import TabsHeaderComponent from "../../components/TabsHeaderComponent";
 import { useSelector } from "react-redux";
 
 export default function TabsLayout() {
+  const theme = useSelector((state) => state.app.theme);
+
   //check for unread notifications
   const has_unread = useSelector((state) => state.notification.has_unread);
+
+  //paths with white scene
+  const white_scene_path = ["/account", "/create"];
+  const path = usePathname();
 
   return (
     <SafeAreaWrapper>
@@ -17,9 +23,9 @@ export default function TabsLayout() {
 
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: COLOR_THEME.primary,
-          tabBarInactiveTintColor: COLOR_THEME.gray100,
-          tabBarStyle: styles.tabBar,
+          tabBarActiveTintColor: COLOR_THEME[theme].primary,
+          tabBarInactiveTintColor: COLOR_THEME[theme].gray100,
+          tabBarStyle: styles(theme).tabBar,
           tabBarItemStyle: {
             paddingVertical: 6,
           },
@@ -37,6 +43,11 @@ export default function TabsLayout() {
               {children}
             </TouchableOpacity>
           ),
+          sceneStyle: {
+            backgroundColor: white_scene_path?.includes(path)
+              ? COLOR_THEME[theme].white
+              : COLOR_THEME[theme].gray50,
+          },
         }}
       >
         <Tabs.Screen
@@ -67,7 +78,7 @@ export default function TabsLayout() {
               <Octicons name="bell" size={18} color={color} />
             ),
             tabBarBadge: has_unread ? "" : undefined,
-            tabBarBadgeStyle: styles.tabBarBadge,
+            tabBarBadgeStyle: styles(theme).tabBarBadge,
           }}
         />
 
@@ -85,21 +96,22 @@ export default function TabsLayout() {
   );
 }
 
-const styles = StyleSheet.create({
-  tabBar: {
-    height: 72,
-    backgroundColor: COLOR_THEME.white,
-    elevation: 0,
-    borderTopWidth: 0,
-  },
-  tabBarBadge: {
-    minWidth: 10,
-    width: 10,
-    height: 10,
-    borderRadius: 20,
-    backgroundColor: COLOR_THEME.primary,
-    position: "absolute",
-    top: 0,
-    right: 5,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    tabBar: {
+      height: 72,
+      backgroundColor: COLOR_THEME[theme].white,
+      elevation: 0,
+      borderTopWidth: 0,
+    },
+    tabBarBadge: {
+      minWidth: 10,
+      width: 10,
+      height: 10,
+      borderRadius: 20,
+      backgroundColor: COLOR_THEME[theme].primary,
+      position: "absolute",
+      top: 0,
+      right: 5,
+    },
+  });

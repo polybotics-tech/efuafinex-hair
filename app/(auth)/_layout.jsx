@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,25 +11,23 @@ import React, { useEffect, useState } from "react";
 import { router, Slot, usePathname } from "expo-router";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import {
-  COLOR_THEME,
-  FONT_SIZE,
-  FONT_WEIGHT,
-  SCREEN_DIMENSION,
-} from "../../constants";
+import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
 import { Alert } from "../../helpers/utils/alert";
 import { AUTH_HOOKS } from "../../helpers/hooks/auth";
 import { jwtDecode } from "jwt-decode";
+import { useSelector } from "react-redux";
 
 export default function AuthLayout() {
+  const theme = useSelector((state) => state.app.theme);
+
   const pathname = usePathname();
 
   return (
     <SafeAreaWrapper>
       <ScrollView
-        contentContainerStyle={[styles.scrollView]}
+        contentContainerStyle={[styles(theme).scrollView]}
         showsVerticalScrollIndicator={false}
       >
         <Slot />
@@ -38,22 +35,22 @@ export default function AuthLayout() {
         {(pathname === "/login" || pathname === "/register") && (
           <>
             {/**social auth button */}
-            <View style={styles.socialCont}>
-              <View style={styles.splitView}>
-                <Text style={styles.splitText}>or continue with</Text>
+            <View style={styles(theme).socialCont}>
+              <View style={styles(theme).splitView}>
+                <Text style={styles(theme).splitText}>or continue with</Text>
               </View>
 
               {/** */}
-              <View style={styles.btnCont}>
-                <SignInWithGoogle />
+              <View style={styles(theme).btnCont}>
+                <SignInWithGoogle theme={theme} />
 
-                {/*<SignInWithApple />*/}
+                {/*<SignInWithApple theme={theme} />*/}
               </View>
 
               {/**terms and policies */}
-              <Text style={styles.bottomText}>
+              <Text style={styles(theme).bottomText}>
                 By continuing, you agree to our{" "}
-                <Text style={styles.bottomLink}>
+                <Text style={styles(theme).bottomLink}>
                   Terms and Privacy Policies
                 </Text>
               </Text>
@@ -65,7 +62,7 @@ export default function AuthLayout() {
   );
 }
 
-const SignInWithGoogle = () => {
+const SignInWithGoogle = ({ theme }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const configureGoogleSignIn = () => {
@@ -158,25 +155,28 @@ const SignInWithGoogle = () => {
 
   return (
     <TouchableOpacity
-      style={styles.socialBtn}
+      style={styles(theme).socialBtn}
       activeOpacity={0.6}
       disabled={isLoading}
       onPress={() => signInWithGoogle()}
     >
       {isLoading ? (
-        <ActivityIndicator size={FONT_SIZE.s} color={COLOR_THEME.primary} />
+        <ActivityIndicator
+          size={FONT_SIZE.s}
+          color={COLOR_THEME[theme].primary}
+        />
       ) : (
         <MaterialCommunityIcons
           name="google"
           size={24}
-          color={COLOR_THEME.primary}
+          color={COLOR_THEME[theme].primary}
         />
       )}
     </TouchableOpacity>
   );
 };
 
-const SignInWithApple = () => {
+const SignInWithApple = ({ theme }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   //handle form submission
@@ -271,18 +271,21 @@ const SignInWithApple = () => {
     <>
       {Platform.OS === "ios" && (
         <TouchableOpacity
-          style={styles.socialBtn}
+          style={styles(theme).socialBtn}
           activeOpacity={0.6}
           disabled={isLoading}
           onPress={() => signInWithApple()}
         >
           {isLoading ? (
-            <ActivityIndicator size={FONT_SIZE.s} color={COLOR_THEME.primary} />
+            <ActivityIndicator
+              size={FONT_SIZE.s}
+              color={COLOR_THEME[theme].primary}
+            />
           ) : (
             <MaterialCommunityIcons
               name="apple"
               size={26}
-              color={COLOR_THEME.primary}
+              color={COLOR_THEME[theme].primary}
             />
           )}
         </TouchableOpacity>
@@ -291,57 +294,58 @@ const SignInWithApple = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    width: "100%",
-    gap: 32,
-    padding: 16,
-  },
-  socialCont: {
-    paddingVertical: 16,
-  },
-  splitView: {
-    width: "100%",
-    height: 0.8,
-    backgroundColor: COLOR_THEME.gray100,
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "visible",
-  },
-  splitText: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray100,
-    textAlign: "center",
-    height: 15,
-    paddingHorizontal: 16,
-    backgroundColor: COLOR_THEME.white,
-  },
-  btnCont: {
-    paddingVertical: 32,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 16,
-  },
-  socialBtn: {
-    width: 48,
-    height: 48,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 32,
-    borderWidth: 1.5,
-    borderColor: COLOR_THEME.primary,
-    // backgroundColor: COLOR_THEME.primary,
-  },
-  bottomText: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray100,
-    textAlign: "center",
-  },
-  bottomLink: {
-    color: COLOR_THEME.primary,
-    fontWeight: FONT_WEIGHT.semibold,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    scrollView: {
+      width: "100%",
+      gap: 32,
+      padding: 16,
+    },
+    socialCont: {
+      paddingVertical: 16,
+    },
+    splitView: {
+      width: "100%",
+      height: 0.8,
+      backgroundColor: COLOR_THEME[theme].gray100,
+      alignItems: "center",
+      justifyContent: "center",
+      overflow: "visible",
+    },
+    splitText: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray100,
+      textAlign: "center",
+      height: 15,
+      paddingHorizontal: 16,
+      backgroundColor: COLOR_THEME[theme].white,
+    },
+    btnCont: {
+      paddingVertical: 32,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 16,
+    },
+    socialBtn: {
+      width: 48,
+      height: 48,
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 32,
+      borderWidth: 1.5,
+      borderColor: COLOR_THEME[theme].primary,
+      // backgroundColor: COLOR_THEME[theme].primary,
+    },
+    bottomText: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray100,
+      textAlign: "center",
+    },
+    bottomLink: {
+      color: COLOR_THEME[theme].primary,
+      fontWeight: FONT_WEIGHT.semibold,
+    },
+  });

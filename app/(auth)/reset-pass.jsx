@@ -7,8 +7,11 @@ import { COLOR_THEME } from "../../constants/theme";
 import { AUTH_HOOKS } from "../../helpers/hooks/auth";
 import { router } from "expo-router";
 import { DEBOUNCE } from "../../helpers/utils/debounce";
+import { useSelector } from "react-redux";
 
 export default function VerifyEmail() {
+  const theme = useSelector((state) => state.app.theme);
+
   const [formData, setFormData] = useState({
     new_pass: "",
     confirm_pass: "",
@@ -38,7 +41,7 @@ export default function VerifyEmail() {
         formType={"input"}
         inputMode={"password"}
         inputIcon={
-          <Octicons name="lock" size={16} color={COLOR_THEME.gray200} />
+          <Octicons name="lock" size={16} color={COLOR_THEME[theme].gray200} />
         }
         label={"New Password"}
         placeholder={"Enter a new password"}
@@ -52,7 +55,7 @@ export default function VerifyEmail() {
         formType={"input"}
         inputMode={"password"}
         inputIcon={
-          <Octicons name="lock" size={16} color={COLOR_THEME.gray200} />
+          <Octicons name="lock" size={16} color={COLOR_THEME[theme].gray200} />
         }
         label={"Confirm Password"}
         placeholder={"Retype password"}
@@ -64,4 +67,4 @@ export default function VerifyEmail() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = (theme) => StyleSheet.create({});

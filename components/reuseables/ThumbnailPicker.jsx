@@ -16,6 +16,7 @@ import { USER_HOOKS } from "../../helpers/hooks/user";
 import { BORDER_RADIUS } from "../../constants/theme";
 
 const ThumbnailPicker = () => {
+  const theme = useSelector((state) => state.app.theme);
   const thumbnail = useSelector((state) => state.user.user?.thumbnail);
   const thumbnail_blur = useSelector(
     (state) => state.user.user?.thumbnail_blur
@@ -48,9 +49,9 @@ const ThumbnailPicker = () => {
   };
 
   return (
-    <View style={styles.component}>
+    <View style={styles(theme).component}>
       {/**placeholder */}
-      <View style={styles.placeholder}>
+      <View style={styles(theme).placeholder}>
         <ImageComponent
           uri={IMAGE_LOADER.user_thumbnail(thumbnail)}
           blur={thumbnail_blur}
@@ -59,15 +60,15 @@ const ThumbnailPicker = () => {
 
       {/**picker toggle */}
       <TouchableOpacity
-        style={styles.button}
+        style={styles(theme).button}
         activeOpacity={0.9}
         disabled={isLoading}
         onPress={() => SELECT_IMAGE()}
       >
         {isLoading ? (
-          <ActivityIndicator size={18} color={COLOR_THEME.white} />
+          <ActivityIndicator size={18} color={COLOR_THEME[theme].white} />
         ) : (
-          <Octicons name="plus" size={18} color={COLOR_THEME.white} />
+          <Octicons name="plus" size={18} color={COLOR_THEME[theme].white} />
         )}
       </TouchableOpacity>
     </View>
@@ -76,30 +77,31 @@ const ThumbnailPicker = () => {
 
 export default memo(ThumbnailPicker);
 
-const styles = StyleSheet.create({
-  component: {
-    width: 150,
-    height: 150,
-    position: "relative",
-  },
-  placeholder: {
-    width: 150,
-    height: 150,
-    backgroundColor: COLOR_THEME.gray50,
-    borderRadius: BORDER_RADIUS.r,
-    overflow: "hidden",
-  },
-  button: {
-    width: 48,
-    height: 48,
-    borderRadius: BORDER_RADIUS.r,
-    backgroundColor: COLOR_THEME.primary,
-    borderWidth: 1,
-    borderColor: COLOR_THEME.white,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    component: {
+      width: 150,
+      height: 150,
+      position: "relative",
+    },
+    placeholder: {
+      width: 150,
+      height: 150,
+      backgroundColor: COLOR_THEME[theme].gray50,
+      borderRadius: BORDER_RADIUS.r,
+      overflow: "hidden",
+    },
+    button: {
+      width: 48,
+      height: 48,
+      borderRadius: BORDER_RADIUS.r,
+      backgroundColor: COLOR_THEME[theme].primary,
+      borderWidth: 1,
+      borderColor: COLOR_THEME[theme].white,
+      alignItems: "center",
+      justifyContent: "center",
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+    },
+  });

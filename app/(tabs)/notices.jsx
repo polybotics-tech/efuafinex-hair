@@ -16,6 +16,8 @@ import { NOTICE_TITLE } from "../../helpers/json";
 import { format_date_time_readable } from "../../helpers/utils/datetime";
 
 export default function Notifications() {
+  const theme = useSelector((state) => state.app.theme);
+
   const has_unread = useSelector((state) => state.notification.has_unread);
   const notifications = useSelector(
     (state) => state.notification.notifications
@@ -28,10 +30,10 @@ export default function Notifications() {
   }, [has_unread]);
 
   return (
-    <ScrollViewWrapper style={styles.noticeList}>
+    <ScrollViewWrapper style={styles(theme).noticeList}>
       {notifications && notifications?.length > 0 ? (
         notifications?.map((item, index) => (
-          <NoticeTab key={index} notice={item} />
+          <NoticeTab key={index} notice={item} theme={theme} />
         ))
       ) : (
         <NotFoundComponent text={"No notifications found"} />
@@ -40,7 +42,7 @@ export default function Notifications() {
   );
 }
 
-const NoticeTab = ({ notice }) => {
+const NoticeTab = ({ notice, theme }) => {
   const { notification_type, extra, created_time } = notice;
 
   const path = {
@@ -54,22 +56,22 @@ const NoticeTab = ({ notice }) => {
   };
 
   return (
-    <View style={styles.noticeBlock}>
-      <View style={styles.noticeTab}>
-        <View style={styles.noticeIcon}>
+    <View style={styles(theme).noticeBlock}>
+      <View style={styles(theme).noticeTab}>
+        <View style={styles(theme).noticeIcon}>
           <Octicons
             name="info"
             size={FONT_SIZE.s}
-            color={COLOR_THEME.gray100}
+            color={COLOR_THEME[theme].gray100}
           />
         </View>
 
-        <View style={styles.noticeDesc}>
-          <Text style={styles.noticeTitle}>
+        <View style={styles(theme).noticeDesc}>
+          <Text style={styles(theme).noticeTitle}>
             {NOTICE_TITLE[notification_type]}
           </Text>
 
-          <Text style={styles.noticeTime}>
+          <Text style={styles(theme).noticeTime}>
             {format_date_time_readable(created_time)}
           </Text>
         </View>
@@ -77,12 +79,12 @@ const NoticeTab = ({ notice }) => {
 
       {/**action buttons */}
       {(Boolean(extra?.package_id) || Boolean(extra?.transaction_ref)) && (
-        <View style={styles.noticeActionCont}>
+        <View style={styles(theme).noticeActionCont}>
           {Boolean(extra?.package_id) && (
             <TouchableOpacity
               onPress={() => navigatToPath("package", extra?.package_id)}
             >
-              <Text style={styles.noticeAction}>View package</Text>
+              <Text style={styles(theme).noticeAction}>View package</Text>
             </TouchableOpacity>
           )}
 
@@ -90,7 +92,7 @@ const NoticeTab = ({ notice }) => {
             <TouchableOpacity
               onPress={() => navigatToPath("reciept", extra?.transaction_ref)}
             >
-              <Text style={styles.noticeAction}>See reciept</Text>
+              <Text style={styles(theme).noticeAction}>See reciept</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -99,67 +101,68 @@ const NoticeTab = ({ notice }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  noticeList: {
-    width: "100%",
-    minHeight: SCREEN_DIMENSION.heightRatio(1 / 1.4),
-    gap: 8,
-    backgroundColor: COLOR_THEME.gray50,
-    padding: 16,
-  },
-  noticeBlock: {
-    width: "100%",
-    padding: 16,
-    borderWidth: 1,
-    borderColor: COLOR_THEME.gray50,
-    borderRadius: 8,
-    backgroundColor: COLOR_THEME.white,
-    gap: 8,
-  },
-  noticeTab: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  noticeIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 4,
-    backgroundColor: COLOR_THEME.gray50,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  noticeDesc: {
-    width: SCREEN_DIMENSION.subtractWidth(8, 48 + 16, 44),
-    gap: 4,
-    paddingVertical: 8,
-  },
-  noticeTitle: {
-    maxWidth: "100%",
-    fontSize: FONT_SIZE.m,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray200,
-  },
-  noticeTime: {
-    fontSize: FONT_SIZE.xs,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLOR_THEME.gray100,
-  },
-  noticeActionCont: {
-    width: "100%",
-    paddingTop: 8,
-    paddingBottom: 4,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    gap: 16,
-    borderTopWidth: 1,
-    borderTopColor: COLOR_THEME.gray50,
-  },
-  noticeAction: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.primary,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    noticeList: {
+      width: "100%",
+      minHeight: SCREEN_DIMENSION.heightRatio(1 / 1.4),
+      gap: 8,
+      backgroundColor: COLOR_THEME[theme].gray50,
+      padding: 16,
+    },
+    noticeBlock: {
+      width: "100%",
+      padding: 16,
+      borderWidth: 1,
+      borderColor: COLOR_THEME[theme].gray50,
+      borderRadius: 8,
+      backgroundColor: COLOR_THEME[theme].white,
+      gap: 8,
+    },
+    noticeTab: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+    },
+    noticeIcon: {
+      width: 44,
+      height: 44,
+      borderRadius: 4,
+      backgroundColor: COLOR_THEME[theme].gray50,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    noticeDesc: {
+      width: SCREEN_DIMENSION.subtractWidth(8, 48 + 16, 44),
+      gap: 4,
+      paddingVertical: 8,
+    },
+    noticeTitle: {
+      maxWidth: "100%",
+      fontSize: FONT_SIZE.m,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray200,
+    },
+    noticeTime: {
+      fontSize: FONT_SIZE.xs,
+      fontWeight: FONT_WEIGHT.regular,
+      color: COLOR_THEME[theme].gray100,
+    },
+    noticeActionCont: {
+      width: "100%",
+      paddingTop: 8,
+      paddingBottom: 4,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      gap: 16,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_THEME[theme].gray50,
+    },
+    noticeAction: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].primary,
+    },
+  });

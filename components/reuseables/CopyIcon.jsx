@@ -9,8 +9,10 @@ import * as Clipboard from "expo-clipboard";
 import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME } from "../../constants";
 import { Alert } from "../../helpers/utils/alert";
+import { useSelector } from "react-redux";
 
 const CopyIcon = ({ text_to_copy = "" }) => {
+  const theme = useSelector((state) => state.app.theme);
   const [isLoading, setIsLoading] = useState(false);
 
   const CopyText = async (text) => {
@@ -37,14 +39,12 @@ const CopyIcon = ({ text_to_copy = "" }) => {
       disabled={isLoading}
     >
       {isLoading ? (
-        <ActivityIndicator size={14} color={COLOR_THEME.gray100} />
+        <ActivityIndicator size={14} color={COLOR_THEME[theme].gray100} />
       ) : (
-        <Octicons name="copy" size={14} color={COLOR_THEME.gray100} />
+        <Octicons name="copy" size={14} color={COLOR_THEME[theme].gray100} />
       )}
     </TouchableOpacity>
   );
 };
 
 export default memo(CopyIcon);
-
-const styles = StyleSheet.create({});

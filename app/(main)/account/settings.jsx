@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { router } from "expo-router";
 
 export default function AccountSettings() {
+  const theme = useSelector((state) => state.app.theme);
+
   const user = useSelector((state) => state.user.user);
 
   const [formData, setFormData] = useState({
@@ -29,9 +31,9 @@ export default function AccountSettings() {
   };
 
   return (
-    <View style={styles.page}>
+    <View style={styles(theme).page}>
       {/**thumbnail picker */}
-      <View style={styles.thumbnailCont}>
+      <View style={styles(theme).thumbnailCont}>
         <ThumbnailPicker />
       </View>
 
@@ -48,7 +50,11 @@ export default function AccountSettings() {
               formType={"input"}
               inputMode={"email"}
               inputIcon={
-                <Octicons name="note" size={16} color={COLOR_THEME.gray200} />
+                <Octicons
+                  name="mail"
+                  size={16}
+                  color={COLOR_THEME[theme].gray200}
+                />
               }
               label={"Email Address"}
               placeholder={"Ex. johnsdoe@example.com"}
@@ -62,7 +68,11 @@ export default function AccountSettings() {
             formType={"input"}
             inputMode={"text"}
             inputIcon={
-              <Octicons name="note" size={16} color={COLOR_THEME.gray200} />
+              <Octicons
+                name="note"
+                size={16}
+                color={COLOR_THEME[theme].gray200}
+              />
             }
             label={"Legal full name"}
             placeholder={"Ex. Okoye Raymond"}
@@ -79,7 +89,7 @@ export default function AccountSettings() {
               <Octicons
                 name="device-mobile"
                 size={16}
-                color={COLOR_THEME.gray200}
+                color={COLOR_THEME[theme].gray200}
               />
             }
             label={"Phone number"}
@@ -94,19 +104,20 @@ export default function AccountSettings() {
   );
 }
 
-const styles = StyleSheet.create({
-  page: {
-    width: "100%",
-    minHeight: "100%",
-    padding: 16,
-    gap: 16,
-    backgroundColor: COLOR_THEME.white,
-  },
-  thumbnailCont: {
-    width: "100%",
-    alignItems: "center",
-    paddingBottom: 32,
-    borderBottomWidth: 1,
-    borderBottomColor: COLOR_THEME.gray50,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    page: {
+      width: "100%",
+      minHeight: "100%",
+      padding: 16,
+      gap: 16,
+      backgroundColor: COLOR_THEME[theme].white,
+    },
+    thumbnailCont: {
+      width: "100%",
+      alignItems: "center",
+      paddingBottom: 32,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_THEME[theme].gray50,
+    },
+  });

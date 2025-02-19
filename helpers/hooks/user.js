@@ -13,8 +13,49 @@ import {
   ACTION_UPDATE_LATEST_NOTIFICATIONS,
   ACTION_UPDATE_NOTIFICATION_HAS_UNREAD,
 } from "../../redux/reducer/notificationSlice";
+import { ACTION_TOGGLE_APP_THEME } from "../../redux/reducer/appSlice";
 
 export const USER_HOOKS = {
+  fetch_theme_preference: async () => {
+    //fetch locally saved theme
+    let theme = await LOCAL_STORAGE.read(LOCAL_STORAGE.paths.app_theme);
+
+    if (theme && theme != "") {
+      //save to global storage
+      store.dispatch(ACTION_TOGGLE_APP_THEME({ theme }));
+    } else {
+      store.dispatch(ACTION_TOGGLE_APP_THEME({ theme: "light" }));
+      await LOCAL_STORAGE.save(LOCAL_STORAGE.paths.app_theme, "light");
+    }
+  },
+  toggle_theme_preference: async () => {
+    try {
+      const current_theme = store.getState().app.theme;
+
+      let theme;
+      if (current_theme === "light") {
+        theme = "dark";
+      } else {
+        theme = "light";
+      }
+
+      //save to global and local storage
+      store.dispatch(ACTION_TOGGLE_APP_THEME({ theme }));
+
+      await LOCAL_STORAGE.save(LOCAL_STORAGE.paths.app_theme, theme);
+
+      //alert user
+      Alert.success(
+        "Theme update successful",
+        `App theme preference set to ${theme} mode`
+      );
+
+      return true;
+    } catch (error) {
+      Alert.error("Theme update failed", HEADERS.error_extractor(error));
+      return false;
+    }
+  },
   update_user_thumbnail: async (setLoader = () => {}, photo) => {
     try {
       setLoader(true);

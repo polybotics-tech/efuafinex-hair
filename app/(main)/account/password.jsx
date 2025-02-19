@@ -7,8 +7,11 @@ import { COLOR_THEME } from "../../../constants/theme";
 import { router } from "expo-router";
 import { USER_HOOKS } from "../../../helpers/hooks/user";
 import { DEBOUNCE } from "../../../helpers/utils/debounce";
+import { useSelector } from "react-redux";
 
 export default function VerifyEmail() {
+  const theme = useSelector((state) => state.app.theme);
+
   const [formData, setFormData] = useState({
     pass: "",
     new_pass: "",
@@ -27,7 +30,7 @@ export default function VerifyEmail() {
   });
 
   return (
-    <View style={styles.safeArea}>
+    <View style={styles(theme).safeArea}>
       <AuthScreenWrapper
         buttonText={"Change"}
         buttonIsLoading={isLoading}
@@ -38,7 +41,11 @@ export default function VerifyEmail() {
           formType={"input"}
           inputMode={"password"}
           inputIcon={
-            <Octicons name="lock" size={16} color={COLOR_THEME.gray200} />
+            <Octicons
+              name="lock"
+              size={16}
+              color={COLOR_THEME[theme].gray200}
+            />
           }
           label={"Current Password"}
           placeholder={"Enter your current password"}
@@ -52,7 +59,11 @@ export default function VerifyEmail() {
           formType={"input"}
           inputMode={"password"}
           inputIcon={
-            <Octicons name="lock" size={16} color={COLOR_THEME.gray200} />
+            <Octicons
+              name="lock"
+              size={16}
+              color={COLOR_THEME[theme].gray200}
+            />
           }
           label={"New Password"}
           placeholder={"Enter a new password"}
@@ -66,7 +77,11 @@ export default function VerifyEmail() {
           formType={"input"}
           inputMode={"password"}
           inputIcon={
-            <Octicons name="lock" size={16} color={COLOR_THEME.gray200} />
+            <Octicons
+              name="lock"
+              size={16}
+              color={COLOR_THEME[theme].gray200}
+            />
           }
           label={"Confirm Password"}
           placeholder={"Retype password"}
@@ -79,9 +94,10 @@ export default function VerifyEmail() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    width: "100%",
-    padding: 16,
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    safeArea: {
+      width: "100%",
+      padding: 16,
+    },
+  });

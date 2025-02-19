@@ -8,12 +8,15 @@ import {
 import React, { memo } from "react";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
 import { BORDER_RADIUS } from "../../constants/theme";
+import { useSelector } from "react-redux";
 
 const PrimaryButton = ({ ...props }) => {
+  const theme = useSelector((state) => state.app.theme);
+
   return (
     <TouchableOpacity
       style={[
-        styles.primaryBtn(props?.type),
+        styles(theme).primaryBtn(props?.type),
         props?.style,
         { opacity: props?.disabled ? 0.5 : 1 },
       ]}
@@ -23,12 +26,12 @@ const PrimaryButton = ({ ...props }) => {
     >
       <Text
         style={[
-          styles.primaryBtnText,
+          styles(theme).primaryBtnText,
           {
             color:
               props?.color || props?.type === "secondary"
-                ? COLOR_THEME.primary
-                : COLOR_THEME.white,
+                ? COLOR_THEME[theme].primary
+                : COLOR_THEME[theme].white,
           },
         ]}
       >
@@ -40,8 +43,8 @@ const PrimaryButton = ({ ...props }) => {
           size={FONT_SIZE.s}
           color={
             props?.color || props?.type === "secondary"
-              ? COLOR_THEME.primary
-              : COLOR_THEME.white
+              ? COLOR_THEME[theme].primary
+              : COLOR_THEME[theme].white
           }
         />
       ) : (
@@ -49,7 +52,7 @@ const PrimaryButton = ({ ...props }) => {
           {props?.icon && (
             <View
               style={[
-                styles.primaryBtnIcon,
+                styles(theme).primaryBtnIcon,
                 props?.iconSize && { width: props?.iconSize },
               ]}
             >
@@ -64,24 +67,27 @@ const PrimaryButton = ({ ...props }) => {
 
 export default memo(PrimaryButton);
 
-const styles = StyleSheet.create({
-  primaryBtn: (type = "primary") => ({
-    width: "100%",
-    height: 48,
-    borderRadius: BORDER_RADIUS.r,
-    backgroundColor:
-      type === "primary" ? COLOR_THEME.primary : COLOR_THEME.primaryFaded,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  }),
-  primaryBtnText: {
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.semibold,
-  },
-  primaryBtnIcon: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    primaryBtn: (type = "primary") => ({
+      width: "100%",
+      height: 48,
+      borderRadius: BORDER_RADIUS.r,
+      backgroundColor:
+        type === "primary"
+          ? COLOR_THEME[theme].primary
+          : COLOR_THEME[theme].primaryFaded,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+    }),
+    primaryBtnText: {
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.semibold,
+    },
+    primaryBtnIcon: {
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  });

@@ -18,8 +18,11 @@ import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
 import PhotoPicker from "../../../components/reuseables/PhotoPicker";
 import { PACKAGE_HOOKS } from "../../../helpers/hooks/package";
 import { DEBOUNCE, DEBOUNCE_ASYNC } from "../../../helpers/utils/debounce";
+import { useSelector } from "react-redux";
 
 export default function CreatePackage() {
+  const theme = useSelector((state) => state.app.theme);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -75,7 +78,7 @@ export default function CreatePackage() {
     <SafeAreaWrapper>
       <DefaultHeaderComponent directory={"create"} />
 
-      <ScrollViewWrapper style={styles.page}>
+      <ScrollViewWrapper style={styles(theme).page}>
         <AuthScreenWrapper
           buttonText={"Create package"}
           buttonIsLoading={isLoading}
@@ -85,7 +88,11 @@ export default function CreatePackage() {
           <AuthFormComponent
             formType={"input"}
             inputIcon={
-              <Octicons name="log" size={16} color={COLOR_THEME.gray200} />
+              <Octicons
+                name="log"
+                size={16}
+                color={COLOR_THEME[theme].gray200}
+              />
             }
             label={"Package Title"}
             placeholder={"Ex. Hair for valentine"}
@@ -152,7 +159,7 @@ export default function CreatePackage() {
                   <FontAwesome6
                     name="naira-sign"
                     size={16}
-                    color={COLOR_THEME.gray200}
+                    color={COLOR_THEME[theme].gray200}
                   />
                 }
                 inputMode={"numeric"}
@@ -204,7 +211,7 @@ export default function CreatePackage() {
                 <Octicons
                   name="calendar"
                   size={16}
-                  color={COLOR_THEME.gray200}
+                  color={COLOR_THEME[theme].gray200}
                 />
               }
               name={"deadline"}
@@ -227,7 +234,7 @@ export default function CreatePackage() {
                   <Octicons
                     name="stopwatch"
                     size={16}
-                    color={COLOR_THEME.gray200}
+                    color={COLOR_THEME[theme].gray200}
                   />
                 }
                 name={"duration"}
@@ -237,12 +244,14 @@ export default function CreatePackage() {
               />
               {Boolean(formData?.duration) && (
                 <TouchableOpacity
-                  style={styles.resetBtn}
+                  style={styles(theme).resetBtn}
                   onPress={() => {
                     setFormData((prev) => ({ ...prev, duration: "" }));
                   }}
                 >
-                  <Text style={styles.resetBtnText}>Reset Duration?</Text>
+                  <Text style={styles(theme).resetBtnText}>
+                    Reset Duration?
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -253,23 +262,24 @@ export default function CreatePackage() {
   );
 }
 
-const styles = StyleSheet.create({
-  page: {
-    width: "100%",
-    minHeight: "100%",
-    padding: 16,
-    backgroundColor: COLOR_THEME.white,
-  },
-  resetBtn: {
-    width: "auto",
-    marginLeft: "auto",
-    paddingVertical: 8,
-  },
-  resetBtnText: {
-    maxWidth: 120,
-    fontSize: FONT_SIZE.s,
-    fontWeight: FONT_WEIGHT.semibold,
-    color: COLOR_THEME.primary,
-    textAlign: "right",
-  },
-});
+const styles = (theme) =>
+  StyleSheet.create({
+    page: {
+      width: "100%",
+      minHeight: "100%",
+      padding: 16,
+      backgroundColor: COLOR_THEME[theme].white,
+    },
+    resetBtn: {
+      width: "auto",
+      marginLeft: "auto",
+      paddingVertical: 8,
+    },
+    resetBtnText: {
+      maxWidth: 120,
+      fontSize: FONT_SIZE.s,
+      fontWeight: FONT_WEIGHT.semibold,
+      color: COLOR_THEME[theme].primary,
+      textAlign: "right",
+    },
+  });
