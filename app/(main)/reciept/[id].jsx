@@ -12,6 +12,7 @@ import {
   FONT_SIZE,
   FONT_WEIGHT,
   NAIRA_CURRENCY,
+  SCREEN_DIMENSION,
 } from "../../../constants";
 import { format_number } from "../../../helpers/utils/numbers";
 import { format_date_time_readable } from "../../../helpers/utils/datetime";
@@ -386,12 +387,13 @@ const styles = (theme) =>
       fontWeight: FONT_WEIGHT.semibold,
       color: COLOR_THEME[theme].black,
       textAlign: "left",
-      maxWidth: "44%",
+      width: 100,
     },
     detailValueTab: {
-      maxWidth: "52%",
+      width: SCREEN_DIMENSION.subtractWidth(16, 32 + 32, 100),
       flexDirection: "row",
       alignItems: "center",
+      justifyContent: "flex-end",
       gap: 4,
     },
     detailValue: {
