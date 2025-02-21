@@ -39,14 +39,13 @@ const PopupModalWrapper = ({ children, onCloseFunc = () => {}, ...props }) => {
             <Text style={styles(theme).headerTitle}>{props?.title}</Text>
 
             {/**close modal */}
-            <Text
-              style={styles(theme).cancelBtn}
+            <TouchableOpacity
               onPress={() => {
                 props?.setIsVisible(false);
               }}
             >
-              Close
-            </Text>
+              <Text style={styles(theme).cancelBtn}>Close</Text>
+            </TouchableOpacity>
           </View>
 
           {/** */}
