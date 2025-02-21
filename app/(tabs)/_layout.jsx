@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
-import { Tabs, usePathname } from "expo-router";
+import React, { useEffect } from "react";
+import { router, Tabs, usePathname } from "expo-router";
 import { Octicons } from "@expo/vector-icons";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants/theme";
 import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
@@ -19,6 +19,8 @@ export default function TabsLayout() {
 
   return (
     <SafeAreaWrapper>
+      <UserVerifiedChecker />
+
       <TabsHeaderComponent />
 
       <Tabs
@@ -95,6 +97,26 @@ export default function TabsLayout() {
     </SafeAreaWrapper>
   );
 }
+
+const UserVerifiedChecker = () => {
+  const user = useSelector((state) => state.user.user);
+
+  useEffect(() => {
+    if (user) {
+      //check if user is verified
+      if (
+        !Boolean(user?.is_verified === true || user?.is_verified === "true")
+      ) {
+        if (router.canDismiss()) {
+          router.dismissAll();
+        }
+        router.dismissTo("/(auth)/verify/");
+      }
+    }
+  }, [user]);
+
+  return <></>;
+};
 
 const styles = (theme) =>
   StyleSheet.create({
