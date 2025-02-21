@@ -14,8 +14,8 @@ const SeeMoreBtn = ({ onPress, isLoading }) => {
   const theme = useSelector((state) => state.app.theme);
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>See More</Text>
+    <TouchableOpacity style={styles(theme).button} onPress={onPress}>
+      <Text style={styles(theme).text}>See More</Text>
 
       {/* show loading indicator */}
       {isLoading ? (
