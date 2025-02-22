@@ -10,10 +10,7 @@ import SafeAreaWrapper from "../../../components/ui/safeAreaWrapper";
 import ScrollViewWrapper from "../../../components/ui/ScrollViewWrapper";
 import DefaultHeaderComponent from "../../../components/DefaultHeaderComponent";
 import { router, useLocalSearchParams } from "expo-router";
-import {
-  fetch_package_data,
-  PACKAGE_HOOKS,
-} from "../../../helpers/hooks/package";
+import { PACKAGE_HOOKS } from "../../../helpers/hooks/package";
 import PackageCard from "../../../components/reuseables/PackageCard";
 import {
   COLOR_THEME,

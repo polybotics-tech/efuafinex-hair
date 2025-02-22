@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import React, { memo, useEffect, useState } from "react";
 import {
