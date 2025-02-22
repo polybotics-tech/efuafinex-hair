@@ -59,8 +59,8 @@ const HelperBlock = ({ theme }) => {
       <View style={styles(theme).optionsList}>
         {isLoading ||
         Boolean(
-          formData?.email === "" ||
-            formData?.instagram === "" ||
+          formData?.email === "" &&
+            formData?.instagram === "" &&
             formData?.whatsapp === ""
         ) ? (
           <NotFoundComponent
