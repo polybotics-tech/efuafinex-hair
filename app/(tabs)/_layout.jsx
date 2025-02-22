@@ -102,11 +102,9 @@ const UserVerifiedChecker = () => {
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    if (user) {
+    if (user && Boolean(user?.email !== "")) {
       //check if user is verified
-      if (
-        !Boolean(user?.is_verified === true || user?.is_verified === "true")
-      ) {
+      if (!user?.is_verified) {
         if (router.canDismiss()) {
           router.dismissAll();
         }
