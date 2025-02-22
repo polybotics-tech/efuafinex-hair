@@ -5,8 +5,9 @@ import {
   Pressable,
   View,
   ScrollView,
+  Keyboard,
 } from "react-native";
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import {
   COLOR_THEME,
   FONT_SIZE,
@@ -17,6 +18,30 @@ import { useSelector } from "react-redux";
 
 const PopupModalWrapper = ({ children, onCloseFunc = () => {}, ...props }) => {
   const theme = useSelector((state) => state.app.theme);
+
+  //handle keyboard display
+  const [keyboardPadding, setKeyboardPadding] = useState(32);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      (event) => {
+        setKeyboardPadding(Number(event.endCoordinates.height));
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardPadding(32);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   return (
     <>
@@ -52,6 +77,9 @@ const PopupModalWrapper = ({ children, onCloseFunc = () => {}, ...props }) => {
           <ScrollView
             contentContainerStyle={[
               styles(theme).container,
+              {
+                paddingBottom: keyboardPadding,
+              },
               props?.containerStyle,
             ]}
           >

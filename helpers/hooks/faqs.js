@@ -26,4 +26,26 @@ export const FAQS_HOOKS = {
       setLoader(false);
     }
   },
+  fetch_contact_info: async (setLoader = () => {}) => {
+    try {
+      setLoader(true);
+
+      const { data } = await axios.get(
+        END_POINTS.admin.contact_info,
+        HEADERS.json()
+      );
+
+      const { success, message } = data;
+      if (success) {
+        const res = data?.data;
+
+        return res;
+      }
+    } catch (error) {
+      Alert.error("Request failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
 };

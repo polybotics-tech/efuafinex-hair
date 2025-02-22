@@ -23,6 +23,28 @@ export default function ContactUs() {
 }
 
 const HelperBlock = ({ theme }) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    instagram: "",
+    whatsapp: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  //handle fetching existing contact info
+  const fetch_contact_info = async () => {
+    const res = await FAQS_HOOKS.fetch_contact_info(setIsLoading);
+
+    if (res) {
+      const { email, instagram, whatsapp } = res;
+
+      setFormData((prev) => ({ ...prev, email, instagram, whatsapp }));
+    }
+  };
+
+  useEffect(() => {
+    fetch_contact_info();
+  }, []);
+
   return (
     <View style={styles(theme).block}>
       <Text style={styles(theme).blockTitle}>How May We Help You?</Text>
@@ -35,9 +57,29 @@ const HelperBlock = ({ theme }) => {
 
       {/**contact options */}
       <View style={styles(theme).optionsList}>
-        <SocialTab name={"email"} theme={theme} />
-        <SocialTab name={"instagram"} theme={theme} />
-        <SocialTab name={"whatsapp"} theme={theme} />
+        {isLoading ||
+        Boolean(
+          formData?.email === "" ||
+            formData?.instagram === "" ||
+            formData?.whatsapp === ""
+        ) ? (
+          <NotFoundComponent
+            text={"Unable to load contact options"}
+            isLoading={isLoading}
+          />
+        ) : (
+          <>
+            {Boolean(formData?.email != "") && (
+              <SocialTab name={"email"} theme={theme} />
+            )}
+            {Boolean(formData?.whatsapp != "") && (
+              <SocialTab name={"whatsapp"} theme={theme} />
+            )}
+            {Boolean(formData?.instagram != "") && (
+              <SocialTab name={"instagram"} theme={theme} />
+            )}
+          </>
+        )}
       </View>
     </View>
   );
