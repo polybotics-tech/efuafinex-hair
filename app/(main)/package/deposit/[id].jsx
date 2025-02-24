@@ -66,11 +66,23 @@ export default function Deposit() {
 
   //handle quick validation of amount entered
   useEffect(() => {
-    if (
-      Number(formData?.amount) >= Number(MINIMUM_DEPOSIT) &&
-      Number(formData?.amount) <= Number(balance)
-    ) {
-      setCanProceed(true);
+    if (data) {
+      if (data?.package_type === "defined") {
+        if (
+          Number(formData?.amount) >= Number(MINIMUM_DEPOSIT) &&
+          Number(formData?.amount) <= Number(balance)
+        ) {
+          setCanProceed(true);
+        } else {
+          setCanProceed(false);
+        }
+      } else {
+        if (Number(formData?.amount) >= Number(MINIMUM_DEPOSIT)) {
+          setCanProceed(true);
+        } else {
+          setCanProceed(false);
+        }
+      }
     } else {
       setCanProceed(false);
     }
