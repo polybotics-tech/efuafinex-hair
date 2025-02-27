@@ -196,6 +196,10 @@ export const USER_HOOKS = {
     try {
       const token = store.getState()?.user?.token;
 
+      if (!token) {
+        return false;
+      }
+
       const { data } = await axios.get(
         END_POINTS.user.notifications(1),
         HEADERS.json(token)
