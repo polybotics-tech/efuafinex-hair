@@ -1,4 +1,4 @@
-const HOST = "https://test.polybotics.tech"; //"http://192.168.138.31:5050";
+const HOST = "https://efh.i2medier.com"; //"http://192.168.138.31:5050";
 const API = HOST + "/v1";
 
 export const END_POINTS = {
