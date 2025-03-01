@@ -42,5 +42,6 @@ export const END_POINTS = {
   admin: {
     faqs: (page = 1) => API + `/admin/faqs/?page=${page}`,
     contact_info: API + "/admin/faqs/contacts",
+    banners: (page = 1) => API + `/admin/banners/?page=${page}`,
   },
 };

@@ -55,7 +55,9 @@ const PhotoPicker = ({ name, form, setForm }) => {
         activeOpacity={0.9}
         onPress={() => SELECT_IMAGE()}
       >
-        <Text style={styles(theme).buttonText}>Select photo</Text>
+        <Text style={styles(theme).buttonText}>
+          {Boolean(form[name]?.uri) ? "Change" : "Select"} photo
+        </Text>
         <Octicons name="plus" size={18} color={COLOR_THEME[theme].gray100} />
       </TouchableOpacity>
 

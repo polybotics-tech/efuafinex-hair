@@ -17,4 +17,5 @@ export const SCREEN_DIMENSION = {
   height: screenH,
   heightRatio: (ratio = 1) => Number(screenH * ratio),
   numberCounterWidth: counterWidth,
+  bannerHeight: (width) => Number((width * 512) / 1080),
 };
