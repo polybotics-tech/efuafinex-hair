@@ -43,7 +43,7 @@ const DefaultChecker = () => {
 
     const interval = setInterval(() => {
       requestNotifications();
-    }, 30000);
+    }, 120000);
 
     return () => {
       clearInterval(interval);
