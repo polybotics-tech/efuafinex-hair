@@ -13,7 +13,7 @@ export default function SetThumbnail() {
   const thumbnail = useSelector((state) => state.user.user?.thumbnail);
 
   const continueToHome = () => {
-    router.dismissTo("/(tabs)/");
+    router.dismissTo("/terms/?ref=refund");
   };
 
   return (

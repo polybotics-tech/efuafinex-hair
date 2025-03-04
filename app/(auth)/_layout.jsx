@@ -24,6 +24,10 @@ export default function AuthLayout() {
 
   const pathname = usePathname();
 
+  const _readTerms = () => {
+    router.navigate("/terms/?ref=read");
+  };
+
   return (
     <SafeAreaWrapper>
       <ScrollView
@@ -50,7 +54,10 @@ export default function AuthLayout() {
               {/**terms and policies */}
               <Text style={styles(theme).bottomText}>
                 By continuing, you agree to our{" "}
-                <Text style={styles(theme).bottomLink}>
+                <Text
+                  style={styles(theme).bottomLink}
+                  onPress={() => _readTerms()}
+                >
                   Terms and Privacy Policies
                 </Text>
               </Text>

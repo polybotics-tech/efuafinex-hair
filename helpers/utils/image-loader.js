@@ -15,6 +15,13 @@ export const IMAGE_LOADER = {
 
     return { uri: url };
   },
+  bank_thumbnail: (url) => {
+    if (!url) {
+      return null;
+    }
+
+    return { uri: `${END_POINTS.bank_logo(url)}` };
+  },
   app_logo: () => {
     return require("../../assets/images/icon.png");
   },

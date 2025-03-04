@@ -29,8 +29,8 @@ export default function NotFound() {
           size={100}
           color={COLOR_THEME[theme].error}
         />
-        <Text style={styles?.big}>404</Text>
-        <Text style={styles?.sub}>
+        <Text style={styles(theme)?.big}>404</Text>
+        <Text style={styles(theme)?.sub}>
           Unknown Route: <Text style={styles(theme).route}>{pathname}</Text>
         </Text>
       </View>

@@ -4,6 +4,7 @@ const API = HOST + "/v1";
 export const END_POINTS = {
   home: HOST,
   media: (url) => HOST + url,
+  bank_logo: (name) => HOST + "/media/photos/bank-logo/" + name + ".png",
   auth: {
     login: API + "/auth/login",
     register: API + "/auth/register",
@@ -43,5 +44,9 @@ export const END_POINTS = {
     faqs: (page = 1) => API + `/admin/faqs/?page=${page}`,
     contact_info: API + "/admin/faqs/contacts",
     banners: (page = 1) => API + `/admin/banners/?page=${page}`,
+    transfer: {
+      verify_account: API + "/admin/transfers/verify/account/",
+      save_refund: API + "/admin/transfers/refund/",
+    },
   },
 };

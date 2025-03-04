@@ -59,10 +59,17 @@ export default function Account() {
           path={"/account/contact/"}
           theme={theme}
         />
+        <OptionTag
+          title={"Terms and Conditions"}
+          icon={"file"}
+          theme={theme}
+          path={"/terms/?ref=read"}
+        />
+
         <OptionTag title={"Privacy Policy"} icon={"file"} theme={theme} />
       </SectionContainer>
 
-      {/**support card */}
+      {/**miscellaneous */}
       <SectionContainer title={"Miscellaneous"} theme={theme}>
         <ThemeToggle theme={theme} />
         <OptionTag

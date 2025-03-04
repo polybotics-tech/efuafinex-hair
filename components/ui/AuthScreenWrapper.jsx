@@ -59,12 +59,14 @@ const AuthScreenWrapper = ({
 
       {/**submit button */}
       <View style={styles(theme).bottomCont}>
-        <PrimaryButton
-          title={buttonText}
-          onPress={formSubmitFunction}
-          isLoading={buttonIsLoading}
-          disabled={buttonIsLoading || buttonIsDisabled}
-        />
+        {Boolean(buttonText) && (
+          <PrimaryButton
+            title={buttonText}
+            onPress={formSubmitFunction}
+            isLoading={buttonIsLoading}
+            disabled={buttonIsLoading || buttonIsDisabled}
+          />
+        )}
 
         <Text style={styles(theme).bottomText}>
           {bottomText}{" "}
