@@ -46,7 +46,7 @@ export const END_POINTS = {
     banners: (page = 1) => API + `/admin/banners/?page=${page}`,
     transfer: {
       verify_account: API + "/admin/transfers/verify/account/",
-      save_refund: API + "/admin/transfers/refund/",
+      refund_account: API + "/admin/transfers/refund/",
     },
   },
 };

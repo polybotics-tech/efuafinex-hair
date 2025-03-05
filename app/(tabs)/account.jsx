@@ -39,16 +39,18 @@ export default function Account() {
           theme={theme}
         />
         <OptionTag
+          title={"Manage Bank Account"}
+          icon={"checklist"}
+          path={"/account/refund/"}
+          theme={theme}
+        />
+
+        <OptionTag
           title={"Push Notifications"}
           icon={"bell"}
           path={"/account/notification/"}
           theme={theme}
         />
-        {/*<OptionTag
-          title={"Delivery Location"}
-          icon={"location"}
-          path={"/account/location/"}
-        />*/}
       </SectionContainer>
 
       {/**support card */}

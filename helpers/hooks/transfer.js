@@ -41,7 +41,7 @@ export const TRANSFER_HOOKS = {
       const token = store.getState().user.token;
 
       const { data } = await axios.post(
-        END_POINTS.admin.transfer.save_refund,
+        END_POINTS.admin.transfer.refund_account,
         form,
         HEADERS.json(token)
       );
@@ -50,6 +50,30 @@ export const TRANSFER_HOOKS = {
       if (success) {
         Alert.success("Request successful", message);
         let res = data?.data;
+
+        return res;
+      }
+    } catch (error) {
+      Alert.error("Request failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
+  fetch_refund_account: async (setLoader = () => {}) => {
+    try {
+      setLoader(true);
+
+      const token = store.getState().user.token;
+
+      const { data } = await axios.get(
+        END_POINTS.admin.transfer.refund_account,
+        HEADERS.json(token)
+      );
+
+      const { success, message } = data;
+      if (success) {
+        const res = data?.data;
 
         return res;
       }

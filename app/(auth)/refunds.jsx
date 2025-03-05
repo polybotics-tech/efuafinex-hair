@@ -160,8 +160,7 @@ export default function Refunds() {
             formData?.account_number &&
               formData?.bank_code &&
               formData?.account_name &&
-              formData?.recipient_code &&
-              formData?.reason
+              formData?.recipient_code
           ) && (
             <PrimaryButton
               title={"Save Refund Account"}

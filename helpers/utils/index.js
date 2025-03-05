@@ -10,7 +10,7 @@ export const extract_name_from_bank_code = (bank_code) => {
   });
 
   if (!bank) {
-    return null;
+    return "Unknown Bank";
   }
 
   return bank?.name;

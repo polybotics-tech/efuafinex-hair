@@ -21,6 +21,7 @@ const DefaultHeaderComponent = ({ directory }) => {
       logout: "Log Out",
       delete: "Delete Account",
       contact: "Contact Us",
+      refund: "Manage Bank Account",
     },
   };
 
