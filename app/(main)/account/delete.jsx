@@ -29,7 +29,8 @@ export default function DeleteAccount() {
     let success = await USER_HOOKS.delete_account(setIsLoading);
 
     if (success) {
-      router.dismissTo("/login/");
+      console.log("deleted");
+      router.dismissTo("/(auth)/login/");
     }
   };
 

@@ -29,7 +29,7 @@ export default function LogOut() {
     let success = await AUTH_HOOKS.attempt_logout(setIsLoading);
 
     if (success) {
-      router.dismissTo("/login/");
+      router.dismissTo("/(auth)/login/");
     }
   };
 

@@ -12,8 +12,8 @@ export default function SetThumbnail() {
 
   const thumbnail = useSelector((state) => state.user.user?.thumbnail);
 
-  const continueToHome = () => {
-    router.dismissTo("/terms/?ref=refund");
+  const _continueToHome = async () => {
+    router.dismissTo("/(auth)/terms/?ref=refund");
   };
 
   return (
@@ -29,14 +29,14 @@ export default function SetThumbnail() {
       <View style={styles(theme).actionCont}>
         <PrimaryButton
           title={"Continue"}
-          disabled={!thumbnail}
-          onPress={() => continueToHome()}
+          disabled={!Boolean(thumbnail)}
+          onPress={() => _continueToHome()}
         />
 
         {/**skip button */}
         <TouchableOpacity
           style={styles(theme).skipBtn}
-          onPress={() => continueToHome()}
+          onPress={() => _continueToHome()}
         >
           <Text style={styles(theme).skipBtnText}>Skip, maybe later</Text>
         </TouchableOpacity>
