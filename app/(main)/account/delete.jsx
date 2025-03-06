@@ -13,8 +13,8 @@ import {
   SCREEN_DIMENSION,
 } from "../../../constants";
 import { router } from "expo-router";
-import { AUTH_HOOKS } from "../../../helpers/hooks/auth";
 import { useSelector } from "react-redux";
+import { USER_HOOKS } from "../../../helpers/hooks/user";
 
 export default function DeleteAccount() {
   const theme = useSelector((state) => state.app.theme);
@@ -26,7 +26,7 @@ export default function DeleteAccount() {
   };
 
   const deleteAcct = async () => {
-    let success = await AUTH_HOOKS.attempt_logout(setIsLoading);
+    let success = await USER_HOOKS.delete_account(setIsLoading);
 
     if (success) {
       router.dismissTo("/login/");

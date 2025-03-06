@@ -4,6 +4,7 @@ import store from "../../redux/store";
 import { END_POINTS } from "../api/endpoints";
 import {
   ACTION_LOG_USER_IN,
+  ACTION_LOG_USER_OUT,
   ACTION_UPDATE_USER_THUMBNAIL,
 } from "../../redux/reducer/userSlice";
 import { Alert } from "../utils/alert";
@@ -116,6 +117,47 @@ export const USER_HOOKS = {
 
         //update user global state
         store.dispatch(ACTION_LOG_USER_IN({ user }));
+        return true;
+      }
+    } catch (error) {
+      Alert.error("request failed", HEADERS.error_extractor(error));
+      return false;
+    } finally {
+      setLoader(false);
+    }
+  },
+  delete_account: async (setLoader = () => {}) => {
+    try {
+      setLoader(true);
+
+      //check if token stored in global state
+      const token = store.getState()?.user?.token;
+
+      const { data } = await axios.delete(
+        END_POINTS.user.account,
+        HEADERS.json(token)
+      );
+
+      const { success, message } = data;
+      if (success) {
+        Alert.success("request successful", message);
+
+        const res = data?.data;
+
+        //delete token from local storage
+        await LOCAL_STORAGE.delete(LOCAL_STORAGE.paths.token);
+
+        //remove user and token from global state
+        store.dispatch(ACTION_LOG_USER_OUT());
+
+        //remove notifications from global state
+        store.dispatch(ACTION_CLEAR_NOTIFICATION_RECORDS());
+
+        Alert.success(
+          "Account Deleted",
+          "You will be logged out of device now"
+        );
+
         return true;
       }
     } catch (error) {
