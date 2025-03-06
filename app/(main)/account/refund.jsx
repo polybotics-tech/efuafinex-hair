@@ -110,7 +110,6 @@ const RefundAccountComponent = ({ theme, refreshFunc = () => {} }) => {
     account_name: "",
     recipient_code: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
 
   //refresh form if bank change
   useEffect(() => {
@@ -255,7 +254,7 @@ const RefundAccountComponent = ({ theme, refreshFunc = () => {} }) => {
             ) && (
               <PrimaryButton
                 title={"Update Account"}
-                isLoading={isLoading}
+                isLoading={refundLoading}
                 onPress={() => _saveRefund()}
               />
             )}
