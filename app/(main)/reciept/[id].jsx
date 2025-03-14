@@ -132,7 +132,7 @@ export default function RecieptPage() {
             <View style={styles(theme).component}>
               <Text style={styles(theme).amountHeader}>AMOUNT</Text>
               <Text style={styles(theme).amount}>
-                {NAIRA_CURRENCY} {format_number(data?.amount_expected)}
+                {NAIRA_CURRENCY} {format_number(data?.amount_paid)}
               </Text>
 
               <View>
@@ -227,6 +227,14 @@ export default function RecieptPage() {
 
             {/**amount, status, date */}
             <View style={styles(theme).component}>
+              <DetailTab
+                title={"Amount Expected"}
+                value={`${NAIRA_CURRENCY} ${format_number(
+                  data?.amount_expected
+                )}`}
+                theme={theme}
+              />
+
               <DetailTab
                 title={"Amount Paid"}
                 value={`${NAIRA_CURRENCY} ${format_number(data?.amount_paid)}`}
