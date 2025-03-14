@@ -132,7 +132,7 @@ export default function RecieptPage() {
             <View style={styles(theme).component}>
               <Text style={styles(theme).amountHeader}>AMOUNT</Text>
               <Text style={styles(theme).amount}>
-                {NAIRA_CURRENCY} {format_number(data?.amount_paid)}
+                {NAIRA_CURRENCY} {format_number(data?.amount_expected)}
               </Text>
 
               <View>

@@ -36,7 +36,7 @@ const DepositRecord = ({ data }) => {
       <View style={styles(theme).bottomRow}>
         {/* amount */}
         <Text style={styles(theme).amount}>
-          {NAIRA_CURRENCY} {format_number(data?.amount_paid)}
+          {NAIRA_CURRENCY} {format_number(data?.amount_expected)}
         </Text>
 
         {/* created time */}
