@@ -234,12 +234,6 @@ export default function RecieptPage() {
               />
 
               <DetailTab
-                title={"Fee Charged"}
-                value={`${NAIRA_CURRENCY} ${format_number(data?.fee_charged)}`}
-                theme={theme}
-              />
-
-              <DetailTab
                 title={"Date"}
                 value={`${format_date_time_readable(data?.created_time)}`}
                 theme={theme}
