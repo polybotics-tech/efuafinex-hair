@@ -130,6 +130,7 @@ export default function Deposit() {
 
     if (url != authorization_url) {
       setLauchWeb(false);
+      verifyTransaction();
     }
   };
 
