@@ -20,6 +20,10 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./keys/efuafinex-mobile-app-240f7a05d081.json"
+      }
+    }
   }
 }

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Efuafinex Hair",
     "slug": "efuafinex_hair_app",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -13,9 +13,9 @@
       "supportsTablet": false,
       "usesAppleSignIn": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "This app would like to get access to your camera to take photos for your profile or posts",
-        "NSPhotoLibraryAddUsageDescription": "This app would like to save images to your device",
-        "NSPhotoLibraryUsageDescription": "This app would like to save images to your device",
+        "NSCameraUsageDescription": "Efuafinex hair would like to get access to your camera to take photos for your profile or posts",
+        "NSPhotoLibraryAddUsageDescription": "Efuafinex hair would like to save images to your device",
+        "NSPhotoLibraryUsageDescription": "Efuafinex hair would like to save images to your device",
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [
@@ -64,7 +64,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow access to photos to upload photo(s) from your library"
+          "photosPermission": "Efuafinex hair would like to get access to your camera/gallery to take photos for your profile or posts"
         }
       ]
     ],

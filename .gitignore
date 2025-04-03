@@ -10,6 +10,7 @@ node_modules/
 .expo/
 dist/
 web-build/
+keys/
 
 package-lock.json
 
