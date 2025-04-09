@@ -130,7 +130,7 @@ export const AUTH_HOOKS = {
 
         //update user global state
         store.dispatch(ACTION_LOG_USER_IN({ user, token }));
-        return true;
+        return user;
       }
     } catch (error) {
       Alert.error("login failed", HEADERS.error_extractor(error));

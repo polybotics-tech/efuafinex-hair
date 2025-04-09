@@ -1,9 +1,15 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import AuthScreenWrapper from "../../components/ui/AuthScreenWrapper";
 import AuthFormComponent from "../../components/AuthFormComponent";
 import { Octicons } from "@expo/vector-icons";
-import { COLOR_THEME } from "../../constants/theme";
+import { BORDER_RADIUS, COLOR_THEME } from "../../constants/theme";
 import { AUTH_HOOKS } from "../../helpers/hooks/auth";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSelector } from "react-redux";
@@ -59,41 +65,91 @@ export default function VerifyEmail() {
   });
 
   return (
-    <AuthScreenWrapper
-      title={"Verify Email"}
-      subText={`An OTP has been sent to ${user?.email}`}
-      switchText={"Resend"}
-      bottomText={"Didn't get code?"}
-      switchPath={`/verify/?ref=${ref}`}
-      buttonText={"Verify"}
-      buttonIsLoading={isLoading}
-      formSubmitFunction={submitForm}
-    >
-      {!data ? (
-        <NotFoundComponent
-          text={"Something went wrong. Click below to resend code"}
-          isLoading={isLoading}
-        />
-      ) : (
-        <AuthFormComponent
-          formType={"input"}
-          inputMode={"numeric"}
-          inputIcon={
-            <Octicons
-              name="number"
-              size={16}
-              color={COLOR_THEME[theme].gray200}
-            />
-          }
-          label={"6-digit OTP"}
-          placeholder={"Ex. 123456"}
-          name={"otp"}
-          form={formData}
-          setForm={setFormData}
-        />
-      )}
-    </AuthScreenWrapper>
+    <>
+      {/**back button */}
+      <BackBtn />
+
+      {/**page */}
+      <AuthScreenWrapper
+        title={"Verify Email"}
+        subText={`An OTP has been sent to ${user?.email}`}
+        switchText={"Resend"}
+        bottomText={"Didn't get code?"}
+        switchPath={`/verify/?ref=${ref}`}
+        buttonText={"Verify"}
+        buttonIsLoading={isLoading}
+        formSubmitFunction={submitForm}
+      >
+        {!data ? (
+          <NotFoundComponent
+            text={"Something went wrong. Click below to resend code"}
+            isLoading={isLoading}
+          />
+        ) : (
+          <AuthFormComponent
+            formType={"input"}
+            inputMode={"numeric"}
+            inputIcon={
+              <Octicons
+                name="number"
+                size={16}
+                color={COLOR_THEME[theme].gray200}
+              />
+            }
+            label={"6-digit OTP"}
+            placeholder={"Ex. 123456"}
+            name={"otp"}
+            form={formData}
+            setForm={setFormData}
+          />
+        )}
+      </AuthScreenWrapper>
+    </>
   );
 }
 
-const styles = (theme) => StyleSheet.create({});
+const BackBtn = ({}) => {
+  const theme = useSelector((state) => state.app.theme);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const _goBack = async () => {
+    let success = await AUTH_HOOKS.attempt_logout(setIsLoading);
+
+    if (success) {
+      router.dismissTo("/(auth)/login/");
+    }
+  };
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles(theme).actionBtn}
+      onPress={_goBack}
+      disabled={isLoading}
+    >
+      {isLoading ? (
+        <ActivityIndicator size={18} color={COLOR_THEME[theme].black} />
+      ) : (
+        <Octicons
+          name="arrow-left"
+          size={18}
+          color={COLOR_THEME[theme].black}
+        />
+      )}
+    </TouchableOpacity>
+  );
+};
+
+const styles = (theme) =>
+  StyleSheet.create({
+    actionBtn: {
+      width: 44,
+      height: 44,
+      borderRadius: BORDER_RADIUS.r,
+      backgroundColor: COLOR_THEME[theme].gray50,
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative",
+    },
+  });

@@ -83,9 +83,9 @@ const RefundChoice = ({}) => {
       <View style={styles(theme).action}>
         <PrimaryButton title={"Continue"} onPress={() => _addRefund()} />
 
-        <TouchableOpacity style={styles(theme).skip} onPress={() => _skip()}>
+        {/*<TouchableOpacity style={styles(theme).skip} onPress={() => _skip()}>
           <Text style={styles(theme).skipText}>Skip, maybe later</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </View>
     </View>
   );

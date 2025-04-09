@@ -75,9 +75,9 @@ const SignInWithGoogle = ({ theme }) => {
   const configureGoogleSignIn = () => {
     GoogleSignin.configure({
       webClientId:
-        "1051061091644-rk6rdjvsq8kg0gerraddds8h19pit2mh.apps.googleusercontent.com",
+        "385057153859-po5ijs4sqqn9627c34m39v6eo9hvmaj4.apps.googleusercontent.com",
       iosClientId:
-        "1051061091644-bjcue7e6li5vc56fg09ioodp1dgiqcgt.apps.googleusercontent.com",
+        "385057153859-vuav0b4a4tp84vg7vsredf9vkd281ntj.apps.googleusercontent.com",
       offlineAccess: true,
       forceCodeForRefreshToken: true,
       profileImageSize: 1280,
@@ -96,8 +96,13 @@ const SignInWithGoogle = ({ theme }) => {
     );
 
     if (login) {
-      //redirect to home
-      router.dismissTo("/(tabs)");
+      if (login?.new_registration) {
+        //redirect to terms
+        router.dismissTo("/(auth)/terms?ref=refund");
+      } else {
+        //redirect to home
+        router.dismissTo("/(tabs)");
+      }
     }
   };
 
