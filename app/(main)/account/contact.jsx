@@ -1,7 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { memo, useEffect, useState } from "react";
-import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../../constants";
 import { Ionicons, Octicons } from "@expo/vector-icons";
+import * as Linking from "expo-linking";
+import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../../constants";
 import { DEMO_FAQs } from "../../../helpers/json";
 import NotFoundComponent from "../../../components/reuseables/NotFoundComponent";
 import { FAQS_HOOKS } from "../../../helpers/hooks/faqs";
@@ -70,13 +71,21 @@ const HelperBlock = ({ theme }) => {
         ) : (
           <>
             {Boolean(formData?.email != "") && (
-              <SocialTab name={"email"} theme={theme} />
+              <SocialTab name={"email"} theme={theme} data={formData?.email} />
             )}
             {Boolean(formData?.whatsapp != "") && (
-              <SocialTab name={"whatsapp"} theme={theme} />
+              <SocialTab
+                name={"whatsapp"}
+                theme={theme}
+                data={formData?.whatsapp}
+              />
             )}
             {Boolean(formData?.instagram != "") && (
-              <SocialTab name={"instagram"} theme={theme} />
+              <SocialTab
+                name={"instagram"}
+                theme={theme}
+                data={formData?.instagram}
+              />
             )}
           </>
         )}
@@ -148,14 +157,29 @@ const FaqsBlock = ({ theme }) => {
   );
 };
 
-const SocialTab = ({ name, theme }) => {
+const SocialTab = ({ name, theme, data = "" }) => {
   const icon = {
     email: "mail-outline",
     whatsapp: "logo-whatsapp",
     instagram: "logo-instagram",
   };
+
+  const _openUrl = async () => {
+    if (!data) {
+      return;
+    }
+
+    if (name === "email") {
+      await Linking.openURL(`mailto:${data}`);
+    } else if (name === "whatsapp") {
+      await Linking.openURL(`https://wa.me/${data}`);
+    } else {
+      await Linking.openURL(`${data}`);
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles(theme).socialBtn}>
+    <TouchableOpacity style={styles(theme).socialBtn} onPress={_openUrl}>
       <View style={styles(theme).socialIcon}>
         <Ionicons
           name={icon[name]}
