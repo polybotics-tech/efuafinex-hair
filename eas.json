@@ -16,7 +16,14 @@
     },
     "production": {
       "autoIncrement": true,
-      "channel": "production"
+      "channel": "production",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:bundleRelease",
+        "env": {
+          "EXPO_DEBUG_SYMBOLS": "true"
+        }
+      }
     }
   },
   "submit": {
