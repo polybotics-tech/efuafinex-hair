@@ -46,7 +46,7 @@ export default function Account() {
         />
 
         <OptionTag
-          title={"Push Notifications"}
+          title={"Manage Notifications"}
           icon={"bell"}
           path={"/account/notification/"}
           theme={theme}

@@ -17,7 +17,7 @@ const DefaultHeaderComponent = ({ directory }) => {
       settings: "Account Settings",
       password: "Change Password",
       location: "Delivery Location",
-      notification: "Push Notifications",
+      notification: "Manage Notifications",
       logout: "Log Out",
       delete: "Delete Account",
       contact: "Contact Us",

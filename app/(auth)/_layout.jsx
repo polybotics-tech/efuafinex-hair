@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { router, Slot, usePathname } from "expo-router";
 import * as AppleAuthentication from "expo-apple-authentication";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+//import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../../constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
@@ -46,9 +46,9 @@ export default function AuthLayout() {
 
               {/** */}
               <View style={styles(theme).btnCont}>
-                <SignInWithGoogle theme={theme} />
+                {/*<SignInWithGoogle theme={theme} />
 
-                {/*<SignInWithApple theme={theme} />*/}
+                <SignInWithApple theme={theme} />*/}
               </View>
 
               {/**terms and policies */}

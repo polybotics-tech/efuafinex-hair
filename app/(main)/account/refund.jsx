@@ -130,7 +130,6 @@ const RefundAccountComponent = ({ theme, refreshFunc = () => {} }) => {
       const { account_name, recipient_code } = res;
 
       setFormData((prev) => ({ ...prev, account_name, recipient_code }));
-      console.log("recipient_code: ", recipient_code);
     }
   });
 

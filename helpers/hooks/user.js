@@ -253,6 +253,8 @@ export const USER_HOOKS = {
         const res = data?.data;
         const { notifications } = res;
 
+        console.log("single notification: ", notifications[0]);
+
         //update notifications list in global state
         store.dispatch(ACTION_UPDATE_LATEST_NOTIFICATIONS({ notifications }));
 
@@ -286,6 +288,8 @@ export const USER_HOOKS = {
         LOCAL_STORAGE.paths.latest_notification_id,
         latest_id
       );
+
+      //push local notification
     }
   },
   mark_notifications_read: async () => {

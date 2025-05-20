@@ -102,15 +102,25 @@ const PopupModalWrapper = ({ children, onCloseFunc = () => {}, ...props }) => {
 
 export default memo(PopupModalWrapper);
 
+const modalLeftPos = Boolean(
+  SCREEN_DIMENSION.fullWidth > SCREEN_DIMENSION.maxWidth
+)
+  ? Number(
+      Number(SCREEN_DIMENSION.fullWidth / 2) -
+        Number(SCREEN_DIMENSION.maxWidth / 2)
+    )
+  : 0;
+
 const styles = (theme) =>
   StyleSheet.create({
     modalInset: {
       width: "100%",
+      maxWidth: SCREEN_DIMENSION.maxWidth,
       minHeight: SCREEN_DIMENSION.heightRatio(1 / 3),
       maxHeight: SCREEN_DIMENSION.heightRatio(1 / 1.2),
       position: "absolute",
       bottom: 0,
-      left: 0,
+      left: modalLeftPos,
       backgroundColor: COLOR_THEME[theme].white,
       shadowColor: COLOR_THEME[theme].black,
       shadowOffset: {

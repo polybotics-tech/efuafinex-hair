@@ -96,7 +96,9 @@ const styles = (theme) =>
     },
     logoComp: {
       width: SCREEN_DIMENSION.widthRatio(1 / 2),
+      maxWidth: 350,
       height: SCREEN_DIMENSION.widthRatio(1 / 2),
+      maxHeight: 350,
     },
     btmText: {
       flexDirection: "row",

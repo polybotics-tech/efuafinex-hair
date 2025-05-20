@@ -16,7 +16,11 @@ const PackageRecordsComponent = ({ filter }) => {
 
   const fetchPackages = async (page) => {
     //send request
-    const result = await PACKAGE_HOOKS.fetch_user_packages(setIsLoading, page);
+    const result = await PACKAGE_HOOKS.fetch_user_packages(
+      setIsLoading,
+      page,
+      filter
+    );
 
     if (result) {
       setMeta(result?.meta);

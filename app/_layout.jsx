@@ -1,13 +1,23 @@
 import { Stack } from "expo-router";
 import { Provider, useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from "react";
+import { fetch } from "@react-native-community/netinfo";
+import * as Notifications from "expo-notifications";
 import store from "../redux/store";
 import TabsHeaderComponent from "../components/TabsHeaderComponent";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { COLOR_THEME, FONT_SIZE, FONT_WEIGHT } from "../constants";
-import { useEffect, useMemo, useState } from "react";
 import { USER_HOOKS } from "../helpers/hooks/user";
-import { fetch } from "@react-native-community/netinfo";
 import { Alert } from "../helpers/utils/alert";
+
+// First, set the handler that will cause the notification to show the alert
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function RootLayout() {
   return (
@@ -82,13 +92,13 @@ const NetworkChecker = () => {
     setIsDefault(false);
   }, [isConnected]);
 
-  //test for connection every 10sec
+  //test for connection every 30sec
   useEffect(() => {
     const testInterval = setInterval(() => {
       fetch().then((state) => {
         setIsConnected(state.isConnected);
       });
-    }, 10000);
+    }, 30000);
 
     return () => {
       clearInterval(testInterval);
