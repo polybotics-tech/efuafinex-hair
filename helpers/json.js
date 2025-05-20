@@ -64,6 +64,11 @@ export const NOTICE_TITLE = {
   "fund-added-to-package": "Funds Added To Package",
 };
 
+export const NOTICE_SUBTITLE = {
+  "package-created": "Your new package was created successfully",
+  "fund-added-to-package": "Deposited funds have been added to your package",
+};
+
 export const BANK_LIST = [
   {
     name: "access bank",

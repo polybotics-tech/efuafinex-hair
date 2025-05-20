@@ -1,7 +1,8 @@
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import { Provider, useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { fetch } from "@react-native-community/netinfo";
+import * as SystemUI from "expo-system-ui";
 import * as Notifications from "expo-notifications";
 import store from "../redux/store";
 import TabsHeaderComponent from "../components/TabsHeaderComponent";
@@ -18,6 +19,9 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+// For transparent system bars (modern edge-to-edge)
+SystemUI.setBackgroundColorAsync("transparent");
 
 export default function RootLayout() {
   return (
@@ -36,6 +40,7 @@ export default function RootLayout() {
       </Stack>
 
       <ThemeChecker />
+      <NotificationRouter />
       <DefaultChecker />
       <NetworkChecker />
     </Provider>
@@ -66,6 +71,57 @@ const DefaultChecker = () => {
       USER_HOOKS.validate_notification_latest_id(latest_id);
     }
   }, [latest_id]);
+
+  return <></>;
+};
+
+const NotificationRouter = () => {
+  useEffect(() => {
+    let isMounted = true;
+
+    function redirect(notification) {
+      const path = {
+        package: (id) => `/package/${id}`,
+        reciept: (ref) => `/reciept/${ref}`,
+      };
+
+      const navigateToPath = (type, id) => {
+        let goto = path[type];
+        router.navigate(goto(id));
+      };
+
+      const extra = notification?.request?.content?.data;
+      if (extra) {
+        //view package
+        if (extra?.package_id) {
+          navigateToPath("package", extra?.package_id);
+        }
+
+        //view reciept
+        if (extra?.transaction_ref) {
+          navigateToPath("reciept", extra?.transaction_ref);
+        }
+      }
+    }
+
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      if (!isMounted || !response?.notification) {
+        return;
+      }
+      redirect(response?.notification);
+    });
+
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        redirect(response.notification);
+      }
+    );
+
+    return () => {
+      isMounted = false;
+      subscription.remove();
+    };
+  }, []);
 
   return <></>;
 };

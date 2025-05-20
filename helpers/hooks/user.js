@@ -7,7 +7,7 @@ import {
   ACTION_LOG_USER_OUT,
   ACTION_UPDATE_USER_THUMBNAIL,
 } from "../../redux/reducer/userSlice";
-import { Alert } from "../utils/alert";
+import { Alert, Notify } from "../utils/alert";
 import { LOCAL_STORAGE } from "../local-storage";
 import {
   ACTION_CLEAR_NOTIFICATION_RECORDS,
@@ -16,6 +16,7 @@ import {
   ACTION_UPDATE_NOTIFICATION_HAS_UNREAD,
 } from "../../redux/reducer/notificationSlice";
 import { ACTION_TOGGLE_APP_THEME } from "../../redux/reducer/appSlice";
+import { extract_latest_notification_by_id } from "../utils";
 
 export const USER_HOOKS = {
   fetch_theme_preference: async () => {
@@ -253,8 +254,6 @@ export const USER_HOOKS = {
         const res = data?.data;
         const { notifications } = res;
 
-        console.log("single notification: ", notifications[0]);
-
         //update notifications list in global state
         store.dispatch(ACTION_UPDATE_LATEST_NOTIFICATIONS({ notifications }));
 
@@ -290,6 +289,18 @@ export const USER_HOOKS = {
       );
 
       //push local notification
+      const all_notifications = store.getState().notification.notifications;
+      let latest_notification = extract_latest_notification_by_id(
+        latest_id,
+        all_notifications
+      );
+
+      if (latest_notification && latest_notification?.notification_type) {
+        Notify.push(
+          latest_notification?.notification_type,
+          latest_notification?.extra
+        );
+      }
     }
   },
   mark_notifications_read: async () => {

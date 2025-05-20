@@ -2,9 +2,7 @@ import { Dimensions } from "react-native";
 
 const screenMaxW = 480;
 const screenFullW = Dimensions.get("screen").width;
-const screenW = Boolean(screenFullW > screenMaxW)
-  ? screenMaxW
-  : screenFullW > screenMaxW;
+const screenW = Boolean(screenFullW > screenMaxW) ? screenMaxW : screenFullW;
 const screenH = Dimensions.get("screen").height;
 
 const counterWidth = 24 + 32 * 2 + 8 * 3;

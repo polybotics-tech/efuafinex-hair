@@ -50,7 +50,7 @@ const NoticeTab = ({ notice, theme }) => {
     reciept: (ref) => `/reciept/${ref}`,
   };
 
-  const navigatToPath = (type, id) => {
+  const navigateToPath = (type, id) => {
     let goto = path[type];
     router.navigate(goto(id));
   };
@@ -82,7 +82,7 @@ const NoticeTab = ({ notice, theme }) => {
         <View style={styles(theme).noticeActionCont}>
           {Boolean(extra?.package_id) && (
             <TouchableOpacity
-              onPress={() => navigatToPath("package", extra?.package_id)}
+              onPress={() => navigateToPath("package", extra?.package_id)}
             >
               <Text style={styles(theme).noticeAction}>View package</Text>
             </TouchableOpacity>
@@ -90,7 +90,7 @@ const NoticeTab = ({ notice, theme }) => {
 
           {Boolean(extra?.transaction_ref) && (
             <TouchableOpacity
-              onPress={() => navigatToPath("reciept", extra?.transaction_ref)}
+              onPress={() => navigateToPath("reciept", extra?.transaction_ref)}
             >
               <Text style={styles(theme).noticeAction}>See reciept</Text>
             </TouchableOpacity>

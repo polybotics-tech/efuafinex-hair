@@ -66,6 +66,14 @@
         {
           "photosPermission": "Efuafinex hair would like to get access to your camera/gallery to take photos for your profile or posts"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#FAFAFA",
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": false
+        }
       ]
     ],
     "experiments": {

@@ -10,7 +10,10 @@ const SafeAreaWrapper = ({ children, style = {} }) => {
 
   return (
     <View style={styles(theme).layout}>
-      <SafeAreaView style={[styles(theme).safeArea, style]}>
+      <SafeAreaView
+        style={[styles(theme).safeArea, style]}
+        edges={["top", "bottom"]}
+      >
         <AppStatusBar />
         {children}
       </SafeAreaView>

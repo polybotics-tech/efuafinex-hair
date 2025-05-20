@@ -11,9 +11,10 @@ const AppStatusBar = () => {
   return (
     <>
       <StatusBar
-        backgroundColor={COLOR_THEME[theme].white}
         style={theme_is_dark ? "light" : "dark"}
         animated={true}
+        backgroundColor="transparent"
+        translucent
       />
 
       <Stack.Screen

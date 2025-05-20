@@ -1,5 +1,6 @@
 import Toast from "react-native-toast-message";
 import * as Notifications from "expo-notifications";
+import { NOTICE_SUBTITLE, NOTICE_TITLE } from "../json";
 
 export const Alert = {
   success: (title, msg = "") => {
@@ -19,12 +20,20 @@ export const Alert = {
 };
 
 export const Notify = {
-  push: () => {
+  push: (type = "", extra = {}) => {
+    if (!type) {
+      return;
+    }
+
+    const title = NOTICE_TITLE[type];
+    const subtitle = NOTICE_SUBTITLE[type];
+
     // Second, call scheduleNotificationAsync()
     Notifications.scheduleNotificationAsync({
       content: {
-        title: "Look at that notification",
-        body: "I'm so proud of myself!",
+        title: title,
+        body: subtitle,
+        data: extra,
       },
       trigger: null,
     });

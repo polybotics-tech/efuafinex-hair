@@ -15,3 +15,20 @@ export const extract_name_from_bank_code = (bank_code) => {
 
   return bank?.name;
 };
+
+export const extract_latest_notification_by_id = (
+  latest_id = "",
+  notifications = {}
+) => {
+  let notice;
+
+  if (notifications && latest_id) {
+    notifications?.forEach((n) => {
+      if (n?.notification_id === latest_id) {
+        notice = n;
+      }
+    });
+  }
+
+  return notice;
+};
