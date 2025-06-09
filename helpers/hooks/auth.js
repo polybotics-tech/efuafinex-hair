@@ -87,7 +87,7 @@ export const AUTH_HOOKS = {
 
       const { success, message } = data;
       if (success) {
-        Alert.success("login successful", message);
+        Alert.success("authentication successful", message);
 
         const res = data?.data;
         //extract user and token
@@ -101,7 +101,7 @@ export const AUTH_HOOKS = {
         return true;
       }
     } catch (error) {
-      Alert.error("login failed", HEADERS.error_extractor(error));
+      Alert.error("authentication failed", HEADERS.error_extractor(error));
       return false;
     } finally {
       setLoader(false);
@@ -119,7 +119,7 @@ export const AUTH_HOOKS = {
 
       const { success, message } = data;
       if (success) {
-        Alert.success("login successful", message);
+        Alert.success("authentication successful", message);
 
         const res = data?.data;
         //extract user and token
@@ -133,7 +133,7 @@ export const AUTH_HOOKS = {
         return user;
       }
     } catch (error) {
-      Alert.error("login failed", HEADERS.error_extractor(error));
+      Alert.error("authentication failed", HEADERS.error_extractor(error));
       return false;
     } finally {
       setLoader(false);

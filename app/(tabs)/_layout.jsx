@@ -102,13 +102,17 @@ const UserVerifiedChecker = () => {
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    if (user && Boolean(user?.user_id) && Boolean(user?.email)) {
-      //check if user is verified
-      if (!user?.is_verified) {
-        if (router.canDismiss()) {
-          router.dismissAll();
+    if (user && Boolean(user?.user_id)) {
+      //check if user account is from google or apple, email check if email is verified
+      if (Boolean(user?.from_google || user?.from_apple)) {
+        return;
+      } else {
+        if (Boolean(!user?.is_verified)) {
+          if (router.canDismiss()) {
+            router.dismissAll();
+          }
+          router.dismissTo("/(auth)/verify/");
         }
-        router.dismissTo("/(auth)/verify/");
       }
     }
   }, [user]);

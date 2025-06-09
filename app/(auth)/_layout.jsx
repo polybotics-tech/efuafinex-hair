@@ -16,7 +16,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SafeAreaWrapper from "../../components/ui/safeAreaWrapper";
 import { Alert } from "../../helpers/utils/alert";
 import { AUTH_HOOKS } from "../../helpers/hooks/auth";
-import { jwtDecode } from "jwt-decode";
 import { useSelector } from "react-redux";
 
 export default function AuthLayout() {
@@ -48,7 +47,7 @@ export default function AuthLayout() {
               <View style={styles(theme).btnCont}>
                 <SignInWithGoogle theme={theme} />
 
-                {/*<SignInWithApple theme={theme} />*/}
+                <SignInWithApple theme={theme} />
               </View>
 
               {/**terms and policies */}
@@ -144,8 +143,12 @@ const SignInWithGoogle = ({ theme }) => {
         const { email, name, photo } = user;
 
         //create form
-        const form = { email, photo_url: photo, fullname: name };
-        console.log("form: ", form);
+        const form = {
+          provider: "google",
+          email,
+          photo_url: photo,
+          fullname: name,
+        };
 
         await submitForm(form);
       } else {
@@ -193,7 +196,6 @@ const SignInWithApple = ({ theme }) => {
 
   //handle form submission
   const submitForm = async (formData) => {
-    console.log("api");
     const login = await AUTH_HOOKS.attempt_apple_signin(formData, setIsLoading);
     if (login) {
       //redirect to home
@@ -240,26 +242,33 @@ const SignInWithApple = ({ theme }) => {
       }
 
       //extract identity token
-      const { identityToken } = credentials;
-
-      //decode token
-      const decoded = jwtDecode(identityToken);
-      console.log("decoded: ", decoded);
-      return;
-      /*const { email, fullName } = credentials;
-      console.log("email: ", email);
+      const { identityToken, email, fullName, user } = credentials;
 
       // signed in with apple
-      if (email && fullName) {
+      if (identityToken && user) {
         //extract fullname
-        const fullname = `${fullName?.familyName} ${fullName?.givenName}`;
+        const fullname = Boolean(fullName?.familyName || fullName?.givenName)
+          ? `${fullName?.familyName} ${fullName?.givenName}`
+          : "New Apple User";
 
         //create form
-        const form = { email, fullname };
+        const form = {
+          provider: "apple",
+          identityToken,
+          userSub: user,
+          email,
+          fullname,
+        };
 
         //submit form to api
         await submitForm(form);
-      }*/
+      } else {
+        Alert.error(
+          "Apple authentication failed",
+          "Unable to fetch user identity token"
+        );
+        return;
+      }
     } catch (e) {
       if (e.code === "ERR_REQUEST_CANCELED") {
         // handle that the user canceled the sign-in flow
