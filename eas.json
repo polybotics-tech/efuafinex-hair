@@ -30,11 +30,6 @@
     "production": {
       "android": {
         "serviceAccountKeyPath": "./keys/efuafinex-mobile-app-240f7a05d081.json"
-      },
-      "ios": {
-        "appleId": "efuafinexhair01@gmail.com",
-        "ascAppId": "6746934526",
-        "appleTeamId": "HNZ8C7C5W4"
       }
     }
   }
