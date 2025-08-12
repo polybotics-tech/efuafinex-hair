@@ -30,6 +30,11 @@
     "production": {
       "android": {
         "serviceAccountKeyPath": "./keys/efuafinex-mobile-app-240f7a05d081.json"
+      },
+      "ios": {
+        "appleId": "efuabest02@gmail.com",
+        "ascAppId": "6749894756",
+        "appleTeamId": "6N9966G72K"
       }
     }
   }
